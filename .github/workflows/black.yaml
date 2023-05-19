@@ -1,0 +1,13 @@
+name: Black formatter
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: CAPI Image Builder
+        uses: psf/black@stable
+        with:
+          src: "capi_image_builder"
