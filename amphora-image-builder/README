@@ -1,0 +1,19 @@
+Amphora Builder
+===============
+
+This script prepares a docker image to build an Amphora image, using the latest Octavia code from git
+and the default arguments.
+
+It is based on https://docs.openstack.org/octavia/latest/admin/amphora-image-build.html
+
+Requirements
+------------
+
+- Docker
+
+Usage
+-----
+
+```
+$ ./build.sh
+```

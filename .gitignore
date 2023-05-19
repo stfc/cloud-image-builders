@@ -1,3 +1,7 @@
+# Amphora output files
+amphora-x64*.raw
+amphora-x64*.d/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
