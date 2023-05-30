@@ -1,0 +1,26 @@
+- name: Prep machine
+  hosts: all
+  gather_facts: true # Required to add user to libvirt group
+  vars:
+    # Packer working directory whilst building
+    packer_dir: "/tmp/packer"
+
+  roles:
+    - role: prep_machine
+      become: true
+      tags:
+        - setup
+        - machine
+
+    - role: prep_packer
+      tags:
+        # Ensure the latest source is used
+        - always
+
+    # Optional builder variants
+    - role: run_packer
+      build_variant: "ubuntu/22_04"
+      tags:
+        - all
+        - ubuntu
+        - ubuntu_22_04

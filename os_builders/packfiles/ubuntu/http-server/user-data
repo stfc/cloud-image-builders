@@ -1,0 +1,25 @@
+#cloud-config
+autoinstall:
+  version: 1
+  early-commands:
+    # workaround to stop ssh for packer as it thinks it timed out
+    - sudo systemctl stop ssh
+
+  locale: en_GB.UTF-8
+  keyboard:
+    layout: gb
+  storage:
+    layout:
+      name: direct
+  ssh:
+    install-server: yes
+    allow-pw: yes
+  user-data:
+    users:
+      - name: builder
+        # openssl passwd -6 -stdin <<< builder
+        passwd: $6$xyz$UtXVazU08Q5b8AW.TJ3MPYZglyXa3Ttf2RCel8MCUPlEYO1evWxeWBhZ2QqivU/Ij4tqYAxMCqc2ujEM4dMSe1
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash

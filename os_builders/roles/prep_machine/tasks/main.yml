@@ -1,0 +1,44 @@
+- name: Add Hashicorp apt key
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Add Hashicorp apt repository
+  apt_repository:
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
+    state: present
+    filename: hashicorp
+    update_cache: yes
+
+- name: Install Packer
+  apt:
+    name: packer
+    state: present
+
+- name: Install QEMU/KVM
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - qemu-kvm
+    - libvirt-daemon-system
+    - libvirt-clients
+    - bridge-utils
+    - virtinst
+
+- name: Add user to libvirt group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: libvirt
+    append: yes
+
+- name: Enable libvirt service
+  service:
+    name: libvirtd
+    enabled: yes
+    state: started
+
+- name: Enable KVM module
+  modprobe:
+    name: kvm
+    state: present
