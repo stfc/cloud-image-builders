@@ -1,26 +1,14 @@
-- name: Prep machine
+- name: Prep builder
   hosts: all
   gather_facts: true # Required to add user to libvirt group
-  vars:
-    # Packer working directory whilst building
-    packer_dir: "/tmp/packer"
 
   roles:
-    - role: prep_machine
+    - role: prep_builder
       become: true
-      tags:
-        - setup
-        - machine
 
-    - role: prep_packer
-      tags:
-        # Ensure the latest source is used
-        - always
-
-    # Optional builder variants
-    - role: run_packer
-      build_variant: "ubuntu/22_04"
-      tags:
-        - all
-        - ubuntu
-        - ubuntu_22_04
+  post_tasks:
+    - name: Run Packer init
+      command: 
+        cmd: packer init prod.pkr.hcl
+        chdir: "{{ playbook_dir }}/packfiles"
+      tags: packer

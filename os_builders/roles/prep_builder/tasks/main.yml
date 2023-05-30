@@ -13,7 +13,7 @@
 - name: Install Packer
   apt:
     name: packer
-    state: present
+    state: latest
 
 - name: Install QEMU/KVM
   apt:
@@ -26,11 +26,14 @@
     - bridge-utils
     - virtinst
 
-- name: Add user to libvirt group
+- name: Add user to required groups
   user:
     name: "{{ ansible_env.USER }}"
-    groups: libvirt
+    groups: "{{ item }}"
     append: yes
+  loop:
+    - kvm
+    - libvirt
 
 - name: Enable libvirt service
   service:

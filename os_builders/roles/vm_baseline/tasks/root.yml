@@ -1,0 +1,39 @@
+- name: Enable root login for authorized admins
+  block:
+    - name: Enable root login for SSH
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "^#?PermitRootLogin"
+        line: "PermitRootLogin yes"
+        state: present
+
+    - name: Disable password login for root over SSH
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
+        state: present
+
+    - debug:
+        msg: "ROOT_PASSWORD is undefined, disabling password based login.  Please set it in your environment."
+      when: not lookup('env', 'ROOT_PASSWORD')
+
+    - name: Enable root account
+      user:
+        name: root
+        state: present
+        shell: /bin/bash
+        password: "{{ lookup('env', 'ROOT_PASSWORD', default='') }}"
+
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted
+
+- name: Copy authorized cloud admin keys into root's authorized_keys
+  copy:
+    src: "authorized_keys"
+    dest: "/root/.ssh/authorized_keys"
+    owner: root
+    group: root
+    mode: 0600

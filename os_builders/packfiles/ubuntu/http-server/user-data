@@ -4,7 +4,6 @@ autoinstall:
   early-commands:
     # workaround to stop ssh for packer as it thinks it timed out
     - sudo systemctl stop ssh
-
   locale: en_GB.UTF-8
   keyboard:
     layout: gb
@@ -14,11 +13,13 @@ autoinstall:
   ssh:
     install-server: yes
     allow-pw: yes
+  # Defer updates until ansible runs
+  updates: security
   user-data:
     users:
-      - name: builder
-        # openssl passwd -6 -stdin <<< builder
-        passwd: $6$xyz$UtXVazU08Q5b8AW.TJ3MPYZglyXa3Ttf2RCel8MCUPlEYO1evWxeWBhZ2QqivU/Ij4tqYAxMCqc2ujEM4dMSe1
+      - name: packer
+        # openssl passwd -6 -stdin <<< packer
+        passwd: "$6$M.lbMd/giDrHLKPD$G9p0JcIWtYDFcXG497OQxvc5aWBaN5o0KdLhlCqrsDyXUhPhcDNsLETFMpeS8JpjyEZOW1qaq6sJq4mS4iO4z."
         groups: [adm, cdrom, dip, plugdev, lxd, sudo]
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL

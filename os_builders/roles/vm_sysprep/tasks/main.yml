@@ -1,0 +1,17 @@
+- name: Stop rsyslog during cleanup
+  service:
+    name: rsyslog
+    state: stopped
+
+- include_tasks: ubuntu_cleanup.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- include_tasks: rocky_cleanup.yml
+  when: ansible_distribution == 'Rocky'
+
+- include_tasks: cleanup.yml
+
+- name: Start rsyslog again
+  service:
+    name: rsyslog
+    state: started
