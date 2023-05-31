@@ -12,9 +12,6 @@
 - name: Remove yum package lists
   command: /usr/bin/yum -y clean all
 
-- name: Reset network interface IDs
-  shell: sed -i '/^\(HWADDR\|UUID\)=/d' /etc/sysconfig/network-scripts/ifcfg-*
-
 - name: Remove the kickstart log
   file:
     state: absent

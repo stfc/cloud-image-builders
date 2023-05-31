@@ -42,8 +42,8 @@ Testing New OS Variants
 It's recommended you run this locally, so that you can see the VNC window and debug any issues:
 
 - Ensure the builder is configured, as above
-- Run your new/modified build, e.g. `packer build packfiles/prod.pkr.hcl`
-- A specific OS can be tested by using `packer build -only=ubuntu-20.04 packfiles/prod.pkr.hcl` for example
+- Run your new/modified build, e.g. `packer build packfiles`
+- A specific OS can be tested by using `packer build -only=ubuntu-20.04 packfiles` for example
 
 
 Testing new Ansible roles on a VM

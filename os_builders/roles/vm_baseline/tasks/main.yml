@@ -1,18 +1,8 @@
-- name: Stop auditing whilst running automated jobs
-  service:
-    name: rsyslog
-    state: stopped
-
 - include_tasks: update.yml
-- include_tasks: root.yml
+- include_tasks: ssh.yml
 - include_tasks: rsyslog.yml
 
 - include_tasks: pakiti.yml
 # Disabled pending fixes from Martin
 # - include_tasks: sssd.yml
 # - include_tasks: openldap.yml
-
-- name: Start auditing again
-  service:
-    name: rsyslog
-    state: started

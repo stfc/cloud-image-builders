@@ -45,4 +45,5 @@
   yum:
     name: "/tmp/pakiti-client-2.1.4-3.RAL.noarch.rpm"
     state: present
+    disable_gpg_check: true
   when: ansible_distribution == "Rocky"

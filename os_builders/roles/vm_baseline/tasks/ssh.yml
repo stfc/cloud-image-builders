@@ -1,3 +1,9 @@
+- block:
+    - name: Install openssh-server
+      package:
+        name: openssh-server
+        state: present
+
 - name: Enable root login for authorized admins
   block:
     - name: Enable root login for SSH
@@ -25,10 +31,13 @@
         shell: /bin/bash
         password: "{{ lookup('env', 'ROOT_PASSWORD', default='') }}"
 
-    - name: Restart sshd
-      service:
-        name: sshd
-        state: restarted
+- name: Ensure root home directory exists
+  file:
+    path: "/root/.ssh"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
 
 - name: Copy authorized cloud admin keys into root's authorized_keys
   copy:

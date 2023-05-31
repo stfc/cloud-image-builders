@@ -12,29 +12,33 @@
     - { path: /etc/machine-id, state: absent, mode: "0444" }
     - { path: /etc/machine-id, state: touch, mode: "0444" }
 
-- name: Truncate hostname file
-  file:
-    state: "{{ item.state }}"
-    path: "{{ item.path }}"
-    owner: root
-    group: root
-    mode: "{{ item.mode }}"
-  loop:
-    - { path: /etc/hostname, state: absent, mode: "0644" }
-    - { path: /etc/hostname, state: touch, mode: "0644" }
+- name: Reset host related files
+  block:
+    - name: Truncate hostname file
+      file:
+        state: "{{ item.state }}"
+        path: "{{ item.path }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: /etc/hostname, state: absent, mode: "0644" }
+        - { path: /etc/hostname, state: touch, mode: "0644" }
 
-- name: Set hostname
-  hostname:
-    name: localhost.local
-    use: systemd
+    - name: Set hostname
+      hostname:
+        name: localhost.local
+        use: systemd
 
-- name: Reset hosts file
-  copy:
-    src: etc/hosts
-    dest: /etc/hosts
-    owner: root
-    group: root
-    mode: "0644"
+    - name: Reset hosts file
+      copy:
+        src: etc/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: "0644"
+  # Ignore errors on Docker CI builds
+  ignore_errors: true
 
 - name: Truncate audit logs
   file:
@@ -90,6 +94,12 @@
     path: "{{ item.path }}"
   loop: "{{ ssh_host_keys.files }}"
 
+- name: Ensure find is installed on RL8 Docker
+  package:
+    name: findutils
+    state: present
+  when: ansible_distribution == "Rocky"
+
 - name: Truncate all remaining log files in /var/log
   shell:
     cmd: |
@@ -121,13 +131,17 @@
         path: "/home/{{ ansible_env.SUDO_USER | default(ansible_user_id) }}/.bash_history",
       }
 
-- name: Rotate journalctl to archive logs
-  shell:
-    cmd: |
-      journalctl --rotate
-  when: not ( ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 7 )
+- name: Rotate journalctl
+  block:
+    - name: Rotate journalctl to archive logs
+      shell:
+        cmd: |
+          journalctl --rotate
+      when: not ( ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 7 )
 
-- name: Remove archived journalctl logs
-  shell:
-    cmd: |
-      journalctl -m --vacuum-time=1s
+    - name: Remove archived journalctl logs
+      shell:
+        cmd: |
+          journalctl -m --vacuum-time=1s
+  # Ignore errors on Docker CI builds
+  ignore_errors: true

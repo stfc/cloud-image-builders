@@ -26,6 +26,7 @@ source "qemu" "ubuntu_2204" {
     format              = "qcow2"
     accelerator         = "kvm"
     memory              = "4096"
+    headless            = var.headless
 
     ssh_username        = "packer"
     ssh_password        = "packer"
