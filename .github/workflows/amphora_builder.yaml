@@ -1,0 +1,41 @@
+name: Amphora Builder PR
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - ".github/workflows/amphora_builder.yml"
+      - "amphora-image-builder/**"
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: "./amphora-image-builder"
+
+  docker-build:
+    name: Test Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./amphora-image-builder
+          push: false
+          tags: "amphora-builder"
+
+  amphora-e2e:
+    name: Amphora E2E
+    runs-on: ubuntu-latest
+    needs: ["docker-build"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Exec Amphora build
+        run: cd amphora-image-builder && ./build.sh
