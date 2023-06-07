@@ -2,7 +2,7 @@ default:
     hosts:
         # Note to reviewer: This should never be merged with
         # a valid DNS name.
-        host-172-16-103-113.nubes.stfc.ac.uk:
+        host-172-16-x-y.nubes.stfc.ac.uk:
             ansible_user: ubuntu
-        host-172-16-113-249.nubes.stfc.ac.uk:
+        host-172-16-x-y.nubes.stfc.ac.uk:
             ansible_user: rocky

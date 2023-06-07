@@ -38,6 +38,8 @@
         group: root
         mode: "0644"
   # Ignore errors on Docker CI builds
+  # The containers do not run with PID 1, and docker sets some of this
+  # so systemd cannot change host related details during the CI runs
   ignore_errors: true
 
 - name: Truncate audit logs
