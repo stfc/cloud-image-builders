@@ -16,7 +16,7 @@ class Args:
     make_image_public: bool = False
 
     # Sane defaults
-    git_branch: str = "master"
+    git_branch: str = "main"
     os_version: str = "2004"
     target_dir: Optional[str] = None
 

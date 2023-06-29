@@ -117,8 +117,8 @@ def test_git_merge_mock():
     # Patch merge to not actually merge
     ops.repo = mock.MagicMock()
 
-    ops.git_merge_upstream("upstream_merge", "master")
-    ops.repo.git.merge.assert_called_once_with("upstream_merge/master")
+    ops.git_merge_upstream("upstream_merge", "main")
+    ops.repo.git.merge.assert_called_once_with("upstream_merge/main")
 
 
 def test_git_push_mock():

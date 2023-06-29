@@ -43,14 +43,14 @@ class GitOps:
         """Fetch the upstream remote of a git repo."""
         self.repo.remotes[remote_name].fetch()
 
-    def git_merge_upstream(self, remote_name: str = "upstream", branch: str = "master"):
+    def git_merge_upstream(self, remote_name: str = "upstream", branch: str = "main"):
         """
         Merge the current branch onto the upstream branch to bring fork into sync.
         """
         print(f"Merging {remote_name}/{branch} into current branch")
         self.repo.git.merge(f"{remote_name}/{branch}")
 
-    def git_push(self, remote_name: str = "origin", branch: str = "master"):
+    def git_push(self, remote_name: str = "origin", branch: str = "main"):
         """Push the current branch to the remote."""
         print(f"Pushing current branch to {remote_name}/{branch}")
         self.repo.git.push(remote_name, branch)
