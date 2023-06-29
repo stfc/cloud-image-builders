@@ -51,8 +51,8 @@ def _parse_args() -> Args:
     )
     parser.add_argument(
         "--git-branch",
-        default="master",
-        help="The branch to build from. Default: master",
+        default="main",
+        help="The branch to build from. Default: main",
     )
     parser.add_argument(
         "--image-name",
