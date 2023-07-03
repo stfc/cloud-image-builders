@@ -1,48 +1,34 @@
-- block:
-    - name: Install openssh-server
-      package:
-        name: openssh-server
-        state: present
+- name: Install openssh-server
+  package:
+    name: openssh-server
+    state: present
 
 - name: Enable root login for authorized admins
   block:
-    - name: Enable root login for SSH
-      lineinfile:
-        path: "/etc/ssh/sshd_config"
-        regexp: "^#?PermitRootLogin"
-        line: "PermitRootLogin yes"
-        state: present
-
-    - name: Disable password login for root over SSH
-      lineinfile:
-        path: "/etc/ssh/sshd_config"
-        regexp: "^#?PasswordAuthentication"
-        line: "PasswordAuthentication no"
-        state: present
-
     - debug:
         msg: "ROOT_PASSWORD is undefined, disabling password based login.  Please set it in your environment."
       when: not lookup('env', 'ROOT_PASSWORD')
 
     - name: Enable root account
       user:
-        name: root
+        name: cloud
         state: present
         shell: /bin/bash
-        password: "{{ lookup('env', 'ROOT_PASSWORD', default='') }}"
+        # If a password is not set in the environment, disable password based login
+        password: "{{ lookup('env', 'ROOT_PASSWORD', default='!') }}"
 
-- name: Ensure root home directory exists
+- name: Ensure cloud home directory exists
   file:
-    path: "/root/.ssh"
+    path: "/home/cloud/.ssh"
     state: directory
-    owner: root
-    group: root
+    owner: cloud
+    group: cloud
     mode: 0700
 
-- name: Copy authorized cloud admin keys into root's authorized_keys
+- name: Copy authorized cloud admin keys into cloud's authorized_keys
   copy:
     src: "authorized_keys"
-    dest: "/root/.ssh/authorized_keys"
-    owner: root
-    group: root
+    dest: "/home/cloud/.ssh/authorized_keys"
+    owner: cloud
+    group: cloud
     mode: 0600
