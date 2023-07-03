@@ -1,0 +1,12 @@
+- name: Print build variant
+  debug:
+    msg: "Building: {{ build_variant }}"
+
+- name: Print packer command for debugging
+  debug:
+    msg: "Running: cd {{ packer_dir }} && packer build packfiles/{{ build_variant }}.pkr.hcl"
+
+- name: Start packer build
+  shell:
+    chdir: "{{ packer_dir }}"
+    cmd: packer build packfiles/{{ build_variant }}.pkr.hcl

@@ -1,0 +1,118 @@
+- name: Install sssd package
+  package:
+    name:
+      - sssd
+    state: latest
+
+- name: Install sssd-client on RL
+  yum:
+    name: sssd-client
+    state: latest
+  when: ansible_distribution == "Rocky"
+
+- name: Copy across the sssd.conf file
+  copy:
+    src: etc/sssd.conf
+    dest: /etc/sssd/sssd.conf
+    owner: root
+    group: root
+    mode: 0400
+
+- name: Restart and enable sssd
+  systemd:
+    name: sssd
+    enabled: yes
+    daemon_reload: yes
+    state: restarted
+
+- name: Insert sssd pam rule for system-auth auth
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_deny.so
+    new_type: auth
+    new_control: sufficient
+    new_module_path: pam_sss.so
+    module_arguments: "use_first_pass"
+    state: before
+
+- name: Insert sssd pam rule for system-auth account
+  pamd:
+    name: system-auth
+    type: account
+    control: required
+    module_path: pam_permit.so
+    new_type: account
+    new_control: "[default=bad success=ok user_unknown=ignore]"
+    new_module_path: pam_sss.so
+    state: before
+
+- name: Insert sssd pam rule for system-auth password
+  pamd:
+    name: system-auth
+    type: password
+    control: required
+    module_path: pam_deny.so
+    new_type: password
+    new_control: sufficient
+    new_module_path: pam_sss.so
+    module_arguments: "use_authtok"
+    state: before
+
+- name: Insert sssd pam rule for system-auth session
+  pamd:
+    name: system-auth
+    type: session
+    control: required
+    module_path: pam_unix.so
+    new_type: session
+    new_control: optional
+    new_module_path: pam_sss.so
+    state: before
+
+- name: Insert sssd pam rule for password-auth auth
+  pamd:
+    name: password-auth
+    type: auth
+    control: required
+    module_path: pam_deny.so
+    new_type: auth
+    new_control: sufficient
+    new_module_path: pam_sss.so
+    module_arguments: "use_first_pass"
+    state: before
+
+- name: Insert sssd pam rule for password-auth account
+  pamd:
+    name: password-auth
+    type: account
+    control: required
+    module_path: pam_permit.so
+    new_type: account
+    new_control: "[default=bad success=ok user_unknown=ignore]"
+    new_module_path: pam_sss.so
+    state: before
+
+- name: Insert sssd pam rule for password-auth password
+  pamd:
+    name: password-auth
+    type: password
+    control: required
+    module_path: pam_deny.so
+    new_type: password
+    new_control: sufficient
+    new_module_path: pam_sss.so
+    module_arguments: "use_authtok"
+    state: before
+
+- name: Insert sssd pam rule for password-auth session
+  pamd:
+    name: password-auth
+    type: session
+    control: required
+    module_path: pam_unix.so
+    new_type: session
+    new_control: optional
+    new_module_path: pam_sss.so
+    state: before

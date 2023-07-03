@@ -1,0 +1,30 @@
+# Adapted from:
+# https://github.com/stfc/k8s-image-builder/blob/master/images/capi/ansible/roles/sysprep/tasks/debian.yml
+
+- name: Remove apt package caches
+  apt:
+    autoclean: yes
+    autoremove: yes
+    force_apt_get: yes
+
+- name: Remove apt package lists
+  file:
+    state: "{{ item.state }}"
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: /var/lib/apt/lists, state: absent, mode: "0755" }
+    - { path: /var/lib/apt/lists, state: directory, mode: "0755" }
+
+- name: Reset network interface IDs
+  file:
+    state: absent
+    path: /etc/udev/rules.d/70-persistent-net.rules
+
+- name: Removing 99-installer.cfg which sets the cloud-init datasource to None
+  file:
+    path: /etc/cloud/cloud.cfg.d/99-installer.cfg
+    state: absent
+  when: ansible_distribution_version is version('22.04', '>=')

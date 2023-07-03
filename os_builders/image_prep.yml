@@ -1,0 +1,18 @@
+- name: Prep STFC Cloud Image
+  hosts: default
+  become: true
+
+  pre_tasks:
+    - name: Exit if provision_this_machine is not set
+      fail:
+        msg: "provision_this_machine is not set, exiting"
+      when: provision_this_machine is not defined
+
+  roles:
+    - role: vm_baseline
+      tags:
+        - baseline
+    - role: vm_sysprep
+      tags:
+        - cleanup
+        - sysprep

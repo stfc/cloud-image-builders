@@ -1,0 +1,18 @@
+- name: Disable swap service and ensure it is masked on RHEL 8
+  systemd:
+    name: swap.target
+    enabled: no
+    masked: yes
+
+- name: Remove yum package caches
+  yum:
+    autoremove: yes
+    lock_timeout: 60
+
+- name: Remove yum package lists
+  command: /usr/bin/yum -y clean all
+
+- name: Remove the kickstart log
+  file:
+    state: absent
+    path: /root/anaconda-ks.cfg

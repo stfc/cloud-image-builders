@@ -1,0 +1,22 @@
+- name: Create cacerts folder to avoid using Mozilla NSS certs directory
+  file:
+    path: /etc/openldap/cacerts/
+    recurse: yes
+    state: directory
+
+#
+# The certificates can be found at http://cs.stfc.ac.uk/csfiles/certificates/
+#
+- name: Copy across STFC CA Certificate
+  copy:
+    src: etc/d9e1102c.0
+    dest: /etc/openldap/cacerts/d9e1102c.0
+    owner: root
+    group: root
+    mode: 0444
+
+- name: Tell openldap to use cacerts folder and not Mozilla NSS certs directory
+  lineinfile:
+    path: /etc/openldap/ldap.conf
+    regexp: "^TLS_CACERTDIR"
+    line: "TLS_CACERTDIR  /etc/openldap/cacerts"
