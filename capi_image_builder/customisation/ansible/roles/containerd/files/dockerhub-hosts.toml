@@ -1,0 +1,4 @@
+server = "https://dockerhub.stfc.ac.uk"
+
+[host."https://dockerhub.stfc.ac.uk"]
+  capabilities = ["pull", "resolve"]
