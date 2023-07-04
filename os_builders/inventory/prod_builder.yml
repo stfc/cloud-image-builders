@@ -1,5 +1,0 @@
-all:
-    hosts:
-        host-172-16-114-16.nubes.stfc.ac.uk:
-    vars:
-        ansible_user: ubuntu

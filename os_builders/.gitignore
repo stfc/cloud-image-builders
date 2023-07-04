@@ -1,3 +1,4 @@
 .vscode/
-output*/
 
+base_output/
+output/

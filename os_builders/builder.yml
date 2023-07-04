@@ -1,5 +1,5 @@
 - name: Prep builder
-  hosts: all
+  hosts: localhost
   gather_facts: true # Required to add user to libvirt group
 
   roles:
@@ -8,7 +8,19 @@
 
   post_tasks:
     - name: Run Packer init
-      command: 
+      command:
         cmd: packer init prod.pkr.hcl
         chdir: "{{ playbook_dir }}/packfiles"
       tags: packer
+
+- name: Build images
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - role: run_packer
+      build_variant: "ubuntu2204"
+  tags:
+    - all
+    - ubuntu
+    - ubuntu2204

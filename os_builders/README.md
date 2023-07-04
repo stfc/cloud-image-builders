@@ -20,6 +20,10 @@ The pipeline consists of the following steps:
 Development and Testing
 ========================
 
+Packer uses a multi stage build. Stage 1 will build the VM image using auto-install. Stage 2 will provision the image with any customisations we want.
+
+This allows us to rapidly iterate on our customisations without having to wait for the OS install to complete.
+
 Preparing a builder
 -------------------
 
@@ -31,25 +35,37 @@ Then run the following command:
 ansible-playbook -i inventory/localhost builder.yml --ask-become-pass
 ```
 
-Alternatively, add your VM to a yaml file (e.g. `inventory/testing.yml`) and run:
+Directory Layout
+----------------
 
-```
-ansible-playbook -i inventory/testing.yml builder.yml
-```
+- `packfiles/` - Packer templates for building the VM images
+- `packfiles/ubuntu_sources.pkr.hcl` - Contains image definitions for Ubuntu
+- `packfiles/rocky_sources.pkr.hcl` - Contains image definitions for Rocky (TODO)
+- `packfiles/build.pkr.hcl` - Contains the build steps for the VM image. This uses a two stage build described below
+
+CI/CD Files:
+
+- `packfiles/headless.pkrvars.hcl` - Contains the variables for doing a headless build
+
 
 Testing New OS Variants
 --------------------------
 It's recommended you run this locally, so that you can see the VNC window and debug any issues:
 
 - Ensure the builder is configured, as above
-- Run your new/modified build, e.g. `packer build packfiles`
-- A specific OS can be tested by using `packer build -only=ubuntu-20.04 packfiles` for example
+- Add your new build to the sources file, you need to add a base step and a provisioning step. See the Ubuntu file for an example.
+- Run your new/modified stage 1 build through the auto-install step: `cd packerfiles && packer build --only=stage1*<name>*` 
+
+For example:
+`cd packerfiles && packer build --only=stage1*ubuntu_2204 .`
+
+- Test the provisioning step on your new image:
+`cd packerfiles && packer build --only=stage2*<name>*`
 
 
-Testing new Ansible roles on a VM
-----------------------------------
-It's recommended you use an existing VM for this testing, as it will be quicker than running an OS install:
-
+Prototyping new Ansible changes on a VM
+----------------------------------------
+It's recommended you use an existing VM for this testing, as it will be quicker than running an OS install and uploading :
 
 - Add your hosts to a testing inventory file, e.g. `cat inventory/testing.yml`:
 
