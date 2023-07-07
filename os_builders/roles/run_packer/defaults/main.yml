@@ -1,3 +1,4 @@
+# Packer
 auto_install_name: "stage-1"
 auto_install_output_path: "packfiles/base_output"
 
@@ -6,3 +7,9 @@ provisioner_output_path: "packfiles/output"
 
 # Build with VNC on by default unless the user opts out
 packer_headless: "false"
+
+# Sysprep options
+# ssh-userdir is disabled, to preserve the root SSH authorized_keys file
+sysprep_options: >-
+  --operations defaults,user-account,-ssh-userdir
+  --remove-user-accounts packer
