@@ -1,0 +1,11 @@
+- name: Build images
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+    - role: run_packer
+      build_variant: "ubuntu_2204"
+  tags:
+    - all
+    - ubuntu
+    - ubuntu_2204

@@ -1,0 +1,7 @@
+- include_tasks: update.yml
+
+- include_tasks: ssh.yml
+- include_tasks: rsyslog.yml
+
+# Include Pakiti last, so it will report on the state of a complete system
+- include_tasks: pakiti.yml
