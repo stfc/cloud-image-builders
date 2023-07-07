@@ -1,0 +1,3 @@
+[submodule "capi_image_builder/upstream_image_builder"]
+	path = capi_image_builder/upstream_image_builder
+	url = https://github.com/kubernetes-sigs/image-builder

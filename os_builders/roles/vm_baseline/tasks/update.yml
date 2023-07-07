@@ -1,0 +1,17 @@
+- name: Error for unknown distributions
+  fail:
+    msg: "Unknown distribution {{ ansible_distribution }}"
+  when: ansible_distribution != "Rocky" and ansible_distribution != "Ubuntu"
+
+- name: Install system updates for RL systems
+  yum:
+    name: "*"
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "Rocky"
+
+- name: Install system updates for Ubuntu systems
+  apt:
+    upgrade: dist
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
