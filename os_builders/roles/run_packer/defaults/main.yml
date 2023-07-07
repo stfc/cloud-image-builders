@@ -1,0 +1,8 @@
+auto_install_name: "stage-1"
+auto_install_output_path: "packfiles/base_output"
+
+provisioner_name: "stage-2"
+provisioner_output_path: "packfiles/output"
+
+# Build with VNC on by default unless the user opts out
+packer_headless: "false"
