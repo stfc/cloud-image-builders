@@ -1,0 +1,82 @@
+name: OS Builders PR
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - ".github/workflows/os_builder.yaml"
+      - "os_builders/**"
+
+jobs:
+  check_prep_builder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+      - name: Run pre-prep playbook
+        run: cd os_builders && ansible-playbook -i inventory/localhost.yml prep_builder.yml
+
+  validate_packer:
+      strategy:
+        matrix:
+          os: ["qemu.ubuntu_2204"]
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+
+        - name: Run prep_builder playbook
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y ansible
+            cd os_builders
+            ansible-playbook -i inventory/localhost.yml prep_builder.yml
+
+        - name: Validate packer files
+          run: |
+            cd os_builders/packfiles &&
+            packer init . &&
+            packer validate .
+
+        # Disabled pending: https://github.com/actions/runner-images/discussions/7191
+        # - name: Run packer for a given OS
+        #   run: cd os_builders && PACKER_LOG=1 packer build --var-file="packfiles/headless.pkrvars.hcl"  --only=${{ matrix.os }} packfiles
+  test_image_provisioning_ubuntu:
+      strategy:
+        matrix:
+          os: ["ubuntu:22.04", "ubuntu:20.04"]
+      runs-on: ubuntu-latest
+      container: ${{ matrix.os }}
+      steps:
+        - uses: actions/checkout@v3
+        - name: Install Ansible
+          run: |
+            apt update
+            apt install -y python3-pip
+            pip3 install ansible
+        - name: Run pre-prep playbook
+          # Patch the inventory to run on this machine
+          run: |
+           cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
+           ansible-playbook -i inventory/localhost.yml provision_image.yml --extra-vars provision_this_machine=True
+
+  test_image_prep_rocky:
+    strategy:
+      matrix:
+        os: ["rockylinux:8", "rockylinux:9"]
+    runs-on: ubuntu-latest
+    container: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Ansible
+        run: |
+          dnf install epel-release -y
+          dnf install ansible -y
+      - name: Run pre-prep playbook
+        run: |
+          cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
+          ansible-playbook -i inventory/localhost.yml provision_image.yml --extra-vars provision_this_machine=True
