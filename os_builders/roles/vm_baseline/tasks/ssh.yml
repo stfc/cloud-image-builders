@@ -1,0 +1,34 @@
+- name: Install openssh-server
+  package:
+    name: openssh-server
+    state: present
+
+- name: Enable root login for authorized admins
+  block:
+    - debug:
+        msg: "ROOT_PASSWORD is undefined, disabling password based login.  Please set it in your environment."
+      when: not lookup('env', 'ROOT_PASSWORD')
+
+    - name: Enable root account
+      user:
+        name: cloud
+        state: present
+        shell: /bin/bash
+        # If a password is not set in the environment, disable password based login
+        password: "{{ lookup('env', 'ROOT_PASSWORD', default='!') }}"
+
+- name: Ensure cloud home directory exists
+  file:
+    path: "/home/cloud/.ssh"
+    state: directory
+    owner: cloud
+    group: cloud
+    mode: 0700
+
+- name: Copy authorized cloud admin keys into cloud's authorized_keys
+  copy:
+    src: "authorized_keys"
+    dest: "/home/cloud/.ssh/authorized_keys"
+    owner: cloud
+    group: cloud
+    mode: 0600
