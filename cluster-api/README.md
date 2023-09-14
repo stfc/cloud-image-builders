@@ -15,8 +15,3 @@ Since we cannot add comments to JSON files I've documented some points here:
 
 - We share the compliance role in the os_builders directory. This allows us to
 update compliance for all of our images at once.
-
-- The relative path in stfc.json assumes make is triggered in the upstream_image_builder/images/capi directory.
-The first 3 ".." get us back to the capi_image_builder directory, 
-the 4th ".." gets us back to the root of the capi_image_builder repo so
-we can access the os_builders directory and share the compliance roles.
