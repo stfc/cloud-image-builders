@@ -32,7 +32,7 @@ Then run the following command to install Qemu and setup the user's groups. You 
 
 
 ```
-ansible-playbook -i inventory/localhost builder.yml --ask-become-pass
+ansible-playbook -i inventory/localhost prep_builder.yml --ask-become-pass
 ```
 
 Running the build
