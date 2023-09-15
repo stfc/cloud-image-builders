@@ -1,7 +1,7 @@
 Requirements
 ============
 
-- Ansible  # apt/dnf package is fine
+- Ansible (can be installed using apt or dnf)
 
 Setup
 -----
