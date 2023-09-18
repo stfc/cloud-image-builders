@@ -1,3 +1,3 @@
 {
-    "firstboot_custom_roles_post": "os_builders/roles/vm_baseline customisation/ansible/roles/containerd"
+    "firstboot_custom_roles_post": "vm_baseline containerd"
 }

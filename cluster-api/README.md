@@ -46,6 +46,7 @@ cd ..  # back to repo root
 git submodule update --init --recursive
 
 # Point to our custom roles:
+export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
 export PACKER_VAR_FILES="$(pwd)/cluster-api/ansible_stfc_roles.json"
 
 # Run build
@@ -60,6 +61,7 @@ To build a custom version of the image, you can specify the version of the image
 ```shell
 # E.g. to build 1.25.x
 cd .. # back to repo root
+export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
 export K8S_VERSION="cluster-api/versions/v1_25.json"
 export ROLE_DEFINITION="cluster-api/ansible_stfc_roles.json"
 
