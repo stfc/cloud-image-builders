@@ -1,3 +1,18 @@
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - gpg
+    - make
+    - git
+    - qemu-kvm
+    - libvirt-daemon-system
+    - libvirt-clients
+    - libguestfs-tools
+    - bridge-utils
+    - virtinst
+
 - name: Add Hashicorp apt key
   apt_key:
     url: https://apt.releases.hashicorp.com/gpg
@@ -13,19 +28,8 @@
 - name: Install Packer
   apt:
     name: packer
-    state: latest
-
-- name: Install required packages
-  apt:
-    name: "{{ item }}"
     state: present
-  loop:
-    - qemu-kvm
-    - libvirt-daemon-system
-    - libvirt-clients
-    - libguestfs-tools
-    - bridge-utils
-    - virtinst
+
 
 - name: Add user to required groups
   user:
@@ -38,6 +42,7 @@
 
 - name: Enable libvirt service
   service:
+    daemon_reload: yes
     name: libvirtd
     enabled: yes
     state: started
