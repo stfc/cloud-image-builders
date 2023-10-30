@@ -27,6 +27,7 @@ REPO_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 
 # Inject the custom roles
 CUSTOM_ROLE_PATH="${REPO_ROOT}/cluster-api/ansible_stfc_roles.json"
+export ANSIBLE_ROLES_PATH="${REPO_ROOT}/os_builders/roles:${REPO_ROOT}/cluster-api/roles"
 
 # Build each version of the image
 shopt -s nullglob  # This forces bash to expand the glob 
