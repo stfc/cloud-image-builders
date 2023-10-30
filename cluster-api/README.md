@@ -9,6 +9,9 @@ Setup
 - Install Ansible, if the version of Ansible core is too old it can be upgraded with:
 
 ```shell
+sudo apt-get install python3.9-venv -y
+python3.9 -m venv venv
+source venv/bin/activate
 pip install "ansible" "ansible-core" --upgrade
 ```
 
