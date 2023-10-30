@@ -2,3 +2,4 @@
 	path = k8s-image-builder
 	url = https://github.com/kubernetes-sigs/image-builder
 	shallow = true
+	branch = main
