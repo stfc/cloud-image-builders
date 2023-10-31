@@ -25,8 +25,9 @@ shift $((OPTIND-1))
 # Get root of repo based on the location of this script
 REPO_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 
-# Inject the custom roles
+# Store the location to the custom roles which are shared from our OS builder...
 CUSTOM_ROLE_PATH="${REPO_ROOT}/cluster-api/ansible_stfc_roles.json"
+# ... and make sure Ansible knows where to find on this machine
 export ANSIBLE_ROLES_PATH="${REPO_ROOT}/os_builders/roles:${REPO_ROOT}/cluster-api/roles"
 
 # Build each version of the image
