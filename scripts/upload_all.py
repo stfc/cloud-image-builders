@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Script to upload all CAPI images in k8s-image-builder to OpenStack
+"""
+
 import argparse
 import dataclasses
 import sys

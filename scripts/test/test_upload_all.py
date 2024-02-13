@@ -1,3 +1,7 @@
+"""
+Associated tests for the upload_all.py script
+"""
+
 from datetime import datetime
 from pathlib import Path
 from typing import Dict
@@ -93,6 +97,7 @@ def _expected_args_helper(file: Path, visibility: str) -> Dict:
     :param visibility: A string of either "public" or "private"
     :return: A dictionary of expected arguments for an assert call list
     """
+    # pylint: disable=duplicate-code
     return {
         "name": get_upload_name(file),
         "filename": file.as_posix(),
