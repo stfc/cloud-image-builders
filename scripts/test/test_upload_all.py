@@ -6,8 +6,15 @@ from unittest.mock import Mock, call
 
 import pytest
 
-from upload_all import glob_output_files, Args, parse_args, upload_images_to_openstack, upload_single_image, main, \
-    get_upload_name
+from upload_all import (
+    glob_output_files,
+    Args,
+    parse_args,
+    upload_images_to_openstack,
+    upload_single_image,
+    main,
+    get_upload_name,
+)
 
 
 def test_glob_output_files(tmp_path):
@@ -92,7 +99,8 @@ def _expected_args_helper(file: Path, visibility: str) -> Dict:
         "disk_format": "qcow2",
         "container_format": "bare",
         "wait": True,
-        "visibility": visibility}
+        "visibility": visibility,
+    }
 
 
 def test_upload_images_to_openstack_real_run():
@@ -107,9 +115,10 @@ def test_upload_images_to_openstack_real_run():
         upload_images_to_openstack(expected_files, args)
 
     assert mocked_upload_single_image.call_count == 2
-    expected = [call(
-        args.os_cloud,
-        _expected_args_helper(file, "public")) for file in expected_files]
+    expected = [
+        call(args.os_cloud, _expected_args_helper(file, "public"))
+        for file in expected_files
+    ]
     assert mocked_upload_single_image.call_args_list == expected
 
 
@@ -123,9 +132,7 @@ def test_upload_images_with_private_annotation():
         upload_images_to_openstack([Path("file1")], args)
 
     assert mocked_upload_single_image.call_count == 1
-    expected = [call(
-        args.os_cloud,
-        _expected_args_helper(Path("file1"), "private"))]
+    expected = [call(args.os_cloud, _expected_args_helper(Path("file1"), "private"))]
     assert mocked_upload_single_image.call_args_list == expected
 
 
@@ -139,7 +146,9 @@ def test_upload_single_image():
         upload_single_image("fake_cloud", fake_args)
 
     mocked_openstack_connect.assert_called_once_with(cloud="fake_cloud")
-    mocked_openstack_connect.return_value.create_image.assert_called_once_with(**fake_args)
+    mocked_openstack_connect.return_value.create_image.assert_called_once_with(
+        **fake_args
+    )
 
 
 def test_get_upload_name():

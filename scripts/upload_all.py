@@ -15,6 +15,7 @@ class Args:
     """
     Holds user arguments for the script
     """
+
     dry_run: bool
     public: bool
     os_cloud: str
@@ -26,7 +27,7 @@ def glob_output_files() -> List[Path]:
     Globs the output files from the CAPI image builder
     :return: A list of files to upload
     """
-    repo = git.Repo('.', search_parent_directories=True)
+    repo = git.Repo(".", search_parent_directories=True)
     root_dir = Path(repo.working_tree_dir)
 
     # Append the full path to the CAPI output directory
@@ -43,9 +44,13 @@ def parse_args(args) -> Args:
     :return: Parsed arguments as a dataclass
     """
     parser = argparse.ArgumentParser(description="Upload CAPI images to OpenStack")
-    parser.add_argument("--dry-run", action="store_true", help="Do not actually upload the images")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Do not actually upload the images"
+    )
     parser.add_argument("--public", action="store_true", help="Make the images public")
-    parser.add_argument("os_cloud", default="default", help="The OpenStack cloud to use")
+    parser.add_argument(
+        "os_cloud", default="default", help="The OpenStack cloud to use"
+    )
     parsed = parser.parse_args(args)
     return Args(**vars(parsed))
 
