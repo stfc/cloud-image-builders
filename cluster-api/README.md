@@ -6,7 +6,15 @@ Requirements
 Setup
 -----
 
-- Install Ansible
+- Install Ansible, if the version of Ansible core is too old it can be upgraded with:
+
+```shell
+sudo apt-get install python3.9-venv -y
+python3.9 -m venv venv
+source venv/bin/activate
+pip install "ansible" "ansible-core" --upgrade
+```
+
 - cd to the `os_builders` directory
 - Configure the local machine / VM to be a builder:
 
@@ -43,7 +51,7 @@ Building the latest image
 
 ```shell
 cd ..  # back to repo root
-git submodule update --init --recursive
+git submodule update --init --recursive --remote
 
 # Point to our custom roles:
 export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
