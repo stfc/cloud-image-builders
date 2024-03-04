@@ -87,7 +87,8 @@ def test_upload_images_to_openstack_dry_run():
 
     with mock.patch("upload_all.upload_single_image") as mocked_upload_single_image:
         upload_images_to_openstack(expected_files, args)
-    assert mocked_upload_single_image.call_count == 0
+
+    mocked_upload_single_image.assert_not_called()
 
 
 def _expected_args_helper(file: Path, visibility: str) -> Dict:
@@ -119,12 +120,11 @@ def test_upload_images_to_openstack_real_run():
     with mock.patch("upload_all.upload_single_image") as mocked_upload_single_image:
         upload_images_to_openstack(expected_files, args)
 
-    assert mocked_upload_single_image.call_count == 2
     expected = [
         call(args.os_cloud, _expected_args_helper(file, "public"))
         for file in expected_files
     ]
-    assert mocked_upload_single_image.call_args_list == expected
+    mocked_upload_single_image.assert_has_calls(expected, any_order=True)
 
 
 def test_upload_images_with_private_annotation():

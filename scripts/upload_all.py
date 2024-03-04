@@ -5,6 +5,7 @@ Script to upload all CAPI images in k8s-image-builder to OpenStack
 
 import argparse
 import dataclasses
+import logging
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -83,13 +84,13 @@ def upload_images_to_openstack(files: List[Path], args: Args):
             "wait": True,
             "visibility": "public" if args.public else "private",
         }
-        print(f"Upload args: {upload_args}")
+        logging.debug("Upload args: %s", upload_args)
         if args.dry_run:
-            print("Dry run, skipping upload")
+            logging.warning("Dry run, skipping upload")
         else:
-            print(f"Uploading {file}...")
+            logging.info("Uploading %s...", file)
             upload_single_image(args.os_cloud, upload_args)
-            print(f"Uploaded {file}")
+            logging.info("Uploaded %s", file)
 
 
 def upload_single_image(os_cloud: str, upload_args: Dict):
