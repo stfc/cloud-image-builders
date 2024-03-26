@@ -91,25 +91,33 @@ def test_upload_images_to_openstack_dry_run():
     mocked_upload_single_image.assert_not_called()
 
 
-def _expected_args_helper(file: Path, visibility: str) -> Dict:
+@pytest.fixture(name="fake_upload_args")
+def fake_upload_args_fixture():
     """
-    Helper function to generate the expected arguments for upload_single_image
-    :param file: The Path of a file to upload
-    :param visibility: A string of either "public" or "private"
-    :return: A dictionary of expected arguments for an assert call list
+    Fixture to generate the expected arguments for upload_single_image
     """
-    # pylint: disable=duplicate-code
-    return {
-        "name": get_upload_name(file),
-        "filename": file.as_posix(),
-        "disk_format": "qcow2",
-        "container_format": "bare",
-        "wait": True,
-        "visibility": visibility,
-    }
+
+    def _expected_args_helper(file: Path, visibility: str) -> Dict:
+        """
+        Helper function to generate the expected arguments for upload_single_image
+        :param file: The Path of a file to upload
+        :param visibility: A string of either "public" or "private"
+        :return: A dictionary of expected arguments for an assert call list
+        """
+        # pylint: disable=duplicate-code
+        return {
+            "name": get_upload_name(file),
+            "filename": file.as_posix(),
+            "disk_format": "qcow2",
+            "container_format": "bare",
+            "wait": True,
+            "visibility": visibility,
+        }
+
+    return _expected_args_helper
 
 
-def test_upload_images_to_openstack_real_run():
+def test_upload_images_to_openstack_real_run(fake_upload_args):
     """
     Tests that the upload_images_to_openstack function calls
     upload_single_image with the expected arguments
@@ -121,13 +129,12 @@ def test_upload_images_to_openstack_real_run():
         upload_images_to_openstack(expected_files, args)
 
     expected = [
-        call(args.os_cloud, _expected_args_helper(file, "public"))
-        for file in expected_files
+        call(args.os_cloud, fake_upload_args(file, "public")) for file in expected_files
     ]
     mocked_upload_single_image.assert_has_calls(expected, any_order=True)
 
 
-def test_upload_images_with_private_annotation():
+def test_upload_images_with_private_annotation(fake_upload_args):
     """
     Tests that the upload_images_to_openstack function calls
     upload_single_image with the expected arguments if the public flag is not set
@@ -137,7 +144,7 @@ def test_upload_images_with_private_annotation():
         upload_images_to_openstack([Path("file1")], args)
 
     assert mocked_upload_single_image.call_count == 1
-    expected = [call(args.os_cloud, _expected_args_helper(Path("file1"), "private"))]
+    expected = [call(args.os_cloud, fake_upload_args(Path("file1"), "private"))]
     assert mocked_upload_single_image.call_args_list == expected
 
 
