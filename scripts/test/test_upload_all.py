@@ -112,6 +112,9 @@ def fake_upload_args_fixture():
             "container_format": "bare",
             "wait": True,
             "visibility": visibility,
+            # Metadata fields
+            "hw_scsi_model": "virtio-scsi",
+            "hw_disk_bus": "scsi",
         }
 
     return _expected_args_helper

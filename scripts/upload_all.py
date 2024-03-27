@@ -83,6 +83,9 @@ def upload_images_to_openstack(files: List[Path], args: Args):
             "container_format": "bare",
             "wait": True,
             "visibility": "public" if args.public else "private",
+            # Metadata fields - setting through kwargs invokes automatic type conversion
+            "hw_scsi_model": "virtio-scsi",
+            "hw_disk_bus": "scsi",
         }
         logging.debug("Upload args: %s", upload_args)
         if args.dry_run:
