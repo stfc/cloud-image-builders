@@ -1,0 +1,4 @@
+gitpython
+openstacksdk
+pytest
+pylint
