@@ -115,6 +115,7 @@ def fake_upload_args_fixture():
             # Metadata fields
             "hw_scsi_model": "virtio-scsi",
             "hw_disk_bus": "scsi",
+            "hw_vif_multiqueue_enable": "true",
         }
 
     return _expected_args_helper

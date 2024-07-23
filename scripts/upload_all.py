@@ -86,6 +86,7 @@ def upload_images_to_openstack(files: List[Path], args: Args):
             # Metadata fields - setting through kwargs invokes automatic type conversion
             "hw_scsi_model": "virtio-scsi",
             "hw_disk_bus": "scsi",
+            "hw_vif_multiqueue_enable": "true",
         }
         logging.debug("Upload args: %s", upload_args)
         if args.dry_run:
