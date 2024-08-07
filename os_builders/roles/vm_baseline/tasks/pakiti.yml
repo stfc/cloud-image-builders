@@ -13,14 +13,19 @@
       ansible.builtin.apt_repository:
         repo: "deb http://repository.egi.eu/sw/production/cas/1/current egi-igtf core"
         state: present
+
+    - name: Install UK eScience Root
+      ansible.builtin.apt:
+        name: ca_UKeScienceRoot-2007
+        state: present
+        update_cache: yes
+
     - name: Install UK eScience CA
       ansible.builtin.apt:
-      - name: ca_UKeScienceRoot-2007
+        name: ca_UKeScienceCA-2B
         state: present
         update_cache: yes
-      - name: ca_UKeScienceCA-2B
-        state: present
-        update_cache: yes
+
   when: ansible_distribution == "Ubuntu"
 
 - name: Install Pakiti on Ubuntu using Alien
