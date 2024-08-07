@@ -1,0 +1,11 @@
+[Unit]
+Description=basic boot script
+After=network.service
+
+[Service]
+Environment= MY_ENVIRONMENT_VAR
+WorkingDirectory=/usr/local/bin/
+ExecStart=/bin/sh /usr/local/sbin/nubes-bootcontext.sh
+
+[Install]
+WantedBy=multi-user.target

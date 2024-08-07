@@ -1,0 +1,37 @@
+- name: Copy in nubes-bootcontext script
+  copy:
+    src: "nubes-bootcontext.sh"
+    dest: "/usr/local/sbin/nubes-bootcontext.sh"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy in nubes-boot systemd unit
+  copy:
+    src: "nubes-boot.service"
+    dest: "/etc/systemd/system/nubes-boot.service"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy in update_cloud_users script
+  copy:
+    src: "update_cloud_users.sh"
+    dest: "/usr/local/sbin/update_cloud_users.sh"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy in motd
+  copy:
+    src: "motd"
+    dest: "/etc/motd"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start systemd service
+  ansible.builtin.systemd_service:
+  - name: "nubes-boot"
+    daemon_reload: true
+    enabled: true
