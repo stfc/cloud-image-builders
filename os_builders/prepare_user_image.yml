@@ -11,4 +11,4 @@
   roles:
     - role: vm_baseline
     - role: container_registry
-    - role: nubes-bootcontext
+    - role: nubes_bootcontext
