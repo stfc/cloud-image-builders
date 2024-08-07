@@ -32,6 +32,6 @@
 
 - name: Start systemd service
   ansible.builtin.systemd_service:
-  - name: "nubes-boot"
+    name: "nubes-boot"
     daemon_reload: true
     enabled: true
