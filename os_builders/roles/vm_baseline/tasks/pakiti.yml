@@ -21,13 +21,13 @@
 
     - name: Install UK eScience Root
       ansible.builtin.apt:
-        name: ca_UKeScienceRoot-2007
+        name: ca-ukescienceroot-2007
         state: present
         update_cache: yes
 
     - name: Install UK eScience CA
       ansible.builtin.apt:
-        name: ca_UKeScienceCA-2B
+        name: ca-ukescienceca-2b
         state: present
         update_cache: yes
 
