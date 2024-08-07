@@ -73,3 +73,20 @@
     state: present
     disable_gpg_check: true
   when: ansible_distribution == "Rocky"
+
+- name: Ensure pakiti config directory exists
+  file:
+    path: "/etc/pakiti2"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: Copy pakiti config file
+  copy:
+    src: "etc/pakiti2/pakiti2-client.conf"
+    dest: "/etc/pakiti2/pakiti2-client.conf"
+    owner: root
+    group: root
+    mode: 0644
