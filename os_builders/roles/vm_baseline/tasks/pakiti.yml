@@ -9,6 +9,11 @@
 
 - name: Install UK eScience CA
   block:
+    - name: Add GPG Key for EU Grid PMA
+      ansible.builtin.apt_key:
+        url: "https://dist.eugridpma.info/distribution/igtf/current/GPG-KEY-EUGridPMA-RPM-3"
+        state: present
+
     - name: Add EU Grid PMA repo
       ansible.builtin.apt_repository:
         repo: "deb http://repository.egi.eu/sw/production/cas/1/current egi-igtf core"
