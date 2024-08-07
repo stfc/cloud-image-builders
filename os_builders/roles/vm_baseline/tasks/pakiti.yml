@@ -7,32 +7,6 @@
   package_facts:
     manager: auto
 
-- name: Install UK eScience CA
-  block:
-    - name: Add GPG Key for EU Grid PMA
-      ansible.builtin.apt_key:
-        url: "https://dist.eugridpma.info/distribution/igtf/current/GPG-KEY-EUGridPMA-RPM-3"
-        state: present
-
-    - name: Add EU Grid PMA repo
-      ansible.builtin.apt_repository:
-        repo: "deb http://repository.egi.eu/sw/production/cas/1/current egi-igtf core"
-        state: present
-
-    - name: Install UK eScience Root
-      ansible.builtin.apt:
-        name: ca-ukescienceroot-2007
-        state: present
-        update_cache: yes
-
-    - name: Install UK eScience CA
-      ansible.builtin.apt:
-        name: ca-ukescienceca-2b
-        state: present
-        update_cache: yes
-
-  when: ansible_distribution == "Ubuntu"
-
 - name: Install Pakiti on Ubuntu using Alien
   block:
     - name: Enable Universe for Alien
