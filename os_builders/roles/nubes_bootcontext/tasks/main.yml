@@ -31,7 +31,12 @@
     mode: 0644
 
 - name: Start systemd service
-  ansible.builtin.systemd_service:
-    name: "nubes-boot"
-    daemon_reload: true
-    enabled: true
+  become: true
+  ansible.builtin.command:
+    cmd: "systemctl enable nubes-boot.service"
+
+# - name: Start systemd service
+#   ansible.builtin.systemd_service:
+#     name: "nubes-boot"
+#     daemon_reload: true
+#     enabled: true
