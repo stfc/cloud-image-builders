@@ -25,7 +25,7 @@ while [ -z "$FEDID" ]
    do
     if [ -z "$INSTANCEID" ]
     then
-        INSTANCEID=$(dmidecode | grep UUID | tr [:upper:] [:lower:] | sed "s/\\tuuid: //")
+        INSTANCEID=$(dmidecode | grep UUID | tr '[:upper:]' '[:lower:]' | sed "s/\\tuuid: //")
     fi
     FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
     ((c++)) && ((c==3)) && c=0 && break
