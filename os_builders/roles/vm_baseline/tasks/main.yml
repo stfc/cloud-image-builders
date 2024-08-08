@@ -1,5 +1,5 @@
 - include_tasks: update.yml
-
+- include_tasks: cron.yml
 - include_tasks: ssh.yml
 - include_tasks: rsyslog.yml
 - include_tasks: openscap.yml
