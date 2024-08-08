@@ -14,13 +14,6 @@
     group: root
     mode: 0755
 
-- name: Copy in update_cloud_users script
-  copy:
-    src: "update_cloud_users.sh"
-    dest: "/usr/local/sbin/update_cloud_users.sh"
-    owner: root
-    group: root
-    mode: 0755
 
 - name: Copy in motd
   copy:
@@ -35,6 +28,7 @@
   ansible.builtin.command:
     cmd: "systemctl enable nubes-boot.service"
 
+- include_tasks: update_cloud_users.yml
 # - name: Start systemd service
 #   ansible.builtin.systemd_service:
 #     name: "nubes-boot"
