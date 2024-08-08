@@ -2,15 +2,15 @@
 
 hostname="networktest"
 
-while [[ $hostname == "networktest" ]];
+while [[ "$hostname" == "networktest" ]];
 do
     sleep 5s
     ipaddress=$(hostname -I)
-    #ipaddress=`ip addr show eth0  | grep inet | grep -v inet6 | cut -d " " -f6 | cut -d "/" -f1`
-    if [[ $ipaddress == "130."* ]]; then
-        hostname=`dig -x $ipaddress +short | sed "s/.ac.uk./.ac.uk/g"`;
-        if [ `echo $hostname | grep "ac"` ]; then
-            hostname $hostname;
+
+    if [[ "$ipaddress" == "130."* ]]; then
+        hostname=$(dig -x "$ipaddress" +short | sed "s/.ac.uk./.ac.uk/g");
+        if [ $(echo $hostname | grep "ac") ]; then
+            hostname "$hostname";
         else
             hostname="networktest";
         fi;
@@ -20,8 +20,8 @@ done;
 
 ##Fixing the SSHD config to allow for AD password logins
 
-if ! cat /etc/ssh/sshd_config | grep Kerberos | grep -qv '^#'; then
-    echo "KerberosAuthentication yes\nKerberosOrLocalPasswd yes\nKerberosTicketCleanup yes\nKerberosGetAFSToken no" >> /etc/ssh/sshd_config
+if ! grep Kerberos /etc/ssh/sshd_config | grep -qv '^#'; then
+    printf "KerberosAuthentication yes\nKerberosOrLocalPasswd yes\nKerberosTicketCleanup yes\nKerberosGetAFSToken no" >> /etc/ssh/sshd_config
 fi
 
 ##Adding Kerberos auth to the pam common auth module which will add AD auth to console logins
