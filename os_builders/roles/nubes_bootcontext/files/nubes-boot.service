@@ -1,6 +1,7 @@
 [Unit]
 Description=basic boot script
 After=network.service
+Before=sshd.service
 
 [Service]
 Environment= MY_ENVIRONMENT_VAR
