@@ -25,7 +25,7 @@ while [ -z "$FEDID" ]
    do
     if [ -z "$INSTANCEID" ]
     then
-        INSTANCEID=`dmidecode | grep UUID | tr [:upper:] [:lower:] | sed "s/\\tuuid: //"`
+        INSTANCEID=$(dmidecode | grep UUID | tr [:upper:] [:lower:] | sed "s/\\tuuid: //")
     fi
     FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
     ((c++)) && ((c==3)) && c=0 && break
@@ -38,7 +38,7 @@ groupadd wheel
 for ID in $FEDIDS; do
     useradd "$ID" -g wheel -m -s /bin/bash
     usermod "$ID" -a -G wheel
-    SUDOVALID=`visudo -c -f /etc/sudoers.d/cloud`
+    SUDOVALID=$(visudo -c -f /etc/sudoers.d/cloud)
     if [ "$SUDOVALID" != "/etc/sudoers.d/cloud: parsed OK" ]
     then
         echo " $ID  ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/cloud

@@ -9,7 +9,7 @@ do
 
     if [[ "$ipaddress" == "130."* ]]; then
         hostname=$(dig -x "$ipaddress" +short | sed "s/.ac.uk./.ac.uk/g");
-        if [ $(echo $hostname | grep "ac") ]; then
+        if [ $(echo "$hostname" | grep "ac") ]; then
             hostname "$hostname";
         else
             hostname="networktest";
