@@ -25,15 +25,20 @@
   when: ansible_distribution == "Ubuntu"
 
 - name: Install UK eScience Root CA on RL
-  yum:
-    name: ca_UKeScienceRoot-2007
-    state: present
-    disable_gpg_check: true
-  when: ansible_distribution == "Rocky"
+  block:
+  - name: add CA repo
+    yum_repository:
+      name: eScienceCAs
+      file: eScienceCAs
+      baseurl: https://repository.egi.eu/sw/production/cas/1/current
+      enabled: true
+      gpgcheck: false
 
-- name: Install UK eScience CA on RL
-  yum:
-    name: ca_UKeScienceCA-2B
-    state: present
-    disable_gpg_check: true
+  - name: Install UK eScience Packages
+    yum:
+      name:
+      - ca_UKeScienceRoot-2007
+      - ca_UKeScienceCA-2B
+      state: present
+      disable_gpg_check: true
   when: ansible_distribution == "Rocky"
