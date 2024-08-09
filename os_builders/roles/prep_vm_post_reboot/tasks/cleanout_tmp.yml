@@ -1,5 +1,5 @@
 - name: Cleanout Tmp
   command:
     cmd:
-    - "/bin/rm -rf /tmp/*"
-    - "/bin/rm -rf /var/tmp/*"
+    - "/bin/rm -rf /tmp/* || echo 'nothing to remove'"
+    - "/bin/rm -rf /var/tmp/* || echo 'nothing to remove'"
