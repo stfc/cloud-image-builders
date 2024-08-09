@@ -1,0 +1,5 @@
+- name: Cleanout RC directories
+  command:
+    cmd:
+    - "/bin/rm -rf /etc/rc.d/rc.local"
+    - "/bin/rm -rf /etc/nubes-bootcontext.sh /etc/rc*/S99-nubes-boot /etc/rc.d/rc.local"
