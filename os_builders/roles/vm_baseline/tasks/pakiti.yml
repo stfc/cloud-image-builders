@@ -46,4 +46,21 @@
     name: "/tmp/pakiti-client-2.1.4-3.RAL.noarch.rpm"
     state: present
     disable_gpg_check: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_distribution == "Rocky"  and "ccm" not in ansible_facts.packages
+
+- name: Ensure pakiti config directory exists
+  file:
+    path: "/etc/pakiti2"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: Copy pakiti config file
+  copy:
+    src: "etc/pakiti2/pakiti2-client.conf"
+    dest: "/etc/pakiti2/pakiti2-client.conf"
+    owner: root
+    group: root
+    mode: 0644

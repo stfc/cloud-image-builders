@@ -1,0 +1,15 @@
+- name: Ensure docker directory exists
+  file:
+    path: "/etc/docker"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy in docker registry config
+  copy:
+    src: "docker.json"
+    dest: "/etc/docker/docker.json"
+    owner: root
+    group: root
+    mode: 0644

@@ -2,10 +2,18 @@
   package:
     name: libopenscap8
     state: present
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version != "24.04"
+
+- name: Install openscap
+  package:
+    name:
+    - openscap-scanner
+    - openscap-utils
+    state: present
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == "24.04"
 
 - name: Install openscap
   package:
     name: openscap
     state: present
-  when: ansible_distribution == "Rocky"
+  when: ansible_distribution == "Rocky"  and "ccm" not in ansible_facts.packages
