@@ -1,0 +1,4 @@
+- name: Remove Host SSH keys
+  command:
+    cmd:
+    - "/bin/rm -f /etc/ssh/*key*"
