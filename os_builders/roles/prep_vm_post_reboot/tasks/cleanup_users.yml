@@ -1,3 +1,3 @@
 - name: Cleanup users
   command:
-    cmd: "for i in packer nagios wjc16017 wjc16017-admin; do userdel -r $i ; done"
+    cmd: "for i in packer nagios wjc16017 wjc16017-admin; do userdel -r $i || echo 'nothing to remove' ; done"
