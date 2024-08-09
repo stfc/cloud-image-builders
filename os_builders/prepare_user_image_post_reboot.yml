@@ -1,6 +1,5 @@
-- name: Prep STFC Cloud User Image
+- name: Prep STFC Cloud User Image After Reboot
   hosts: default
   become: true
-
   roles:
     - role: prep_vm_post_reboot
