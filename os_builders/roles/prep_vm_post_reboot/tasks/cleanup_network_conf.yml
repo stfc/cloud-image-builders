@@ -1,0 +1,6 @@
+- name: Cleanout Network conf
+  command:
+    cmd:
+    - "/bin/rm -rf /etc/sysconfig/network-scripts/ifcfg-e*"
+    - "/bin/rm -rf /etc/udev/rules.d/70*"
+    - "echo '' > /etc/sysconfig/network"
