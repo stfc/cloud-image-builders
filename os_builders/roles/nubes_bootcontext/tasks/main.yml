@@ -5,6 +5,7 @@
     owner: root
     group: root
     mode: 0755
+  when: ansible_distribution != "Rocky"  and "ccm" not in ansible_facts.packages
 
 - name: Copy in nubes-boot systemd unit
   copy:
