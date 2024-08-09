@@ -1,0 +1,11 @@
+- name: Cleanout Tmp
+  command:
+    cmd:
+    - "if ! grep 'ral-tier1' /etc/ccm.conf;
+      then
+        rm -f /etc/ccm.conf
+        rm -rf /var/lib/profile*
+      fi"
+    - "systemctl stop ncm-cdispd"
+    - "systemctl disable ncm-cdispd"
+  when: ansible_distribution == "Rocky"  and "ccm" in ansible_facts.packages

@@ -1,0 +1,5 @@
+- name: Clear Audit log
+  command:
+    cmd:
+    - "/bin/cat /dev/null > /var/log/audit/audit.log"
+    - "/bin/cat /dev/null > /var/log/wtmp"

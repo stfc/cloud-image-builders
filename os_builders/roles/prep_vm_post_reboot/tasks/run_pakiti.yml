@@ -1,0 +1,3 @@
+- name: Run pakiti
+  command:
+    cmd: "pakiti2-client"
