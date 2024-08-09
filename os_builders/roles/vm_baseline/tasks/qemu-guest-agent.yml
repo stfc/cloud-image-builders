@@ -11,4 +11,4 @@
   yum:
     name: "qemu-guest-agent"
     state: present
-  when: ansible_distribution == "Rocky"
+  when: ansible_distribution == "Rocky"  and "ccm" not in ansible_facts.packages

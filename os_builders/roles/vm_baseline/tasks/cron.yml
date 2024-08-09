@@ -12,4 +12,4 @@
   yum:
     name: "cronie"
     state: present
-  when: ansible_distribution == "Rocky"
+  when: ansible_distribution == "Rocky"  and "ccm" not in ansible_facts.packages
