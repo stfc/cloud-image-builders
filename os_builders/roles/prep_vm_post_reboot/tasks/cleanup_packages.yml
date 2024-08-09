@@ -1,0 +1,3 @@
+- name: Remove any packages from home dir
+  command:
+    cmd: "rm -f *.rpm *.deb"

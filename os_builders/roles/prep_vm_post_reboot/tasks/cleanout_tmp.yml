@@ -1,0 +1,5 @@
+- name: Cleanout Tmp
+  command:
+    cmd:
+    - "/bin/rm -rf /tmp/*"
+    - "/bin/rm -rf /var/tmp/*"

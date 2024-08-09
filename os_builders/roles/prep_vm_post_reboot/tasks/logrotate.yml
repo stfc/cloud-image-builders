@@ -1,0 +1,5 @@
+- name: Clear Audit log
+  command:
+    cmd:
+    - "logrotate -f /etc/logrotate.conf"
+    - "/bin/rm -rf /var/log/*.gz"
