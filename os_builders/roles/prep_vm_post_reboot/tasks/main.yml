@@ -6,6 +6,7 @@
 - include_tasks: run_pakiti.yml
 - include_tasks: cleanup_users.yml
 - include_tasks: cleanup_old_kernels.yml
+- include_tasks: remove_host_ssh_keys.yml
 
 - include_tasks: logrotate.yml
 - include_tasks: clear_audit_log.yml
