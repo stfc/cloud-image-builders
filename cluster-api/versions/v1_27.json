@@ -1,5 +1,0 @@
-{
-    "kubernetes_series": "v1.27",
-    "kubernetes_semver": "v1.27.11",
-    "kubernetes_deb_version": "1.27.11-1.1"
-}
