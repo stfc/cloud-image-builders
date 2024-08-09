@@ -1,0 +1,3 @@
+- name: Cleanup sudoers
+  command:
+    cmd: "rm -f /etc/sudoers.d/cloud"

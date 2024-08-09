@@ -1,0 +1,3 @@
+- name: Update admin keys
+  command:
+    cmd: "/usr/local/sbin/update_keys.sh"

@@ -1,0 +1,5 @@
+- name: Remove shell history
+  command:
+    cmd:
+    - "/bin/rm -f /home/*/.bash_history"
+    - "/bin/rm -f ~root/.bash_history && history -c && history -w"
