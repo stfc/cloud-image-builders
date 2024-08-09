@@ -41,6 +41,9 @@
     group: root
     mode: 0700
 
+# ensure that cron is installed
+- include_tasks: cron.yml
+
 - name: Update admin keys periodically
   ansible.builtin.cron:
     name: "update_admin_keys"
