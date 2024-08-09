@@ -30,6 +30,7 @@
     yum_repository:
       name: eScienceCAs
       file: eScienceCAs
+      description: "Repository to install the UK eScience (and other IGTF) CA certs from"
       baseurl: https://repository.egi.eu/sw/production/cas/1/current
       enabled: true
       gpgcheck: false
