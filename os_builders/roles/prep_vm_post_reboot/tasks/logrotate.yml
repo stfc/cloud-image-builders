@@ -1,8 +1,5 @@
 - name: Clear Audit log
-  command:
-    cmd:
-    - "logrotate -f /etc/logrotate.conf"
-    become: true
+  shell: "sudo logrotate -f /etc/logrotate.conf"
 
 - name: Cleanout /var/log/*.gz
   file:
