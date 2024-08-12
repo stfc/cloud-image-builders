@@ -1,6 +1,7 @@
 - name: set locale to set
   set_fact:
     config_system_locale: "en_GB.UTF-8"
+    config_system_language: "en_GB.UTF-8"
 
 - name: check if locale exists
   shell: "locale -a | grep -i {{ config_system_locale | regex_replace('-', '') | quote }}"
