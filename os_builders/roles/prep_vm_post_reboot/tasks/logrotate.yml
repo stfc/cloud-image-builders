@@ -2,6 +2,7 @@
   command:
     cmd:
     - "logrotate -f /etc/logrotate.conf"
+    become: true
 
 - name: Cleanout /var/log/*.gz
   file:
