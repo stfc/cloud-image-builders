@@ -1,3 +1,9 @@
-- name: Remove any packages from home dir
-  command:
-    cmd: "rm -f *.rpm *.deb || echo 'nothing to remove'"
+- name: Cleanout *.rpm
+  file:
+    path: "*.rpm"
+    state: absent
+
+- name: Cleanout *.deb
+  file:
+    path: "*.deb"
+    state: absent

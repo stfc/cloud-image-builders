@@ -2,4 +2,8 @@
   command:
     cmd:
     - "logrotate -f /etc/logrotate.conf"
-    - "/bin/rm -rf /var/log/*.gz"
+
+- name: Cleanout var/log/*.gz
+  file:
+    path: "/var/log/*.gz"
+    state: absent

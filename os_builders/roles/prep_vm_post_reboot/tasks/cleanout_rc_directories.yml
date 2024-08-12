@@ -1,5 +1,14 @@
-- name: Cleanout RC directories
-  command:
-    cmd:
-    - "/bin/rm -rf /etc/rc.d/rc.local || echo 'nothing to remove'"
-    - "/bin/rm -rf /etc/nubes-bootcontext.sh /etc/rc*/S99-nubes-boot /etc/rc.d/rc.local || echo 'nothing to remove'"
+- name: Cleanout rc.loacl
+  file:
+    path: "/etc/rc.d/rc.local"
+    state: absent
+
+- name: Cleanout /etc/nubes-bootcontext.sh
+  file:
+    path: "/etc/nubes-bootcontext.sh"
+    state: absent
+
+- name: Cleanout /etc/nubes-bootcontext.sh
+  file:
+    path: "/etc/rc*/S99-nubes-boot*"
+    state: absent
