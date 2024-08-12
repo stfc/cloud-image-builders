@@ -1,5 +1,18 @@
+- name: Clear EL audits
+  block:
+  - name: Clear Audit log
+    shell: "/bin/cat /dev/null > /var/log/audit/audit.log"
+    become: true
+
+  when: ansible_distribution == "Rocky"
+
 - name: Clear Audit log
-  command:
-    cmd:
-    - "/bin/cat /dev/null > /var/log/audit/audit.log"
-    - "/bin/cat /dev/null > /var/log/wtmp"
+  shell: "/bin/cat /dev/null > /var/log/wtmp"
+  become: true
+
+- name: Clear Ubuntu audits
+  block:
+  - name: Clear Audit log
+    shell: "/bin/cat /dev/null > /var/log/auth.log"
+    become: true
+  when: ansible_distribution == "Ubuntu"
