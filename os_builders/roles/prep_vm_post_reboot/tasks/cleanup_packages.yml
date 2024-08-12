@@ -7,3 +7,12 @@
   file:
     path: "*.deb"
     state: absent
+
+- name: clean yum/dnf
+  command: yum clean
+  when: ansible_distribution == "Rocky"
+
+- name: clean apt cache
+  ansible.builtin.apt:
+    clean: yes
+  when: ansible_distribution == "Ubuntu"
