@@ -1,3 +1,10 @@
 - name: Cleanup users
-  command:
-    cmd: "for i in packer nagios wjc16017 wjc16017-admin; do userdel -r $i || echo 'nothing to remove' ; done"
+  ansible.builtin.user:
+    name: "{{ item }}"
+    remove: true
+    state: absent
+  loop:
+  - "packer"
+  - "nagios"
+  - "wjc16017"
+  - "wjc16017-admin"
