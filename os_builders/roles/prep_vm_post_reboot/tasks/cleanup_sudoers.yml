@@ -1,3 +1,4 @@
-- name: Cleanup sudoers
-  command:
-    cmd: "rm -f /etc/sudoers.d/cloud || echo 'nothing to remove'"
+- name: Cleanout /etc/sudoers.d/cloud
+  file:
+    path: "/etc/sudoers.d/cloud"
+    state: absent

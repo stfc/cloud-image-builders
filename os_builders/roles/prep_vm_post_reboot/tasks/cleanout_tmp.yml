@@ -1,5 +1,9 @@
-- name: Cleanout Tmp
-  command:
-    cmd:
-    - "/bin/rm -rf /tmp/* || echo 'nothing to remove'"
-    - "/bin/rm -rf /var/tmp/* || echo 'nothing to remove'"
+- name: Cleanout /tmp/*
+  file:
+    path: "/tmp/*"
+    state: absent
+
+- name: Cleanout /var/tmp/*
+  file:
+    path: "/var/tmp/*"
+    state: absent

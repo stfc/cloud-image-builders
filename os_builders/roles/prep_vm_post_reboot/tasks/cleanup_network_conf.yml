@@ -1,6 +1,14 @@
-- name: Cleanout Network conf
-  command:
-    cmd:
-    - "/bin/rm -rf /etc/sysconfig/network-scripts/ifcfg-e* || echo 'nothing to remove'"
-    - "/bin/rm -rf /etc/udev/rules.d/70* || echo 'nothing to remove'"
-    - "echo '' > /etc/sysconfig/network"
+- name: Cleanout /etc/sysconfig/network-scripts/ifcfg-e*
+  file:
+    path: "/etc/sysconfig/network-scripts/ifcfg-e*"
+    state: absent
+
+- name: Cleanout /etc/udev/rules.d/70*
+  file:
+    path: "/etc/udev/rules.d/70*"
+    state: absent
+
+- name: Cleanout /etc/sysconfig/network
+  file:
+    path: "/etc/sysconfig/network"
+    state: absent
