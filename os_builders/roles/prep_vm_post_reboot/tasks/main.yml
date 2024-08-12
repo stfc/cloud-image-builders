@@ -1,14 +1,16 @@
+# Cleanup machine
 - include_tasks: cleanout_tmp.yml
 - include_tasks: cleanout_rc_directories.yml
 - include_tasks: cleanup_network_conf.yml
-- include_tasks: cleanup_packages.yml
 - include_tasks: run_update_keys.yml
 - include_tasks: cleanup_quattor.yml
 - include_tasks: run_pakiti.yml
 - include_tasks: cleanup_users.yml
 - include_tasks: cleanup_old_kernels.yml
 - include_tasks: remove_host_ssh_keys.yml
+- include_tasks: cleanup_packages.yml
 
+# Cleanup history of build
 - include_tasks: logrotate.yml
 - include_tasks: clear_audit_log.yml
 - include_tasks: remove_shell_history.yml
