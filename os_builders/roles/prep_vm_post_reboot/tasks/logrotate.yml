@@ -3,7 +3,7 @@
     cmd:
     - "logrotate -f /etc/logrotate.conf"
 
-- name: Cleanout var/log/*.gz
+- name: Cleanout /var/log/*.gz
   file:
     path: "/var/log/*.gz"
     state: absent
