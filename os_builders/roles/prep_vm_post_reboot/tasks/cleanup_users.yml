@@ -4,7 +4,6 @@
     remove: true
     state: absent
   loop:
-  - "packer"
   - "nagios"
   - "wjc16017"
   - "wjc16017-admin"
