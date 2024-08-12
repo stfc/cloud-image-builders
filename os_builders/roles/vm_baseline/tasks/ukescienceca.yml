@@ -42,4 +42,4 @@
       - ca_UKeScienceCA-2B
       state: present
       disable_gpg_check: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_distribution == "Rocky" and "ccm" not in ansible_facts.packages
