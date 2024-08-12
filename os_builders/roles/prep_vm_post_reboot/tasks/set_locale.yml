@@ -40,7 +40,7 @@
   command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
 
 - name: Set locale keymap
-  command: localectl set-keymap gb || localectl set-keymap uk
+  command: localectl set-keymap gb
 
 - name: Set locale x11 keymap
-  command: localeclt set-x11-keymap gb || localectl set-x11-keymap uk
+  command: localeclt set-x11-keymap gb
