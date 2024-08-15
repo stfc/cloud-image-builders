@@ -1,2 +1,4 @@
 - name: run quattor
   shell: "sudo quattor-fetch && sudo quattor-configure --all --verbose"
+  ignore_errors: true
+  when: ansible_distribution == "Rocky"  and "ccm" in ansible_facts.packages
