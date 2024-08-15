@@ -15,7 +15,6 @@
     group: root
     mode: 0755
 
-
 - name: Copy in motd
   copy:
     src: "motd"
@@ -30,8 +29,3 @@
     cmd: "systemctl enable nubes-boot.service"
 
 - include_tasks: update_cloud_users.yml
-# - name: Start systemd service
-#   ansible.builtin.systemd_service:
-#     name: "nubes-boot"
-#     daemon_reload: true
-#     enabled: true
