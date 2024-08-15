@@ -9,7 +9,7 @@
     state: absent
 
 - name: clean yum/dnf
-  command: yum clean
+  command: yum clean all
   when: ansible_distribution == "Rocky"
 
 - name: clean apt cache
