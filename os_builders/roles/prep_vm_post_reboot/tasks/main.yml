@@ -1,4 +1,5 @@
 # Cleanup machine
+- include_tasks: run_quattor.yml
 - include_tasks: get_package_facts.yml
 - include_tasks: cleanout_tmp.yml
 - include_tasks: cleanout_rc_directories.yml
