@@ -1,9 +1,15 @@
 - name: Cleanup old kernels Ubuntu
-  shell: "dpkg --list | egrep -i 'linux-image|linux-headers|linux-modules' | cut -d ' ' -f 3 | grep -v $(uname -r) | grep -v 'linux-headers-generic' | grep -v 'linux-headers-virtual' | grep -v 'linux-image-virtual' | xargs apt-get remove -y"
-  become: true
-  when: ansible_distribution == "Ubuntu" and "linux-image" in ansible_facts.packages and {{ ansible_facts.packages['linux-image'] | length }} > 1
+  block:
+  - name: cleanup old kernels
+    shell: "dpkg --list | egrep -i 'linux-image|linux-headers|linux-modules' | cut -d ' ' -f 3 | grep -v $(uname -r) | grep -v 'linux-headers-generic' | grep -v 'linux-headers-virtual' | grep -v 'linux-image-virtual' | xargs apt-get remove -y"
+    become: true
+    when: ({{ ansible_facts.packages['linux-image'] | length }} > 1)
+  when: ansible_distribution == "Ubuntu" and "linux-image" in ansible_facts.packages
 
 - name: Cleanup old kernels Rocky
-  command:
-    cmd: "dnf remove --oldinstallonly kernel -y"
-  when: ansible_distribution == "Rocky" and "kernel" in ansible_facts.packages and {{ ansible_facts.packages['kernel'] | length }} > 1
+  block:
+  - name: cleanup old kernels
+    command:
+      cmd: "dnf remove --oldinstallonly kernel -y"
+    when: ({{ ansible_facts.packages['kernel'] | length }} > 1)
+  when: ansible_distribution == "Rocky" and "kernel" in ansible_facts.packages
