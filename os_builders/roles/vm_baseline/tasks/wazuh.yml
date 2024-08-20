@@ -77,7 +77,7 @@
 
 - name: Update template file with groups
   replace:
-    path: "/var/ossec/etc/wazuh.template"
+    path: "/var/ossec/etc/ossec.template"
     regexp: 'WAZUH_GROUPS'
     replace: "{{ wazuh_groups | join(',') }}"
 
