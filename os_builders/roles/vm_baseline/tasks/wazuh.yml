@@ -53,7 +53,7 @@
 
 - name: Copy wazuh drop in unit
   copy:
-    src: "wazuh/preexec.conf]"
+    src: "wazuh/preexec.conf"
     dest: "/etc/systemd/system/wazuh-agent.service.d/preexec.conf"
     owner: root
     group: root
