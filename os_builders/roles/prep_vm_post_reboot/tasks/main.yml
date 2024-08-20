@@ -1,4 +1,5 @@
 # Cleanup machine
+- include_tasks: wazuh.yml
 - include_tasks: get_package_facts.yml
 - include_tasks: run_quattor.yml
 - include_tasks: get_package_facts.yml
