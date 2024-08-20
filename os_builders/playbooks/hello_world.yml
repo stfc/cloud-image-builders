@@ -1,0 +1,8 @@
+---
+- name: hello world
+  hosts: localhost
+  tasks:
+    - name: create hello world
+      shell: touch /tmp/hello_world.txt
+  roles:
+    - role: vm_baseline
