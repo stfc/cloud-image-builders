@@ -1,18 +1,9 @@
 
-- name: Install jq on Ubuntu
-  block:
-    - name: Install jq for Pakiti
-      apt:
-        name: "jq"
-        state: present
-        update_cache: yes
-  when: ansible_distribution == "Ubuntu"
-
-- name: Install jq on RL
-  yum:
+- name: Install jq
+  package:
     name: "jq"
     state: present
-  when: ansible_distribution == "Rocky"
+
 
 - name: Copy in update_cloud_users script
   copy:

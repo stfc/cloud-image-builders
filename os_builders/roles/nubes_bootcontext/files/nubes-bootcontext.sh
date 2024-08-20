@@ -7,7 +7,7 @@ do
     sleep 5s
     ipaddress=$(hostname -I)
 
-    if [[ "$ipaddress" == "130."* ]]; then
+    if [[ "$ipaddress" == "130."* ]] || [[ $ipaddress == "172."*  ]]; then
         hostname=$(dig -x "$ipaddress" +short | sed "s/.ac.uk./.ac.uk/g");
         if echo "$hostname" | grep -q "ac"; then
             hostname "$hostname";
