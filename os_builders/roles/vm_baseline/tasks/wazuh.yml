@@ -51,6 +51,14 @@
     group: wazuh
     mode: 0750
 
+- name: Ensure wazuh-agent drop in config directory exists
+  file:
+    path: "/etc/systemd/system/wazuh-agent.service.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Copy wazuh drop in unit
   copy:
     src: "wazuh/preexec.conf"
