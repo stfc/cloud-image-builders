@@ -32,3 +32,21 @@
     owner: cloud
     group: cloud
     mode: 0600
+
+- name: Copy authorized key update script in
+  copy:
+    src: "update_keys.sh"
+    dest: "/usr/local/sbin/update_keys.sh"
+    owner: root
+    group: root
+    mode: 0700
+
+# ensure that cron is installed
+- include_tasks: cron.yml
+
+- name: Update admin keys periodically
+  ansible.builtin.cron:
+    name: "update_admin_keys"
+    minute: 0
+    hour: 7
+    job: "/usr/local/sbin/update_keys.sh"

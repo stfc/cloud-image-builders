@@ -1,0 +1,22 @@
+
+- name: Install jq
+  package:
+    name: "jq"
+    state: present
+
+
+- name: Copy in update_cloud_users script
+  copy:
+    src: "update_cloud_users.sh"
+    dest: "/usr/local/sbin/update_cloud_users.sh"
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: Update cloud users periodically
+  ansible.builtin.cron:
+    name: "update_cloud_keys"
+    minute: 0
+    hour: 6
+    job: "/usr/local/sbin/update_cloud_users.sh"
