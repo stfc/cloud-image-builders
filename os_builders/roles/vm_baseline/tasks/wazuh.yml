@@ -102,4 +102,4 @@
     file:
       path: "/var/ossec/etc/client.keys"
       state: absent
-  when: quattor_packagename not in ansible_facts.packages
+  when: quattor_package_name not in ansible_facts.packages
