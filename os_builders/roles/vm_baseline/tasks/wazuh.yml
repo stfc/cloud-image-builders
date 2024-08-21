@@ -98,4 +98,4 @@
     file:
       path: "/var/ossec/etc/client.keys"
       state: absent
-  when: "ccm" not in ansible_facts.packages
+  when: ansible_distribution == "Rocky" and "ccm" not in ansible_facts.packages
