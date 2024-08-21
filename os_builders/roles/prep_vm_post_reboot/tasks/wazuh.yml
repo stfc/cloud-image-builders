@@ -1,8 +1,12 @@
+- name: Set wazuh package name variable
+  set_fact:
+    wazuh_package_name: "wazuh-agent"
+
 - name: Stop wazuh-agent service
   become: true
   ansible.builtin.command:
     cmd: "systemctl stop wazuh-agent.service"
-  when: "wazuh-agent" in ansible_facts.packages
+  when: wazuh_package_name in ansible_facts.packages
 
 - name: Wazuh agent history
   file:
