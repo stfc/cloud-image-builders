@@ -59,5 +59,5 @@ for ID in $FEDID $FEDIDS; do
     if [[ "$ID" == "$FEDID" ]]; then
         echo "$SSH_PUBLIC_KEY "| sed 's/\\n//g' >> /home/"$ID"/.ssh/authorized_keys
     fi
-    chown "$ID" /home/"$FEDID"/.ssh/authorized_keys
+    chown "$ID" /home/"$ID"/.ssh/authorized_keys
 done
