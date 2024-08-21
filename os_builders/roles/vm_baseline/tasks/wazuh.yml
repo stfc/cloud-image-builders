@@ -82,6 +82,14 @@
       group: wazuh
       mode: 0750
 
+  - name: Copy wazuh local internal config
+    copy:
+      src: "wazuh/local_internal_options.conf"
+      dest: "/var/ossec/etc/local_internal_options.conf"
+      owner: root
+      group: wazuh
+      mode: 0750
+
   - name: Update template file with groups
     replace:
       path: "/var/ossec/etc/ossec.template"
