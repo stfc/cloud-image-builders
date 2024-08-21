@@ -5,5 +5,8 @@
     state: absent
   loop:
   - "nagios"
-  - "wjc16017"
-  - "wjc16017-admin"
+
+- name: mark next boot as first boot
+  file:
+      path: /var/lock/firstboot
+      state: touch
