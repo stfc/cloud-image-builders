@@ -1,0 +1,9 @@
+- name: Cleanout /tmp/*
+  file:
+    path: "/tmp/*"
+    state: absent
+
+- name: Cleanout /var/tmp/*
+  file:
+    path: "/var/tmp/*"
+    state: absent

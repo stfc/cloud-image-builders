@@ -1,0 +1,9 @@
+- name: Cleanup users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    remove: true
+    state: absent
+  loop:
+  - "nagios"
+  - "wjc16017"
+  - "wjc16017-admin"

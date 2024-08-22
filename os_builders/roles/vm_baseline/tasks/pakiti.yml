@@ -3,10 +3,6 @@
     src: "files/pakiti-client-2.1.4-3.RAL.noarch.rpm"
     dest: "/tmp/pakiti-client-2.1.4-3.RAL.noarch.rpm"
 
-- name: Gather Package facts
-  package_facts:
-    manager: auto
-
 - name: Install Pakiti on Ubuntu using Alien
   block:
     - name: Enable Universe for Alien
