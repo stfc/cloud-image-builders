@@ -4,13 +4,57 @@ import os
 import subprocess
 import socket
 import json
+import xml.etree.ElementTree
+import shutil
+import pathlib
 
 source = "/var/ossec/etc/ossec.template"
 destination = "/var/ossec/etc/ossec.conf"
+extra_config_dir = '/var/ossec/etc/extra/'
+
+def dict_to_xml(tag, d):
+ 
+    elem = xml.etree.ElementTree.Element(tag)
+    for key, val in d.items():
+        # create an Element
+        # class object
+        child = xml.etree.ElementTree.Element(key)
+        child.text = str(val)
+        elem.append(child)
+         
+    return elem
 
 # Open template config file
 with open(source) as sourcefile:
     ossec_string = sourcefile.read()
+
+# initialise data structures
+labels_conf = {}
+logfiles_conf = []
+fim_conf = []
+sca_conf = []
+commands_conf = []
+active_responses_conf = []
+groups_conf = []
+wodles_conf = {}
+
+# Load in any additional config
+for extra_config_file in pathlib.Path(extra_config_dir).glob("*.json"):
+    print(extra_config_file)
+    with open(extra_config_file) as extra_config_json:
+        extra_config = json.load(extra_config_json)
+    labels_conf.update(extra_config.get("labels", {}))
+    wodles_conf.update(extra_config.get("wodles", {}))
+    logfiles_conf.extend(extra_config.get("logfiles", []))
+    fim_conf.extend(extra_config.get("file_integrity_monitoring", []))
+    sca_conf.extend(extra_config.get("security_config_assessments", []))
+    commands_conf.extend(extra_config.get("commands", []))
+    active_responses_conf.extend(extra_config.get("active_responses", []))
+    groups_conf.extend(extra_config.get("groups", []))
+
+ossec_conf = xml.etree.ElementTree.parse(source)
+ossec_xml = ossec_conf.getroot()
+
 
 LABELS_STRING=""
 AGENT_HOSTNAME=socket.getfqdn()
@@ -21,11 +65,11 @@ if os.path.exists("/mnt/context/openstack"):
     # Get metadata from openstack config drive
     with open("/mnt/context/openstack/latest/meta_data.json") as openstack_metadata_json:
         openstack_metadata = json.load(openstack_metadata_json)
-    # Format Labels as XML
-    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.uuid", openstack_metadata["uuid"])
-    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.name", openstack_metadata["name"])
-    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.hostname", openstack_metadata["hostname"])
-    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.project_id", openstack_metadata["project_id"])
+    labels_conf["openstack.uuid"] =  openstack_metadata["uuid"]
+    labels_conf["openstack.name"] = openstack_metadata["name"]
+    labels_conf["openstack.hostname"] = openstack_metadata["hostname"]
+    labels_conf["openstack.project_id"] = openstack_metadata["project_id"]
+    # Add uuid to hostname if it is an openstack VM
     AGENT_HOSTNAME = AGENT_HOSTNAME + "-" + openstack_metadata["uuid"]
 
 
@@ -37,14 +81,57 @@ if os.path.exists("/etc/ccm.conf"):
     # Remove cruft from string
     personality = str(personality[0]).replace('b"$ name : ', "").replace("'\\n\\n\"", '"').replace("'", '"')
     # Format as XML and merge into Labels XML - probably a better way of doing this but hayho
-    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "aq.personality", personality)
+    labels_conf["aq.personality"] =  personality
 
-# Merge generated XML and hostname into config
-ossec_string = ossec_string.replace("AGENT_HOSTNAME", AGENT_HOSTNAME)
-ossec_string = ossec_string.replace("LABELS_LIST", LABELS_STRING)
 
-#print(ossec_string)
+# Commands for use with Active Responses
+for command_item in commands_conf:
+     new_command = dict_to_xml('command', command_item)
+     ossec_xml.append(new_command)
+     
+# Log Files
+for logfile_item in logfiles_conf:
+    new_logfile = dict_to_xml('localfile', logfile_item)
+    ossec_xml.append(new_logfile)
+   
+# Security Configuration Assessments
+for sca_item in sca_conf:
+    new_sca = dict_to_xml('sca', sca_item)
+    ossec_xml.append(new_sca)
 
-# Write config out
-with open(destination, 'w') as dest:
-    dest.write(ossec_string)
+# Active Response    
+for activeresponse_item in active_responses_conf:
+    new_activeresponse = dict_to_xml('active-response', activeresponse_item)
+    ossec_xml.append(new_activeresponse)
+
+# File Integrity monitoring
+for fim_item in fim_conf:
+    new_fim = dict_to_xml('syscheck', fim_item)
+    ossec_xml.append(new_fim)
+
+# Labels
+for key, value in labels_conf.items():
+    new_label = xml.etree.ElementTree.SubElement( ossec_xml.find("labels"), 'label')
+    new_label.text = value
+    new_label.attrib['key'] = key
+#labels_xml = ossec_xml.find('labels')
+
+# Wodles
+for wodle_key, wodle_item in wodles_conf.items():
+    new_wodle = dict_to_xml('wodle', wodle_item)
+    new_wodle.set("name", wodle_key)
+    ossec_xml.append(new_wodle)    
+
+# Hostname and Groups setup
+client_update = ossec_xml.find("client").find("enrollment")
+groups_update = xml.etree.ElementTree.SubElement(client_update, 'enrollment')
+group_seperator = ","
+groups_update.tag = "groups"
+groups_update.text = group_seperator.join(groups_conf)
+hostname_update = xml.etree.ElementTree.SubElement(client_update, 'enrollment')
+hostname_update.tag = "agent_name"
+hostname_update.text = AGENT_HOSTNAME
+
+
+
+ossec_conf.write(destination)

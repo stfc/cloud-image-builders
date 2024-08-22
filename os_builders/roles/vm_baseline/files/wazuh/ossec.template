@@ -19,12 +19,11 @@
       <address>wazuh.cape.stfc.ac.uk</address>
     </server>
     <enrollment>
-      <agent_name>AGENT_HOSTNAME</agent_name>
-      <groups>AGENT_GROUPS</groups>
+
     </enrollment>
   </client>
 <labels>
-LABELS_LIST
+
 </labels>
   <alerts>
     <log_alert_level>3</log_alert_level>
