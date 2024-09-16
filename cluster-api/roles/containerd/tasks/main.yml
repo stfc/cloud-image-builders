@@ -13,12 +13,6 @@
     dest: /etc/containerd/certs.d/docker.io/hosts.toml
     mode: 0644
 
-- name: Copy config to point CRI to /etc/containerd/certs.d
-  copy:
-    src: cri-registry.toml
-    dest: /etc/containerd/conf.d/cri-registry.toml
-    mode: 0644
-
 - name: Create a file to hold the Nvidia container config
   file:
     path: /etc/containerd/conf.d/nvidia.toml
