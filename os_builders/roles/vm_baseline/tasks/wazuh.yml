@@ -54,6 +54,14 @@
       wazuh_extra_json:
         groups: wazuh_groups
 
+  - name: Ensure wazuh-agent extra directory exists
+    file:
+      path: "/var/ossec/etc/extra"
+      state: directory
+      owner: root
+      group: root
+      mode: 0644
+
   - name: write out wazuh extra config
     copy:
       dest: /var/ossec/etc/extra/01-ansible-baseline.json
