@@ -14,7 +14,6 @@
       ansible.builtin.apt:
         name: wazuh-agent=4.8.*
         state: present
-        allow_downgrade: true
         update_cache: yes
   when: ansible_distribution == "Ubuntu"
 
@@ -49,6 +48,15 @@
         - "cloud"
         - "{{ ansible_distribution | lower }}"
         - "{{ ansible_facts['os_family'] | lower}}"
+  - name: build wazuh extra json
+    set_fact:
+      wazuh_extra_json:
+        groups: wazuh_groups
+
+  - name: write out wazuh extra config
+    copy:
+      dest: /var/ossec/etc/extra/01-ansible-baseline.json
+      content: "{{ wazuh_extra_json }}"
 
   - name: Copy wazuh client enrichment script
     copy:
