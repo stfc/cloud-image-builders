@@ -13,7 +13,7 @@ destination = "/var/ossec/etc/ossec.conf"
 extra_config_dir = '/var/ossec/etc/extra/'
 
 def dict_to_xml(tag, d):
- 
+
     elem = xml.etree.ElementTree.Element(tag)
     for key, val in d.items():
         # create an Element
@@ -21,7 +21,7 @@ def dict_to_xml(tag, d):
         child = xml.etree.ElementTree.Element(key)
         child.text = str(val)
         elem.append(child)
-         
+
     return elem
 
 # Open template config file
@@ -60,17 +60,18 @@ LABELS_STRING=""
 AGENT_HOSTNAME=socket.getfqdn()
 
 # Check if the host is an OpenStack VM
-if os.path.exists("/mnt/context/openstack"):
-    print("Is OpenStack")
-    # Get metadata from openstack config drive
-    with open("/mnt/context/openstack/latest/meta_data.json") as openstack_metadata_json:
-        openstack_metadata = json.load(openstack_metadata_json)
-    labels_conf["openstack.uuid"] =  openstack_metadata["uuid"]
-    labels_conf["openstack.name"] = openstack_metadata["name"]
-    labels_conf["openstack.hostname"] = openstack_metadata["hostname"]
-    labels_conf["openstack.project_id"] = openstack_metadata["project_id"]
-    # Add uuid to hostname if it is an openstack VM
+try:
+    metadata_url = "http://169.254.169.254/openstack/latest/meta_data.json"
+    response = requests.get(metadata_url)
+    openstack_metadata = response.json()
+    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.uuid", openstack_metadata["uuid"])
+    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.name", openstack_metadata["name"])
+    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.hostname", openstack_metadata["hostname"])
+    LABELS_STRING = "{0}<label key=\"{1}\">{2}</label>".format(LABELS_STRING, "openstack.project_id", openstack_metadata["project_id"])
     AGENT_HOSTNAME = AGENT_HOSTNAME + "-" + openstack_metadata["uuid"]
+except:
+    print("not an openstack VM")
+
 
 
 if os.path.exists("/etc/ccm.conf"):
@@ -88,18 +89,18 @@ if os.path.exists("/etc/ccm.conf"):
 for command_item in commands_conf:
      new_command = dict_to_xml('command', command_item)
      ossec_xml.append(new_command)
-     
+
 # Log Files
 for logfile_item in logfiles_conf:
     new_logfile = dict_to_xml('localfile', logfile_item)
     ossec_xml.append(new_logfile)
-   
+
 # Security Configuration Assessments
 for sca_item in sca_conf:
     new_sca = dict_to_xml('sca', sca_item)
     ossec_xml.append(new_sca)
 
-# Active Response    
+# Active Response
 for activeresponse_item in active_responses_conf:
     new_activeresponse = dict_to_xml('active-response', activeresponse_item)
     ossec_xml.append(new_activeresponse)
@@ -120,7 +121,7 @@ for key, value in labels_conf.items():
 for wodle_key, wodle_item in wodles_conf.items():
     new_wodle = dict_to_xml('wodle', wodle_item)
     new_wodle.set("name", wodle_key)
-    ossec_xml.append(new_wodle)    
+    ossec_xml.append(new_wodle)
 
 # Hostname and Groups setup
 client_update = ossec_xml.find("client").find("enrollment")
