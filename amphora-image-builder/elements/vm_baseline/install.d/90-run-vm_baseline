@@ -1,0 +1,18 @@
+#!/bin/bash
+#install ansible
+/usr/bin/python3 -m pip install ansible
+/usr/bin/git clone https://github.com/stfc/cloud-image-builders.git
+cd cloud-image-builders
+
+locale-gen en_GB.UTF-8
+dpkg-reconfigure locales
+update-locale LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
+source /etc/default/locale
+locale
+
+apt-get install gpg-agent -y
+/usr/bin/gpg-agent --daemon
+
+hostname
+sed -i "s/hosts: default/hosts: localhost/g" os_builders/*.yml
+ansible-playbook os_builders/prepare_user_image.yml --extra-vars provision_this_machine=true -i os_builders/inventory/localhost.yml
