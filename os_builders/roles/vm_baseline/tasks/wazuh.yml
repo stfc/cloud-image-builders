@@ -29,7 +29,7 @@
         name: wazuh
         file: wazuh
         description: "Repository to install wazuh"
-        baseurl: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        baseurl: https://packages.wazuh.com/4.x/yum/
         enabled: true
         gpgcheck: false
 
