@@ -118,10 +118,14 @@
     ansible.builtin.command:
       cmd: "systemctl enable wazuh-agent.service"
 
+  - name: get service facts
+    ansible.builtin.service_facts:
+
   - name: Stop wazuh-agent service
     become: true
     ansible.builtin.command:
-      cmd: "systemctl stop wazuh-agent.service || echo 'not systemd'"
+      cmd: "systemctl stop wazuh-agent.service"
+    when: ansible_facts.services["wazuh-agent"]
 
   - name: Wazuh agent history
     file:
