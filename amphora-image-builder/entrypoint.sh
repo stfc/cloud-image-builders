@@ -25,4 +25,4 @@ export DIB_LOCAL_ELEMENTS_PATH
 
 cd octavia/diskimage-create
 pip3 install -r requirements.txt
-./diskimage-create.sh -t raw -o "/output/amphora-x64-$(date +"%Y-%m-%d")-haproxy.raw"
+./diskimage-create.sh -t qcow2 -o "/output/amphora-x64-$(date +"%Y-%m-%d")-haproxy.qcow2"

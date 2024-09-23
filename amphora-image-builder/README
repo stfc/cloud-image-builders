@@ -20,5 +20,5 @@ Usage
 # Set as appropriate to your environment
 export TARGET_PROJECT=service
 
-openstack image create --property hw_disk_bus=virtio --property hw_scsi_model=virtio-scsi --property hw_vif_multiqueue_enabled=true --private --project $TARGET_PROJECT --disk-format raw --container-format bare --file amphora-x64-haproxy.raw --progress amphora-x64-$(date +%Y-%m-%d)-haproxy
+openstack image create --property hw_disk_bus=virtio --property hw_scsi_model=virtio-scsi --property hw_vif_multiqueue_enabled=true --private --project $TARGET_PROJECT --disk-format qcow2 --container-format bare --file amphora-x64-haproxy.qcow2 --progress amphora-x64-$(date +%Y-%m-%d)-haproxy
 ```
