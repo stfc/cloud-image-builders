@@ -11,7 +11,7 @@ import pathlib
 
 source = "/var/ossec/etc/ossec.template"
 destination = "/var/ossec/etc/ossec.conf"
-extra_config_dir = '/var/ossec/etc/extra/'
+extra_config_dir = "/var/ossec/etc/extra/"
 
 
 def dict_to_xml(tag, d):
@@ -132,7 +132,7 @@ for key, value in labels_conf.items():
     new_label = xml.etree.ElementTree.SubElement(ossec_xml.find("labels"), "label")
     new_label.text = value
     new_label.attrib["key"] = key
-#labels_xml = ossec_xml.find('labels')
+# labels_xml = ossec_xml.find('labels')
 
 # Wodles
 for wodle_key, wodle_item in wodles_conf.items():
