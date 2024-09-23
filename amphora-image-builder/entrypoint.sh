@@ -16,7 +16,7 @@ git clone https://github.com/apdibbo/cloud-image-builders.git
 #git clone https://github.com/stfc/cloud-image-builders.git
 cd /tmp/cloud-image-builders
 git checkout origin/amphora-ral
-ls /tmp
+cd /tmp
 DIB_LOCAL_ELEMENTS="vm_baseline"
 export DIB_LOCAL_ELEMENTS
 DIB_LOCAL_ELEMENTS_PATH="/tmp/cloud-image-builders/amphora-image-builder/elements"
