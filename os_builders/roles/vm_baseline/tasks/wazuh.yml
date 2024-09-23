@@ -117,6 +117,7 @@
     become: true
     ansible.builtin.command:
       cmd: "systemctl enable wazuh-agent.service"
+    ignore_errors: true
 
   - name: get service facts
     ansible.builtin.service_facts:
