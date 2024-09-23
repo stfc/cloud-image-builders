@@ -40,7 +40,7 @@ SSH_PUBLIC_KEY=$(jq .keys[0].data /mnt/context/openstack/latest/meta_data.json |
 groupadd wheel
 
 for ID in $FEDID $FEDIDS; do
-    id -u $ID || useradd "$ID" -g wheel -m -s /bin/bash
+    id -u "$ID" || useradd "$ID" -g wheel -m -s /bin/bash
     usermod "$ID" -a -G wheel
     if ! visudo -c -f /etc/sudoers.d/cloud;
     then
