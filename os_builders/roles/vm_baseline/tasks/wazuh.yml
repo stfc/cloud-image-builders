@@ -125,7 +125,7 @@
     become: true
     ansible.builtin.command:
       cmd: "systemctl stop wazuh-agent.service"
-    when: ansible_facts.services["wazuh-agent"].state is "running"
+    ignore_errors: true
 
   - name: Wazuh agent history
     file:
