@@ -1,5 +1,0 @@
----
-- name: run VM_baseline
-  hosts: localhost
-  roles:
-    - role: vm_baseline
