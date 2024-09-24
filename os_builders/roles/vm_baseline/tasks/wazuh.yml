@@ -52,7 +52,7 @@
   - name: build wazuh extra json
     set_fact:
       wazuh_extra_json:
-        groups: wazuh_groups
+        groups: "{{ wazuh_groups }}"
 
   - name: Ensure wazuh-agent extra directory exists
     file:
