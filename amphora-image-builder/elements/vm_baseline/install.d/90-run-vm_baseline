@@ -15,4 +15,5 @@ apt-get install gpg-agent -y
 
 hostname
 sed -i "s/hosts: default/hosts: localhost/g" os_builders/*.yml
+echo "{\"groups\": [\"default\", \"cloud\", \"ubuntu\", \"debian\", \"octavia-amphora\"], \"labels\": {\"amphora-build-date\": \"$(date '+%Y-%m-%d %H:%M:%S')\" }}" > /var/ossec/etc/extra/03-amphora.json
 ansible-playbook os_builders/prepare_user_image.yml --extra-vars provision_this_machine=true -i os_builders/inventory/localhost.yml
