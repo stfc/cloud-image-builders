@@ -58,28 +58,17 @@ for extra_config_file in pathlib.Path(extra_config_dir).glob("*.json"):
 ossec_conf = xml.etree.ElementTree.parse(source)
 ossec_xml = ossec_conf.getroot()
 
-
-LABELS_STRING = ""
-AGENT_HOSTNAME = socket.getfqdn()
+agent_hostname = socket.getfqdn()
 
 # Check if the host is an OpenStack VM
 try:
     metadata_url = "http://169.254.169.254/openstack/latest/meta_data.json"
     response = requests.get(metadata_url)
     openstack_metadata = response.json()
-    LABELS_STRING = '{0}<label key="{1}">{2}</label>'.format(
-        LABELS_STRING, "openstack.uuid", openstack_metadata["uuid"]
-    )
-    LABELS_STRING = '{0}<label key="{1}">{2}</label>'.format(
-        LABELS_STRING, "openstack.name", openstack_metadata["name"]
-    )
-    LABELS_STRING = '{0}<label key="{1}">{2}</label>'.format(
-        LABELS_STRING, "openstack.hostname", openstack_metadata["hostname"]
-    )
-    LABELS_STRING = '{0}<label key="{1}">{2}</label>'.format(
-        LABELS_STRING, "openstack.project_id", openstack_metadata["project_id"]
-    )
-    AGENT_HOSTNAME = AGENT_HOSTNAME + "-" + openstack_metadata["uuid"]
+    metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
+    for vm_attr in metadata_to_parse:
+        labels_conf["openstack."+vm_attr] = openstack_metadata[vm_attr]
+    agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
 except:
     print("not an openstack VM")
 
@@ -148,7 +137,7 @@ groups_update.tag = "groups"
 groups_update.text = group_seperator.join(groups_conf)
 hostname_update = xml.etree.ElementTree.SubElement(client_update, "enrollment")
 hostname_update.tag = "agent_name"
-hostname_update.text = AGENT_HOSTNAME
+hostname_update.text = agent_hostname
 
 
 ossec_conf.write(destination)
