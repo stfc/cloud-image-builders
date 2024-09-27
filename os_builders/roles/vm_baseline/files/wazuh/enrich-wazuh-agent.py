@@ -67,7 +67,7 @@ try:
     openstack_metadata = response.json()
     metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
     for vm_attr in metadata_to_parse:
-        labels_conf["openstack."+vm_attr] = openstack_metadata[vm_attr]
+        labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
     agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
 except:
     print("not an openstack VM")
