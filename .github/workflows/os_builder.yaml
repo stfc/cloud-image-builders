@@ -34,7 +34,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ansible
             cd os_builders
-            ansible-playbook -i inventory/localhost.yml prep_builder.yml
+            ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml
 
         - name: Validate packer files
           run: |
@@ -62,7 +62,7 @@ jobs:
           # Patch the inventory to run on this machine
           run: |
            cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
-           ansible-playbook -i inventory/localhost.yml provision_image.yml --extra-vars provision_this_machine=True
+           ansible-playbook -i inventory/localhost.yml playbooks/provision_image.yml --extra-vars provision_this_machine=True
 
   test_image_prep_rocky:
     strategy:
@@ -79,4 +79,4 @@ jobs:
       - name: Run pre-prep playbook
         run: |
           cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
-          ansible-playbook -i inventory/localhost.yml provision_image.yml --extra-vars provision_this_machine=True
+          ansible-playbook -i inventory/localhost.yml playbooks/provision_image.yml --extra-vars provision_this_machine=True
