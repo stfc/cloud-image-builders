@@ -13,7 +13,7 @@ jobs:
   check_prep_builder:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Ansible
         run: |
           sudo apt-get update
@@ -27,7 +27,7 @@ jobs:
           os: ["qemu.ubuntu_2204"]
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v4
 
         - name: Run prep_builder playbook
           run: |
@@ -52,7 +52,7 @@ jobs:
       runs-on: ubuntu-latest
       container: ${{ matrix.os }}
       steps:
-        - uses: actions/checkout@v3
+        - uses: actions/checkout@v4
         - name: Install Ansible
           run: |
             apt update
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Ansible
         run: |
           dnf install epel-release -y
