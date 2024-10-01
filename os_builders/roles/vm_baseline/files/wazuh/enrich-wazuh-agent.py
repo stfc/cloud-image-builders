@@ -7,6 +7,7 @@ import json
 import xml.etree.ElementTree
 import shutil
 import pathlib
+import requests
 
 
 source = "/var/ossec/etc/ossec.template"
