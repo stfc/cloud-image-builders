@@ -62,16 +62,20 @@ ossec_xml = ossec_conf.getroot()
 agent_hostname = socket.getfqdn()
 
 # Check if the host is an OpenStack VM
-try:
-    metadata_url = "http://169.254.169.254/openstack/latest/meta_data.json"
-    response = requests.get(metadata_url)
-    openstack_metadata = response.json()
-    metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
-    for vm_attr in metadata_to_parse:
-        labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
-    agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
-except:
-    print("not an openstack VM")
+param = '-w 1 -c 1'
+metadata_ip = "169.254.169.254"
+response = os.system(f"ping {param} {metadata_ip}")
+if response == 0:
+    try:
+        metadata_url = "http://169.254.169.254/openstack/latest/meta_data.json"
+        response = requests.get(metadata_url)
+        openstack_metadata = response.json()
+        metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
+        for vm_attr in metadata_to_parse:
+            labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
+        agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
+    except:
+        print("not an openstack VM")
 
 
 if os.path.exists("/etc/ccm.conf"):
