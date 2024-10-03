@@ -62,7 +62,7 @@ ossec_xml = ossec_conf.getroot()
 agent_hostname = socket.getfqdn()
 
 # Check if the host is an OpenStack VM
-param = '-w 1 -c 1'
+param = "-w 1 -c 1"
 metadata_ip = "169.254.169.254"
 response = os.system(f"ping {param} {metadata_ip}")
 if response == 0:
