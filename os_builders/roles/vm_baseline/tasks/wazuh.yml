@@ -1,0 +1,138 @@
+- name: Install wazuh on Ubuntu
+  block:
+    - name: Add GPG Key for Wazuh
+      ansible.builtin.apt_key:
+        url: "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
+        state: present
+
+    - name: Add Wazuh repo
+      ansible.builtin.apt_repository:
+        repo: "deb https://packages.wazuh.com/4.x/apt/ stable main"
+        state: present
+
+    - name: Install Wazuh agent
+      ansible.builtin.apt:
+        name: wazuh-agent=4.8.*
+        state: present
+        allow_downgrade: true
+        update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Quattor package name
+  set_fact:
+    quattor_package_name: "ccm"
+
+- name: Install wazuh on Rocky
+  block:
+    - name: add wazuh repo
+      yum_repository:
+        name: wazuh
+        file: wazuh
+        description: "Repository to install wazuh"
+        baseurl: https://packages.wazuh.com/4.x/yum/
+        enabled: true
+        gpgcheck: false
+
+    - name: Install wazuh
+      yum:
+        name:
+          - wazuh-agent-4.8.*
+        state: present
+        disable_gpg_check: true
+  when: ansible_distribution == "Rocky" and "ccm" not in ansible_facts.packages
+
+- name: configure wazuh-agent
+  block:
+  - name: build wazuh groups list
+    set_fact:
+      wazuh_groups:
+        - "default"
+        - "cloud"
+        - "{{ ansible_distribution | lower }}"
+        - "{{ ansible_facts['os_family'] | lower}}"
+  - name: build wazuh extra json
+    set_fact:
+      wazuh_extra_json:
+        groups: "{{ wazuh_groups }}"
+        labels:
+          image_build_date: "{{ ansible_date_time.iso8601 }}"
+
+  - name: Ensure wazuh-agent extra directory exists
+    file:
+      path: "/var/ossec/etc/extra"
+      state: directory
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: write out wazuh extra config
+    copy:
+      dest: /var/ossec/etc/extra/01-ansible-baseline.json
+      content: "{{ wazuh_extra_json }}"
+
+  - name: Copy wazuh client enrichment script
+    copy:
+      src: "wazuh/enrich-wazuh-agent.py"
+      dest: "/var/ossec/bin/enrich-wazuh-agent.py"
+      owner: root
+      group: wazuh
+      mode: 0754
+
+  - name: Ensure wazuh-agent drop in config directory exists
+    file:
+      path: "/etc/systemd/system/wazuh-agent.service.d"
+      state: directory
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Copy wazuh drop in unit
+    copy:
+      src: "wazuh/preexec.conf"
+      dest: "/etc/systemd/system/wazuh-agent.service.d/preexec.conf"
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Copy wazuh config template
+    copy:
+      src: "wazuh/ossec.template"
+      dest: "/var/ossec/etc/ossec.template"
+      owner: root
+      group: wazuh
+      mode: 0754
+
+  - name: Copy wazuh local internal config
+    copy:
+      src: "wazuh/local_internal_options.conf"
+      dest: "/var/ossec/etc/local_internal_options.conf"
+      owner: root
+      group: wazuh
+      mode: 0750
+
+  - name: Update template file with groups
+    replace:
+      path: "/var/ossec/etc/ossec.template"
+      regexp: 'AGENT_GROUPS'
+      replace: "{{ wazuh_groups | join(',') }}"
+
+  - name: Enable wazuh-agent service
+    become: true
+    ansible.builtin.command:
+      cmd: "systemctl enable wazuh-agent.service"
+    ignore_errors: true
+
+  - name: get service facts
+    ansible.builtin.service_facts:
+
+  - name: Stop wazuh-agent service
+    become: true
+    ansible.builtin.command:
+      cmd: "systemctl stop wazuh-agent.service"
+    ignore_errors: true
+
+  - name: Clean Wazuh agent history
+    file:
+      path: "/var/ossec/etc/client.keys"
+      state: absent
+  when: quattor_package_name not in ansible_facts.packages

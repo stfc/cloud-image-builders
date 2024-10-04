@@ -1,3 +1,7 @@
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
 - name: Copy in nubes-bootcontext script
   copy:
     src: "nubes-bootcontext.sh"

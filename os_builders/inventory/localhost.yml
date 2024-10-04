@@ -2,3 +2,7 @@ all:
     hosts:
         localhost:
             ansible_connection: local
+default:
+    hosts:
+        localhost:
+            ansible_connection: local
