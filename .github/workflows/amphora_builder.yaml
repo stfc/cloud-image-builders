@@ -13,7 +13,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
@@ -23,7 +23,7 @@ jobs:
     name: Test Docker Image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
@@ -36,6 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: ["docker-build"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Exec Amphora build
         run: cd amphora-image-builder && ./build.sh

@@ -46,6 +46,7 @@
   - name: build wazuh groups list
     set_fact:
       wazuh_groups:
+        - "default"
         - "cloud"
         - "{{ ansible_distribution | lower }}"
         - "{{ ansible_facts['os_family'] | lower}}"
@@ -53,6 +54,8 @@
     set_fact:
       wazuh_extra_json:
         groups: "{{ wazuh_groups }}"
+        labels:
+          image_build_date: "{{ ansible_date_time.iso8601 }}"
 
   - name: Ensure wazuh-agent extra directory exists
     file:
