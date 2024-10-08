@@ -1,5 +1,7 @@
 #!/bin/bash
 #install ansible
+/usr/bin/python3 -m venv /tmp/amphora-venv
+source /tmp/amphora-venv/bin/activate
 /usr/bin/python3 -m pip install ansible
 /usr/bin/git clone https://github.com/stfc/cloud-image-builders.git
 cd cloud-image-builders
