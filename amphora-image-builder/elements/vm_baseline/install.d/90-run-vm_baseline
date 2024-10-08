@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -euo pipefail
+
 #install ansible
 /usr/bin/python3 -m venv /tmp/amphora-venv
 source /tmp/amphora-venv/bin/activate
