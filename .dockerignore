@@ -1,0 +1,7 @@
+# Docker ignore for amphora image builders
+# This doesn't use docker
+k8s-image-builder/
+
+# Don't include any built images if there are any
+**/*.raw
+**/*.qcow*
