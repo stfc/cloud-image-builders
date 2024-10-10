@@ -6,7 +6,12 @@ RUN apt-get update && \
     qemu-utils git kpartx debootstrap curl && \
     apt-get clean all
 
-COPY entrypoint.sh /entrypoint.sh
+# Copy this entire git directory, as we may be on a branch with changes we want to include
+# rather than main
+COPY ./ /opt/cloud-image-builders
+
+
+COPY amphora-image-builder/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT [ "bash", "/entrypoint.sh" ]
