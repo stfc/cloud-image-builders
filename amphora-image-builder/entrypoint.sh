@@ -12,13 +12,14 @@ DIB_REPO_PATH="$(pwd)/octavia"
 export DIB_REPO_PATH
 
 # run local config elements
-git clone https://github.com/stfc/cloud-image-builders.git
-cd /tmp/cloud-image-builders
+cd /opt/cloud-image-builders
 chmod 755 amphora-image-builder/elements/vm_baseline/*/*
+
 cd /tmp
 DIB_LOCAL_ELEMENTS="vm_baseline"
 export DIB_LOCAL_ELEMENTS
-DIB_LOCAL_ELEMENTS_PATH="/tmp/cloud-image-builders/amphora-image-builder/elements"
+
+DIB_LOCAL_ELEMENTS_PATH="/opt/cloud-image-builders/amphora-image-builder/elements"
 export DIB_LOCAL_ELEMENTS_PATH
 
 cd octavia/diskimage-create
