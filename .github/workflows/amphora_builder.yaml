@@ -24,5 +24,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Exec Amphora build
-        run: cd amphora-image-builder && ./build.sh
+        run: |
+          cd $GITHUB_WORKSPACE/amphora-image-builder
+          ./build.sh
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE/output
+      
+      - name: Check image is valid
+        run: |
+          cd $GITHUB_WORKSPACE 
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends qemu-utils
+          qemu-img check output/amphora-x64-$(date +%Y-%m-%d)-haproxy.qcow2
+
+      - name: SHA256 image
+        run: |
+          cd $GITHUB_WORKSPACE 
+          sha256sum output/amphora-x64-$(date +%Y-%m-%d)-haproxy.qcow2 > output/amphora-x64-$(date +%Y-%m-%d)-haproxy.qcow2.sha256
+      
+      - name: Upload image
+        uses: actions/upload-artifact@v4
+        with:
+          name: amphora-image
+          if-no-files-found: error
+          path: output/*qcow2*
+          compression-level: 0  # qcow2 files are already compressed
+          retention-days: 7
