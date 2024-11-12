@@ -10,7 +10,6 @@ RUN apt-get update && \
 # rather than main
 COPY ./ /opt/cloud-image-builders
 
-
 COPY amphora-image-builder/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
