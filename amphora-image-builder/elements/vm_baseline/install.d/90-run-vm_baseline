@@ -8,7 +8,7 @@ apt-get install python3-pip python3-venv -y
 /usr/bin/python3 -m venv /tmp/amphora-venv
 source /tmp/amphora-venv/bin/activate
 /usr/bin/python3 -m pip install ansible
-/usr/bin/git clone https://github.com/stfc/cloud-image-builders.git
+/usr/bin/git clone https://github.com/stfc/cloud-image-builders.git --depth=1
 cd cloud-image-builders
 
 apt-get install locale -y && apt-get clean all

@@ -2,12 +2,15 @@
 
 set -euxo pipefail
 
+DIB_RELEASE="jammy"  # Ubuntu 22.04
+export DIB_RELEASE
+
 cd /tmp
 python3 -m virtualenv octavia_disk_image_create
 # shellcheck source=/dev/null
 source octavia_disk_image_create/bin/activate
 
-git clone --depth=1 https://github.com/openstack/octavia
+git clone --depth=1 https://opendev.org/openstack/octavia
 DIB_REPO_PATH="$(pwd)/octavia"
 export DIB_REPO_PATH
 
