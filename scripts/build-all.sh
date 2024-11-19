@@ -17,5 +17,5 @@ VERSIONS=( "${REPO_ROOT}"/cluster-api/versions/*.json )
 for version_path in "${VERSIONS[@]}"; do
     echo "Building image for version: ${version_path}..." && \
     export PACKER_VAR_FILES="${CUSTOM_ROLE_PATH} ${version_path}" && \
-    make -C "${REPO_ROOT}/k8s-image-builder/images/capi" build-qemu-ubuntu-2404 &
+    make -C "${REPO_ROOT}/k8s-image-builder/images/capi" build-qemu-ubuntu-2204 &
 done
