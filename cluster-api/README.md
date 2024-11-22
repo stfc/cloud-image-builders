@@ -58,7 +58,7 @@ export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
 export PACKER_VAR_FILES="$(pwd)/cluster-api/ansible_stfc_roles.json"
 
 # Run build
-make -C k8s-image-builder/images/capi build-qemu-ubuntu-2004
+make -C k8s-image-builder/images/capi build-qemu-ubuntu-2204
 ```
 
 Building a custom version
@@ -75,7 +75,7 @@ export ROLE_DEFINITION="cluster-api/ansible_stfc_roles.json"
 
 export PACKER_VAR_FILES="$(pwd)/${K8S_VERSION} $(pwd)/${ROLE_DEFINITION}"
 
-make -C k8s-image-builder/images/capi build-qemu-ubuntu-2004
+make -C k8s-image-builder/images/capi build-qemu-ubuntu-2204
 ```
 
 Adding a new version

@@ -28,9 +28,10 @@
 
 - name: Install Packer
   apt:
-    name: packer
+    # K8s-image-builder requires a specific version of packer
+    name: packer=1.9.5-1
     state: present
-
+    allow_downgrade: yes
 
 - name: Add user to required groups
   user:
