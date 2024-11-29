@@ -1,6 +1,7 @@
 # Amphora output files
 amphora-x64*.raw
 amphora-x64*.d/
+log.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -22,6 +23,7 @@ lib/
 lib64/
 parts/
 sdist/
+output/
 var/
 wheels/
 share/python-wheels/

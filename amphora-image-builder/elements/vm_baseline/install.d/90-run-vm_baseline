@@ -8,15 +8,14 @@ apt-get install python3-pip python3-venv -y
 /usr/bin/python3 -m venv /tmp/amphora-venv
 source /tmp/amphora-venv/bin/activate
 /usr/bin/python3 -m pip install ansible
-/usr/bin/git clone https://github.com/stfc/cloud-image-builders.git
+/usr/bin/git clone https://github.com/stfc/cloud-image-builders.git --depth=1
 cd cloud-image-builders
 
-apt-get install language-pack-en -y
-locale-gen en_GB.UTF-8
-dpkg-reconfigure --frontend noninteractive locales
-update-locale LC_ALL=en_GB.UTF-8 LANG=en_GB.UTF-8
+apt-get install locale -y && apt-get clean all
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
+locale-gen en_US.UTF-8
 source /etc/default/locale
-locale
 
 apt-get install gpg-agent -y
 /usr/bin/gpg-agent --daemon
@@ -26,3 +25,5 @@ sed -i "s/hosts: default/hosts: localhost/g" os_builders/*.yml
 mkdir -p /var/ossec/etc/extra
 echo "{\"groups\": [\"default\", \"cloud\", \"ubuntu\", \"debian\", \"octavia-amphora\"], \"labels\": {\"amphora-build-date\": \"$(date '+%Y-%m-%d %H:%M:%S')\" }}" > /var/ossec/etc/extra/03-amphora.json
 ansible-playbook os_builders/prepare_user_image.yml --extra-vars provision_this_machine=true -i os_builders/inventory/localhost.yml
+
+apt-get autoremove -y
