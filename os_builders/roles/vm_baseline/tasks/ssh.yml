@@ -17,6 +17,20 @@
         # If a password is not set in the environment, disable password based login
         password: "{{ lookup('env', 'ROOT_PASSWORD', default='!') }}"
 
+    - name: Ensure cloud sudoers.d directory exists
+      file:
+        path: "/etc/sudoers.d"
+        state: directory
+        owner: root
+        group: root
+        mode: 0440
+
+    - name: Add cloud user to sudoers
+      copy:
+        dest: /etc/sudoers.d/cloud-team-user
+        content: "cloud ALL=(ALL) NOPASSWD:ALL"
+        mode: 0440
+
 - name: Ensure cloud home directory exists
   file:
     path: "/home/cloud/.ssh"
@@ -24,6 +38,8 @@
     owner: cloud
     group: cloud
     mode: 0700
+
+
 
 - name: Copy authorized cloud admin keys into cloud's authorized_keys
   copy:

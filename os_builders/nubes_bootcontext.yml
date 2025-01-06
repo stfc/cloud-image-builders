@@ -1,0 +1,5 @@
+- name: Install Nubes Boot Context
+  hosts: default
+  become: true
+  roles:
+    - role: nubes_boot_context

@@ -15,5 +15,31 @@ Usage
 -----
 
 ```
-$ ./build.sh
+./build.sh
+
+# Set as appropriate to your environment
+export TARGET_PROJECT=service
+
+openstack image create --property hw_disk_bus=virtio --property hw_scsi_model=virtio-scsi --property hw_vif_multiqueue_enabled=true --private --project $TARGET_PROJECT --disk-format qcow2 --container-format bare --file ../output/amphora-x64-$(date +%Y-%m-%d)-haproxy.qcow2 --progress amphora-x64-$(date +%Y-%m-%d)-haproxy
+```
+
+Enabling this for the Amphora
+-----------------------------
+
+- Share this image with the admin project so the control plane can see it after it's tagged
+
+```
+openstack image set --shared --project admin amphora-x64-$(date +%Y-%m-%d)-haproxy
+openstack image add project amphora-x64-$(date +%Y-%m-%d)-haproxy admin
+openstack image set --accept --project admin amphora-x64-$(date +%Y-%m-%d)-haproxy 
+```
+
+- Tag this image with the Amphora image tag
+```
+openstack image set --tag amphora amphora-x64-$(date +%Y-%m-%d)-haproxy
+```
+
+- Untag the old image after testing
+```
+openstack image unset --tag amphora amphora-<old-date>
 ```

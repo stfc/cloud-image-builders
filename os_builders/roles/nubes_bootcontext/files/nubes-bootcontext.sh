@@ -37,3 +37,5 @@ if grep -q minimum_uid=1000 /etc/pam.d/common-password; then
 fi
 
 /usr/local/sbin/update_cloud_users.sh
+
+systemctl restart wazuh-agent

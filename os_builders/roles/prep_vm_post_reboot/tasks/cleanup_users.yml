@@ -1,0 +1,12 @@
+- name: Cleanup users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    remove: true
+    state: absent
+  loop:
+  - "nagios"
+
+- name: mark next boot as first boot
+  file:
+      path: /var/lock/firstboot
+      state: touch
