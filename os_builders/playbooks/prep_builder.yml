@@ -10,5 +10,5 @@
     - name: Run Packer init
       command:
         cmd: packer init .
-        chdir: "{{ playbook_dir }}/packfiles"
+        chdir: "{{ playbook_dir }}/../packfiles"
       tags: packer
