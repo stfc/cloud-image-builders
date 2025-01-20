@@ -1,5 +1,5 @@
 - name: Prep STFC Cloud User Image After Reboot
-  hosts: default
+  hosts: localhost
   become: true
   roles:
     - role: nubes_bootcontext

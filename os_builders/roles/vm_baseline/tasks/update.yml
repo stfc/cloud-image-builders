@@ -9,9 +9,20 @@
     state: latest
     update_cache: yes
   when: ansible_distribution == "Rocky"
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 30
 
 - name: Install system updates for Ubuntu systems
-  apt:
+  ansible.builtin.apt:
     upgrade: dist
     update_cache: yes
-  when: ansible_distribution == "Ubuntu"
+    autoremove: yes
+    autoclean: yes
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 30
