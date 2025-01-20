@@ -15,7 +15,7 @@ build{
 
   provisioner "ansible" {
   user = "packer"
-  playbook_file = "../provision_image.yml"
+  playbook_file = "../playbooks/provision_image.yml"
   extra_arguments = [
       # Include safety checks
       "--extra-vars", "provision_this_machine=true",
