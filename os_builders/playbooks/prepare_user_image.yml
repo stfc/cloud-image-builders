@@ -1,12 +1,10 @@
 - name: Prep STFC Cloud User Image
-  hosts: default
+  hosts: localhost
   become: true
 
   pre_tasks:
-    - name: Exit if provision_this_machine is not set
-      fail:
-        msg: "provision_this_machine is not set, exiting"
-      when: provision_this_machine is not defined
+    - name: User warning
+        msg: "[Warning] Do not run on non-cloud machine"
 
   roles:
     - role: vm_baseline
