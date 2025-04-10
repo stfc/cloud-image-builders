@@ -12,8 +12,9 @@
   become: true
   lineinfile:
     dest: /etc/default/grub
-    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT'
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{grub_cmdline_updated}}"'
+    create: true
+    regexp: '^GRUB_CMDLINE_LINUX'
+    line: 'GRUB_CMDLINE_LINUX="{{grub_cmdline_updated}}"'
 
 - name: run updated grub config for el
   become: true
