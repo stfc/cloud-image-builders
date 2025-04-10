@@ -1,5 +1,5 @@
 - name: Get current grub command line 'AGENT_GROUPS'
-  command: "grep -E '^GRUB_CMDLINE_LINUX_DEFAULT' /etc/default/grub | cut -d'=' -f2 | sed 's/\"//g'"
+  command: "grep -E '^GRUB_CMDLINE_LINUX_DEFAULT' /etc/default/grub | sed 's/GRUB_CMDLINE_LINUX=//g' | sed 's/\"//g'"
   register: grub_cmdline
   changed_when: false
 
