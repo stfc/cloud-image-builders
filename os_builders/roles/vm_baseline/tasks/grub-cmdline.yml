@@ -1,4 +1,5 @@
 - name: Get current grub command line 'AGENT_GROUPS'
+  become: true
   command: "grep -E '^GRUB_CMDLINE_LINUX' /etc/default/grub | sed 's/GRUB_CMDLINE_LINUX=//g' | sed 's/\"//g'"
   register: grub_cmdline
   changed_when: false
@@ -8,19 +9,19 @@
     grub_cmdline_updated: "{{ grub_cmdline.stdout }} pci=nocrs,realloc"
 
 - name: Add grub commandline fixes
+  become: true
   lineinfile:
     dest: /etc/default/grub
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT'
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{grub_cmdline_updated}}"'
 
-- name: run updated grub config
-  command: "grub2-mkconfig -o /etc/grub2.cfg"
-
 - name: run updated grub config for el
+  become: true
   command: "grub2-mkconfig -o /etc/grub2.cfg"
   when: ansible_os_family == "Rocky"
 
 
 - name: run updated grub config for ubuntu
+  become: true
   command: "update-grub"
   when: ansible_os_family == "Ubuntu"
