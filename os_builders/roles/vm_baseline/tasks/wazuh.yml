@@ -16,6 +16,11 @@
         state: present
         allow_downgrade: true
         update_cache: yes
+
+    - name: Remove Wazuh repo
+      ansible.builtin.apt_repository:
+        repo: "deb https://packages.wazuh.com/4.x/apt/ stable main"
+        state: absent
   when: ansible_distribution == "Ubuntu"
 
 - name: Quattor package name
