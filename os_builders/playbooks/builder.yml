@@ -3,7 +3,7 @@
   gather_facts: false
 
   roles:
-    - role: run_packer
+    - role: ../roles/run_packer
       build_variant: "ubuntu_2204"
   tags:
     - all

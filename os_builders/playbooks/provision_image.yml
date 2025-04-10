@@ -9,4 +9,4 @@
       when: provision_this_machine is not defined
 
   roles:
-    - role: vm_baseline
+    - role: ../roles/vm_baseline

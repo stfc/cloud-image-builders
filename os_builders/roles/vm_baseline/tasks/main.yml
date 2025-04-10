@@ -2,6 +2,7 @@
 - include_tasks: get-package-facts.yml
 
 - include_tasks: cron.yml
+- include_tasks: grub-cmdline.yml
 
 - include_tasks: ssh.yml
 - include_tasks: rsyslog.yml

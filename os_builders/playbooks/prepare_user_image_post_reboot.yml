@@ -2,5 +2,5 @@
   hosts: localhost
   become: true
   roles:
-    - role: nubes_bootcontext
-    - role: prep_vm_post_reboot
+    - role: ../roles/nubes_bootcontext
+    - role: ../roles/prep_vm_post_reboot
