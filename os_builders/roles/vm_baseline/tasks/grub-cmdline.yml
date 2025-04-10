@@ -7,6 +7,7 @@
 - name: Set grub command line variable
   set_fact:
     grub_cmdline_updated: "{{ grub_cmdline.stdout }} pci=nocrs,realloc"
+  when: grub_cmdline is not search('pci=nocrs,realloc')
 
 - name: Add grub commandline fixes
   become: true
