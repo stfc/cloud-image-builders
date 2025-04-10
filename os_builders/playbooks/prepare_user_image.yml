@@ -8,6 +8,6 @@
         msg: "[Warning] Do not run on non-cloud machine"
 
   roles:
-    - role: vm_baseline
-    - role: container_registry
-    - role: nubes_bootcontext
+    - role: ../roles/vm_baseline
+    - role: ../roles/container_registry
+    - role: ../roles/nubes_bootcontext
