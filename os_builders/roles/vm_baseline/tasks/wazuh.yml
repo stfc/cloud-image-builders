@@ -122,6 +122,8 @@
       cmd: "systemctl enable wazuh-agent.service"
     ignore_errors: true
 
+    when: quattor_package_name not in ansible_facts.packages
+
   - name: get service facts
     ansible.builtin.service_facts:
 
@@ -135,4 +137,3 @@
     file:
       path: "/var/ossec/etc/client.keys"
       state: absent
-  when: quattor_package_name not in ansible_facts.packages
