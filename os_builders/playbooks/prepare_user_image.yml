@@ -4,6 +4,7 @@
 
   pre_tasks:
     - name: User warning
+      ansible.builtin.debug:
         msg: "[Warning] Do not run on non-cloud machine"
 
   roles:
