@@ -25,5 +25,6 @@ sed -i "s/hosts: default/hosts: localhost/g" os_builders/*.yml
 mkdir -p /var/ossec/etc/extra
 echo "{\"groups\": [\"default\", \"cloud\", \"ubuntu\", \"debian\", \"octavia-amphora\"], \"labels\": {\"amphora-build-date\": \"$(date '+%Y-%m-%d %H:%M:%S')\" }}" > /var/ossec/etc/extra/03-amphora.json
 ansible-playbook os_builders/playbooks/prepare_user_image.yml --extra-vars provision_this_machine=true -i os_builders/inventory/localhost.yml
+echo "130.246.210.20 wazuh.cape.stfc.ac.uk" >> /etc/hosts
 
 apt-get autoremove -y
