@@ -1,6 +1,0 @@
-{
-    "kubernetes_series": "v1.27",
-    "kubernetes_semver": "v1.27.16",
-    "kubernetes_deb_version": "1.27.16-1.1",
-    "kubernetes_deb_gpg_key": "https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key"
-}

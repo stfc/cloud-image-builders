@@ -80,6 +80,15 @@ make -C k8s-image-builder/images/capi build-qemu-ubuntu-2204
 
 Adding a new version
 ====================
+- Update the image builder :
+
+```shell
+cd k8s-image-builder/
+git fetch
+git reset --h origin/main
+cd ..
+```
+
 - Navigate to https://kubernetes.io/releases/
 - Find the version you want to add or update
 - Update the semver in the relevant JSON file. There should be a 1:1 mapping of
