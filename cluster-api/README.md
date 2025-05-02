@@ -22,10 +22,10 @@ pip install "ansible" "ansible-core" --upgrade
 cd os_builders
 
 # If sudo is passwordless:
-ansible-playbook -i inventory/localhost prep_builder.yml
+ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml
 
 # If password is required for sudo:
-ansible-playbook -i inventory/localhost prep_builder.yml --ask-become-pass
+ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml --ask-become-pass
 ```
 - Log out and back in again to ensure the groups are applied
 ```shell
