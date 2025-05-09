@@ -14,7 +14,7 @@ else
     wget http://openstack.nubes.rl.ac.uk:9999/admin_key_list
     if [ -f admin_key_list ]
     then
-        mv admin_key_list /root/.ssh/authorized_keys
+        mv admin_key_list $KEYSPATH/.ssh/authorized_keys
         if [ ! -s $KEYSPATH/.ssh/authorized_keys ]
         then
             echo "file $KEYSPATH/.ssh/admin_key_list is empty. The download from service node failed. Generated from \`update_keys.sh\`." #| mail -s "Error during VM authorized_keys update" cloud-support@stfc.ac.uk
