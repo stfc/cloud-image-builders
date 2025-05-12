@@ -22,10 +22,10 @@ pip install "ansible" "ansible-core" --upgrade
 cd os_builders
 
 # If sudo is passwordless:
-ansible-playbook -i inventory/localhost prep_builder.yml
+ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml
 
 # If password is required for sudo:
-ansible-playbook -i inventory/localhost prep_builder.yml --ask-become-pass
+ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml --ask-become-pass
 ```
 - Log out and back in again to ensure the groups are applied
 ```shell
@@ -80,6 +80,15 @@ make -C k8s-image-builder/images/capi build-qemu-ubuntu-2204
 
 Adding a new version
 ====================
+- Update the image builder :
+
+```shell
+cd k8s-image-builder/
+git fetch
+git reset --h origin/main
+cd ..
+```
+
 - Navigate to https://kubernetes.io/releases/
 - Find the version you want to add or update
 - Update the semver in the relevant JSON file. There should be a 1:1 mapping of
