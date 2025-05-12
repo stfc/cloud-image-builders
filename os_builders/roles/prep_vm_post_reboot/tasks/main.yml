@@ -1,5 +1,5 @@
 # Cleanup machine
-- include_tasks: wazuh.yml
+
 - include_tasks: get_package_facts.yml
 - include_tasks: run_quattor.yml
   when: ansible_distribution == "Rocky"  and "ccm" in ansible_facts.packages
@@ -9,6 +9,7 @@
 - include_tasks: cleanup_network_conf.yml
 - include_tasks: run_update_keys.yml
 - include_tasks: set_locale.yml
+- include_tasks: wazuh.yml
 - include_tasks: cleanup_quattor.yml
   when: ansible_distribution == "Rocky"  and "ccm" in ansible_facts.packages
 - include_tasks: run_pakiti.yml
