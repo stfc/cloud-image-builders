@@ -1,26 +1,5 @@
 - name: Install wazuh on Ubuntu
-  block:
-    - name: Add GPG Key for Wazuh
-      ansible.builtin.apt_key:
-        url: "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
-        state: present
-
-    - name: Add Wazuh repo
-      ansible.builtin.apt_repository:
-        repo: "deb https://packages.wazuh.com/4.x/apt/ stable main"
-        state: present
-
-    - name: Install Wazuh agent
-      ansible.builtin.apt:
-        name: wazuh-agent=4.8.*
-        state: present
-        allow_downgrade: true
-        update_cache: yes
-
-    - name: Remove Wazuh repo
-      ansible.builtin.apt_repository:
-        repo: "deb https://packages.wazuh.com/4.x/apt/ stable main"
-        state: absent
+  ansible.builtin.include_tasks: wazuh/install_wazuh_ubuntu.yml
   when: ansible_distribution == "Ubuntu"
 
 - name: Quattor package name
@@ -28,22 +7,7 @@
     quattor_package_name: "ccm"
 
 - name: Install wazuh on Rocky
-  block:
-    - name: add wazuh repo
-      yum_repository:
-        name: wazuh
-        file: wazuh
-        description: "Repository to install wazuh"
-        baseurl: https://packages.wazuh.com/4.x/yum/
-        enabled: true
-        gpgcheck: false
-
-    - name: Install wazuh
-      yum:
-        name:
-          - wazuh-agent-4.8.*
-        state: present
-        disable_gpg_check: true
+  ansible.builtin.include_tasks: wazuh/install_wazuh_rocky.yml
   when: ansible_distribution == "Rocky" and "ccm" not in ansible_facts.packages
 
 - name: configure wazuh-agent
