@@ -1,0 +1,26 @@
+- name: Install required package
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+    update_cache: yes
+    
+- name: Add Wazuh repo
+  ansible.builtin.deb822_repository:
+    name: wazuh
+    uris: https://packages.wazuh.com/4.x/apt/
+    signed_by: "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
+    suites: stable
+    components: main
+    state: present
+
+- name: Install Wazuh agent
+  ansible.builtin.apt:
+    name: wazuh-agent=4.8.*
+    state: present
+    allow_downgrade: true
+    update_cache: yes
+
+- name: Remove Wazuh repo
+  ansible.builtin.deb822_repository:
+    name: wazuh
+    state: absent
