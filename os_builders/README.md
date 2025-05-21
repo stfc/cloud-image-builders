@@ -28,6 +28,11 @@ Preparing a builder
 To build locally, you need to have the following installed:
 - ansible
 
+First, install required ansible collections:
+```
+ansible-galaxy install -r requirements.yml
+```
+
 Then run the following command to install Qemu and setup the user's groups. You will need to log out and back in again for the groups to take effect.
 
 
