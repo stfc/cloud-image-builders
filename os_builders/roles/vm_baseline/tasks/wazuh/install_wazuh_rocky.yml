@@ -1,0 +1,15 @@
+- name: add wazuh repo
+  yum_repository:
+    name: wazuh
+    file: wazuh
+    description: "Repository to install wazuh"
+    baseurl: https://packages.wazuh.com/4.x/yum/
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+
+- name: Install wazuh
+  yum:
+    name:
+      - wazuh-agent-4.8.*
+    state: present

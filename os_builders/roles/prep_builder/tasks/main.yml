@@ -50,7 +50,7 @@
     state: started
 
 - name: Enable KVM module
-  modprobe:
+  community.general.modprobe:
     name: kvm
     state: present
 

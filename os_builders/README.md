@@ -28,11 +28,16 @@ Preparing a builder
 To build locally, you need to have the following installed:
 - ansible
 
+First, install required ansible collections:
+```
+ansible-galaxy install -r requirements.yml
+```
+
 Then run the following command to install Qemu and setup the user's groups. You will need to log out and back in again for the groups to take effect.
 
 
 ```
-ansible-playbook -i inventory/localhost prep_builder.yml --ask-become-pass
+ansible-playbook -i inventory/localhost playbooks/prep_builder.yml --ask-become-pass
 ```
 
 Running the build
@@ -40,13 +45,13 @@ Running the build
 
 Images can be built with the following command
 ```
-ansible-playbook -i inventory/localhost builder.yml
+ansible-playbook -i inventory/localhost playbooks/builder.yml
 ````
 
 This will build all images (it implies the `all` tag). Individual tags can be selected as follows
 
 ```
-ansible-playbook -i inventory/localhost builder.yml -t <tag>
+ansible-playbook -i inventory/localhost playbooks/builder.yml -t <tag>
 ````
 
 The following tags are available:
@@ -63,7 +68,7 @@ By default we show a VNC window for the packer build, this is useful for debuggi
 To run a headless build, you need to set the `headless` variable to true. This can be done by passing the variable on the command line:
 
 ```
-ansible-playbook -i inventory/localhost builder.yml --extra-vars packer_headless=true
+ansible-playbook -i inventory/localhost playbooks/builder.yml --extra-vars packer_headless=true
 ```
 
 
@@ -121,6 +126,6 @@ The `provision_this_machine` variable acts as a guard from trashing your own mac
 
 - Run the playbook
 ```
-ansible-playbook -i inventory/testing.yml image_prep.yml --extra-vars provision_this_machine=true
+ansible-playbook -i inventory/testing.yml playbooks/provision_image.yml --extra-vars provision_this_machine=true
 ```
 

@@ -41,8 +41,8 @@ locals {
 # Sets options which are default across all Ubuntu builders
 # Adapted from https://github.com/tylert/packer-build/blob/master/source/ubuntu/22.04_jammy/base.pkr.hcl
 source "qemu" "ubuntu_2204_base" {
-    iso_url             = "https://releases.ubuntu.com/jammy/ubuntu-22.04.3-live-server-amd64.iso"
-    iso_checksum        = "a4acfda10b18da50e2ec50ccaf860d7f20b389df8765611142305c0e911d16fd"
+    iso_url             = "https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso"
+    iso_checksum        = "9bc6028870aef3f74f4e16b900008179e78b130e6b0b9a140635434a46aa98b0"
     disk_size           = local.disk_size
     output_directory    = local.auto_install_output
     # Remove the packer user and shutdown the VM at the same time

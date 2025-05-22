@@ -1,0 +1,25 @@
+- name: Install required package
+  ansible.builtin.pip:
+    name: python-debian
+    state: present
+    
+- name: Add EU Grid PMA repo
+  ansible.builtin.deb822_repository:
+    name: eu-grid-pma
+    uris: http://repository.egi.eu/sw/production/cas/1/current
+    signed_by: "https://dist.eugridpma.info/distribution/igtf/current/GPG-KEY-EUGridPMA-RPM-4"
+    suites: egi-igtf
+    components: core
+    state: present
+
+- name: Install UK eScience Root
+  ansible.builtin.apt:
+    name: ca-ukescienceroot-2007
+    state: present
+    update_cache: yes
+
+- name: Install UK eScience CA
+  ansible.builtin.apt:
+    name: ca-ukescienceca-2b
+    state: present
+    update_cache: yes
