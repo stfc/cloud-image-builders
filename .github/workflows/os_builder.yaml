@@ -48,7 +48,7 @@ jobs:
   test_image_provisioning_ubuntu:
       strategy:
         matrix:
-          os: ["ubuntu:22.04", "ubuntu:20.04"]
+          os: ["ubuntu:22.04", "ubuntu:24.04"]
       runs-on: ubuntu-latest
       container: ${{ matrix.os }}
       steps:
@@ -56,11 +56,15 @@ jobs:
         - name: Install Ansible
           run: |
             apt update
-            apt install -y python3-pip
+            apt install -y python3-pip python3-venv
+            python3 -m venv venv
+            . venv/bin/activate
+            pip3 install --upgrade pip
             pip3 install ansible
         - name: Run pre-prep playbook
           # Patch the inventory to run on this machine
           run: |
+           . venv/bin/activate
            cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
            ansible-playbook -i inventory/localhost.yml playbooks/provision_image.yml --extra-vars provision_this_machine=True
 
