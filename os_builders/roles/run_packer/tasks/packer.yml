@@ -17,7 +17,7 @@
 
     - name: Running packer auto install build for {{ build_variant }}. This may take a while...
       shell:
-        chdir: "{{ playbook_dir }}/packfiles"
+        chdir: "{{ playbook_dir }}/../packfiles"
         cmd: packer build --only='{{ auto_install_name }}*{{ build_variant }}*'  .
       environment:
         PKR_VAR_headless: "{{ packer_headless }}"
@@ -29,7 +29,7 @@
 
 - name: (Re-)Provision image for {{ build_variant }}
   shell:
-    chdir: "{{ playbook_dir }}/packfiles"
+    chdir: "{{ playbook_dir }}/../packfiles"
     cmd: packer build --force --only='{{ provisioner_name }}*{{ build_variant }}*' .
   environment:
     PKR_VAR_headless: "{{ packer_headless }}"

@@ -1,6 +1,6 @@
 - name: Find output image
   find:
-    path: "{{ playbook_dir }}/{{ provisioner_output_path }}"
+    path: "{{ playbook_dir }}/../{{ provisioner_output_path }}"
     patterns: "*{{ build_variant }}*"
   register: provisioner_output
 
