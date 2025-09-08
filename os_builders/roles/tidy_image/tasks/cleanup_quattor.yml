@@ -1,0 +1,25 @@
+- name: Cleanout Quattor
+  block:
+    - name: Cleanout Quattor
+      stat:
+        path: /etc/ccm.conf
+      register: ccm_conf_exists
+
+    - name: Cleanout ccm config file
+      file:
+        path: "/etc/ccm.conf"
+        state: absent
+      when: ccm_conf_exists
+
+    - name: Cleanout quattor profile
+      file:
+        path: "/var/lib/profile*"
+        state: absent
+      when: ccm_conf_exists
+
+    - name: Stop quattor listener
+      become: true
+      ansible.builtin.command:
+        cmd: "systemctl stop ncm-cdispd.service"
+      when: ccm_conf_exists
+  when: ansible_distribution == "Rocky"  and "ccm" in ansible_facts.packages

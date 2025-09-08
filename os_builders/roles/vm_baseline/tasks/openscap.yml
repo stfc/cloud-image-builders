@@ -3,6 +3,10 @@
     name: libopenscap8
     state: present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version != "24.04"
+  register: result
+  retries: 5
+  delay: 30
+  until: result is not failed
 
 - name: Install openscap
   package:
@@ -11,9 +15,17 @@
     - openscap-utils
     state: present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == "24.04"
+  register: result
+  retries: 5
+  delay: 30
+  until: result is not failed
 
 - name: Install openscap
   package:
     name: openscap
     state: present
   when: ansible_distribution == "Rocky"  and "ccm" not in ansible_facts.packages
+  register: result
+  retries: 5
+  delay: 30
+  until: result is not failed

@@ -26,3 +26,11 @@
   until: result is not failed
   retries: 5
   delay: 30
+
+- name: get IP
+  shell: hostname -I
+  register: my_hostname
+
+- name: print IP
+  debug:
+    msg: "{{ my_hostname }}"
