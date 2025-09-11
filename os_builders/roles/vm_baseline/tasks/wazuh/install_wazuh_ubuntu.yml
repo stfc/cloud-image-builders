@@ -2,6 +2,7 @@
   ansible.builtin.pip:
     name: python-debian
     state: present
+    break_system_packages: true
     
 - name: Add Wazuh repo
   ansible.builtin.deb822_repository:
