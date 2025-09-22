@@ -10,3 +10,9 @@
     name: "qemu-guest-agent"
     state: present
   when: ansible_distribution == "Rocky"  and "ccm" not in ansible_facts.packages
+
+- name: Enable Qemu Guest Agent
+  ansible.builtin.systemd_service:
+    name: qemu-guest-agent.service
+    enabled: true
+    state: started
