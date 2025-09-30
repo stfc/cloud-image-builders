@@ -1,0 +1,4 @@
+- name: Cleanout Host SSH Keys
+  file:
+    path: "/etc/ssh/*key*"
+    state: absent

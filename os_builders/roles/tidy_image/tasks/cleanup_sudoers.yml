@@ -1,0 +1,4 @@
+- name: Cleanout /etc/sudoers.d/cloud
+  file:
+    path: "/etc/sudoers.d/cloud"
+    state: absent
