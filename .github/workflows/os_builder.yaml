@@ -23,8 +23,6 @@ jobs:
 
   validate_packer:
       strategy:
-        matrix:
-          os: ["qemu.ubuntu_2204"]
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v5
@@ -42,9 +40,6 @@ jobs:
             packer init . &&
             packer validate .
 
-        # Disabled pending: https://github.com/actions/runner-images/discussions/7191
-        # - name: Run packer for a given OS
-        #   run: cd os_builders && PACKER_LOG=1 packer build --var-file="packfiles/headless.pkrvars.hcl"  --only=${{ matrix.os }} packfiles
   test_image_provisioning_ubuntu:
       strategy:
         matrix:
