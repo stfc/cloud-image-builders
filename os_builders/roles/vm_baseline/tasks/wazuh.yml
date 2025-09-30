@@ -14,7 +14,7 @@
 
 - name: Install wazuh on Rocky
   ansible.builtin.include_tasks: wazuh/install_wazuh_rocky.yml
-  when: ansible_distribution == "Rocky" and "ccm" not in ansible_facts.packages
+  when: ansible_distribution == "Rocky"
 
 - name: configure wazuh-agent
   block:
