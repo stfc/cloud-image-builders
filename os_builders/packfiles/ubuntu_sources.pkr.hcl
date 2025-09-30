@@ -27,7 +27,7 @@ locals {
 
 source "openstack" "ubuntu_2204" {
   external_source_image_url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img"
-  image_name                = "ubuntu-jammy"
+  image_name                = "ubuntu-jammy-22.04-nogui-latest-baseline"
 
   identity_endpoint         = local.identity_endpoint
   flavor                    = local.flavor
