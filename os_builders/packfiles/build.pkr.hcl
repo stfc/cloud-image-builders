@@ -17,7 +17,7 @@ build {
 
 build {
   name    = "azimuth_ubuntu"
-  sources = ["source.openstack.test_ubuntu"]
+  sources = ["source.openstack.azimuth_ubuntu"]
 
   provisioner "ansible" {
     user          = "ubuntu"

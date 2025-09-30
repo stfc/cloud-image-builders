@@ -27,7 +27,7 @@ locals {
 
 source "openstack" "ubuntu_2204" {
   external_source_image_url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img"
-  image_name                = "test-ubuntu-04-09-2025-v1"
+  image_name                = "ubuntu-jammy"
 
   identity_endpoint         = local.identity_endpoint
   flavor                    = local.flavor
@@ -45,7 +45,7 @@ source "openstack" "ubuntu_2204" {
 
 source "openstack" "azimuth_ubuntu" {
   external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-desktop-250701-1116.qcow2"    
-  image_name                = "test-azimuth-01-09-2025-v2"
+  image_name                = "test-azimuth"
 
   identity_endpoint         = local.identity_endpoint
   flavor                    = local.flavor
