@@ -1,5 +1,6 @@
 - name: Reboot machine
   ansible.builtin.reboot:
+  become: true
 
 - name: Wait for SSH to come up
   wait_for_connection:
