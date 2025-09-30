@@ -1,11 +1,11 @@
 packer {
   required_plugins {
     ansible = {
-      version = ">= 1.0.4"
+      version = " >= 1.0.4"
       source  = "github.com/hashicorp/ansible"
     }
     openstack = {
-      version = ">= 1.1.2"
+      version = " >= 1.1.2"
       source  = "github.com/hashicorp/openstack"
     }
   }

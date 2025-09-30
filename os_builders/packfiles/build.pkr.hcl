@@ -3,7 +3,7 @@ build {
   sources = ["source.openstack.ubuntu_2204"]
 
   provisioner "ansible" {
-    user          = "packer"
+    user          = "ubuntu"
     playbook_file = "${path.root}/../playbooks/prepare_user_image.yml"
     extra_arguments = [
       # Include safety checks
@@ -20,7 +20,7 @@ build {
   sources = ["source.openstack.test_ubuntu"]
 
   provisioner "ansible" {
-    user          = "packer"
+    user          = "ubuntu"
     playbook_file = "${path.root}/../playbooks/prepare_user_image.yml"
     extra_arguments = [
       # Include safety checks
