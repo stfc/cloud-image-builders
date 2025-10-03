@@ -37,6 +37,12 @@ build {
     external_source_image_url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
   }
   source "openstack.builder" {
+    name                      = "ubuntu-noble"
+    image_name                = "ubuntu-noble-24.04-nogui-latest-baseline"
+    ssh_username              = "ubuntu"
+    external_source_image_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+  }
+  source "openstack.builder" {
     name                      = "ubuntu-azimuth"
     external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-desktop-250701-1116.qcow2"
     image_name                = "test-azimuth"
