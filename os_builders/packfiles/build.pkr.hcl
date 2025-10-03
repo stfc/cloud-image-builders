@@ -52,13 +52,13 @@ build {
     name = "rocky-8"
     image_name = "rocky-8-nogui-baseline"
     ssh_username = "rocky"
-    external_source_image_url = "https://dl.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud.latest.x86_64.qcow2"
+    external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"    
   }
     source "openstack.builder" {
     name = "rocky-9"
     image_name = "rocky-9-nogui-baseline"
     ssh_username = "rocky"
-    external_source_image_url = "https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud.latest.x86_64.qcow2"
+    external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
   }
 
   sources = ["openstack.builder"]
