@@ -24,7 +24,7 @@ source "openstack" "builder" {
     "hw_firmware_type" : "uefi",
     "hw_qemu_guest_agent" : "yes",
     "hw_scsi_model" : "virtio-scsi",
-    "hw_vif_multiqueue_enable" : "true",
+    "hw_vif_multiqueue_enabled" : "true",
     "os_require_quiesce" : "yes"
   }
 }
