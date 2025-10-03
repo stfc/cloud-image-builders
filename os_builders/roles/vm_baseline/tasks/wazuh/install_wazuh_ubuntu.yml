@@ -1,6 +1,7 @@
 - name: Install required package
-  ansible.builtin.pip:
-    name: python-debian
+  ansible.builtin.apt:
+    name: python3-debian
+    update_cache: true
     state: present
     
 - name: Add Wazuh repo
