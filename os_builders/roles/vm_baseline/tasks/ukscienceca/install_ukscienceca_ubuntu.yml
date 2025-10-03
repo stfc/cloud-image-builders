@@ -1,6 +1,7 @@
 - name: Install required package
-  ansible.builtin.pip:
-    name: python-debian
+  ansible.builtin.apt:
+    name: python3-debian
+    update_cache: true
     state: present
     
 - name: Add EU Grid PMA repo
@@ -20,6 +21,6 @@
 
 - name: Install UK eScience CA
   ansible.builtin.apt:
-    name: ca-ukescienceca-2b
+    name: ca-ukescienceca-2b 
     state: present
     update_cache: yes
