@@ -5,7 +5,7 @@ hostname="networktest"
 while [[ "$hostname" == "networktest" ]];
 do
     sleep 5s
-    ipaddress=$(hostname -I)
+    ipaddress=$(hostname -I | sed "s/ //g")
 
     if [[ "$ipaddress" == "130."* ]] || [[ $ipaddress == "172."*  ]]; then
         hostname=$(dig -x "$ipaddress" +short | sed "s/.ac.uk./.ac.uk/g");
