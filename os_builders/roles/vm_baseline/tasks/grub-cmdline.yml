@@ -1,6 +1,6 @@
 - name: Get current grub command line 'AGENT_GROUPS'
   become: true
-  shell: "grep -E '^GRUB_CMDLINE_LINUX' /etc/default/grub | sed 's/GRUB_CMDLINE_LINUX=//g' | sed 's/\"//g'"
+  shell: 'grep -E ''^GRUB_CMDLINE_LINUX'' /etc/default/grub | sed ''s/GRUB_CMDLINE_LINUX=//g'' | sed ''s/"//g'''
   register: grub_cmdline
   changed_when: false
 
@@ -19,16 +19,15 @@
   lineinfile:
     dest: /etc/default/grub
     create: true
-    regexp: '^GRUB_CMDLINE_LINUX'
+    regexp: "^GRUB_CMDLINE_LINUX"
     line: 'GRUB_CMDLINE_LINUX="{{grub_cmdline_updated}}"'
 
 - name: run updated grub config for el
   become: true
   shell: "grub2-mkconfig -o /etc/grub2.cfg"
-  when: ansible_os_family == "Rocky"
-
+  when: ansible_distribution == "Rocky"
 
 - name: run updated grub config for ubuntu
   become: true
   shell: "update-grub"
-  when: ansible_os_family == "Ubuntu"
+  when: ansible_distribution == "Ubuntu"
