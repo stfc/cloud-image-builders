@@ -1,10 +1,21 @@
-- name: Cleanup users
+- name: Get list of current users
+  ansible.builtin.getent:
+    database: passwd
+
+- name: Extract usernames with 'admin-' prefix
+  set_fact:
+    current_users: "{{ getent_passwd | select('search', 'admin-')}}"
+
+- name: Determine users to remove
+  set_fact:
+    users_to_remove: '{{ current_users | difference(["cloud","ubuntu","rocky"]) }}'
+
+- name: Remove users with 'admin-' prefix
   ansible.builtin.user:
     name: "{{ item }}"
-    remove: true
     state: absent
-  loop:
-  - "nagios"
+    remove: yes
+  loop: "{{ users_to_remove }}"
 
 - name: mark next boot as first boot
   file:
