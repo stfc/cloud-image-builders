@@ -1,0 +1,6 @@
+- name: Ensure SELinux is set to permissive mode
+  ansible.builtin.lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+  when: ansible_distribution == "Rocky"
