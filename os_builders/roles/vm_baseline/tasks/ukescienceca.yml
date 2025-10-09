@@ -4,4 +4,4 @@
 
 - name: Install UK eScience Root CA on RL
   ansible.builtin.include_tasks: ukscienceca/install_ukscienceca_rocky.yml
-  when: ansible_distribution == "Rocky" and "ccm" not in ansible_facts.packages
+  when: ansible_distribution == "Rocky"

@@ -22,4 +22,4 @@
       ansible.builtin.command:
         cmd: "systemctl stop ncm-cdispd.service"
       when: ccm_conf_exists
-  when: ansible_distribution == "Rocky"  and "ccm" in ansible_facts.packages
+  when: ansible_distribution == "Rocky" 
