@@ -8,10 +8,6 @@
   ansible.builtin.include_tasks: wazuh/install_wazuh_ubuntu.yml
   when: ansible_distribution == "Ubuntu"
 
-- name: Quattor package name
-  set_fact:
-    quattor_package_name: "ccm"
-
 - name: Install wazuh on Rocky
   ansible.builtin.include_tasks: wazuh/install_wazuh_rocky.yml
   when: ansible_distribution == "Rocky"
@@ -96,8 +92,6 @@
     ansible.builtin.command:
       cmd: "systemctl enable wazuh-agent.service"
     ignore_errors: true
-
-    when: quattor_package_name not in ansible_facts.packages
 
   - name: get service facts
     ansible.builtin.service_facts:
