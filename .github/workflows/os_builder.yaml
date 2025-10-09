@@ -28,7 +28,7 @@ jobs:
             packer init . &&
             packer validate .
 
-  test_image_provisioning_ubuntu:
+  test_image_build_ubuntu:
       strategy:
         matrix:
           os: ["ubuntu:22.04", "ubuntu:24.04"]
@@ -51,7 +51,7 @@ jobs:
            cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
            ansible-playbook -i inventory/localhost.yml playbooks/prepare_user_image.yml --extra-vars provision_this_machine=True
 
-  test_image_prep_rocky:
+  test_image_build_rocky:
     strategy:
       matrix:
         os: ["rockylinux:8", "rockylinux:9"]
