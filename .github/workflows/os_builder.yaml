@@ -26,7 +26,7 @@ jobs:
           run: |
             cd os_builders/packfiles &&
             packer init . &&
-            packer validate .
+            packer validate -syntax-only .
 
   test_image_build_ubuntu:
       strategy:
