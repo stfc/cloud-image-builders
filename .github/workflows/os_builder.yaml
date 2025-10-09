@@ -22,7 +22,6 @@ jobs:
         run: cd os_builders && ansible-playbook -i inventory/localhost.yml playbooks/prepare_user_image.yml
 
   validate_packer:
-      strategy:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v5
