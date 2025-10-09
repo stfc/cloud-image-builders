@@ -9,4 +9,10 @@
   yum:
     name: "qemu-guest-agent"
     state: present
-  when: ansible_distribution == "Rocky" 
+  when: ansible_distribution == "Rocky"
+
+- name: Enable Qemu Guest Agent
+  ansible.builtin.systemd_service:
+    name: qemu-guest-agent.service
+    enabled: true
+    state: started
