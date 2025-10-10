@@ -9,17 +9,17 @@
       file:
         path: "/etc/ccm.conf"
         state: absent
-      when: ccm_conf_exists
+      when: ccm_conf_exists.stat.exists
 
     - name: Cleanout quattor profile
       file:
         path: "/var/lib/profile*"
         state: absent
-      when: ccm_conf_exists
+      when: ccm_conf_exists.stat.exists
 
     - name: Stop quattor listener
       become: true
       ansible.builtin.command:
         cmd: "systemctl stop ncm-cdispd.service"
-      when: ccm_conf_exists
+      when: ccm_conf_exists.stat.exists
   when: ansible_distribution == "Rocky" 
