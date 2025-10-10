@@ -39,11 +39,11 @@ jobs:
         - name: Install Ansible
           run: |
             apt update
-            apt install -y python3-pip python3-venv
+            apt install -y python3-pip python3-venv 
             python3 -m venv venv
             . venv/bin/activate
             pip3 install --upgrade pip
-            pip3 install ansible
+            pip3 install ansible python-debian
         - name: Run pre-prep playbook
           # Patch the inventory to run on this machine
           run: |

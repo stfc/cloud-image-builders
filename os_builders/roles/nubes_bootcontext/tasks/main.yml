@@ -2,6 +2,13 @@
   ansible.builtin.package_facts:
     manager: auto
 
+- name: Install dnsutils for dig
+  ansible.builtin.package:
+    name: dnsutils
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Rocky"
+
 - name: Copy in nubes-bootcontext script
   copy:
     src: "nubes-bootcontext.sh"
@@ -9,7 +16,6 @@
     owner: root
     group: root
     mode: 0755
-  when: ansible_distribution != "Rocky" 
 
 - name: Copy in nubes-boot systemd unit
   copy:
@@ -17,7 +23,7 @@
     dest: "/etc/systemd/system/nubes-boot.service"
     owner: root
     group: root
-    mode: 0755
+    mode: 0644
 
 - name: Copy in motd
   copy:

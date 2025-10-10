@@ -13,3 +13,5 @@
 - include_tasks: ukescienceca.yml
 - include_tasks: pakiti.yml
 - include_tasks: qemu-guest-agent.yml
+
+- include_tasks: disable_selinux.yml

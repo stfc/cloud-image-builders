@@ -8,6 +8,13 @@
   ansible.builtin.include_tasks: wazuh/install_wazuh_ubuntu.yml
   when: ansible_distribution == "Ubuntu"
 
+- name: Install python3 on Rocky8 for Wazuh
+  ansible.builtin.package:
+    name: python3
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Rocky" and ansible_distribution_major_version == "8"
+
 - name: Install wazuh on Rocky
   ansible.builtin.include_tasks: wazuh/install_wazuh_rocky.yml
   when: ansible_distribution == "Rocky"

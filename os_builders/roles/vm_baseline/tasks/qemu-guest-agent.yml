@@ -15,4 +15,3 @@
   ansible.builtin.systemd_service:
     name: qemu-guest-agent.service
     enabled: true
-    state: started

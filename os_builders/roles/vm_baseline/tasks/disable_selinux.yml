@@ -1,0 +1,8 @@
+- name: Ensure SELinux is set to permissive mode for Wazuh
+  ansible.builtin.lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: SELINUX=permissive
+    state: present
+    create: true
+  when: ansible_distribution == "Rocky"
