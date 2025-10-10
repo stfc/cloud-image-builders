@@ -3,4 +3,6 @@
     path: /etc/selinux/config
     regexp: '^SELINUX='
     line: SELINUX=permissive
+    state: present
+    create: true
   when: ansible_distribution == "Rocky"
