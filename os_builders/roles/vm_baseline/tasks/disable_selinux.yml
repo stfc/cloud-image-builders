@@ -1,4 +1,4 @@
-- name: Ensure SELinux is set to permissive mode
+- name: Ensure SELinux is set to permissive mode for Wazuh
   ansible.builtin.lineinfile:
     path: /etc/selinux/config
     regexp: '^SELINUX='
