@@ -22,12 +22,21 @@
     regexp: "^GRUB_CMDLINE_LINUX"
     line: 'GRUB_CMDLINE_LINUX="{{grub_cmdline_updated}}"'
 
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: in_container
+
 - name: run updated grub config for el
   become: true
   shell: "grub2-mkconfig -o /etc/grub2.cfg"
-  when: ansible_distribution == "Rocky"
+  when: 
+    - ansible_distribution == "Rocky"
+    - in_container.stdout != "0::/"
 
 - name: run updated grub config for ubuntu
   become: true
   shell: "update-grub"
-  when: ansible_distribution == "Ubuntu"
+  when: 
+    - ansible_distribution == "Ubuntu"
+    - in_container.stdout != "0::/"
