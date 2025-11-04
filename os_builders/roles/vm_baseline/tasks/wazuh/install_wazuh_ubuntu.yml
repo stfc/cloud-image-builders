@@ -2,7 +2,7 @@
   ansible.builtin.pip:
     name: python-debian
     state: present
-    
+
 - name: Add Wazuh repo
   ansible.builtin.deb822_repository:
     name: wazuh
@@ -14,7 +14,7 @@
 
 - name: Install Wazuh agent
   ansible.builtin.apt:
-    name: wazuh-agent=4.8.*
+    name: wazuh-agent=4.14.*
     state: present
     allow_downgrade: true
     update_cache: yes

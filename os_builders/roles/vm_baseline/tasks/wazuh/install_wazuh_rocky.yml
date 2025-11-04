@@ -11,5 +11,5 @@
 - name: Install wazuh
   yum:
     name:
-      - wazuh-agent-4.8.*
+      - wazuh-agent-4.14.*
     state: present
