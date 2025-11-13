@@ -50,8 +50,11 @@ Building the latest image
 - Grab the latest version of the K8s Image Builder submodule:
 
 ```shell
-cd ..  # back to repo root
+# Update the submodule
+cd ../k8s-image-builder
 git submodule update --init --recursive --remote
+git clean -fxd
+git reset --hard origin/main
 
 # Point to our custom roles:
 export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
