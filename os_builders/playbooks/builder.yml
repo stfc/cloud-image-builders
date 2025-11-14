@@ -4,7 +4,7 @@
 
   roles:
     - role: ../roles/run_packer
-      build_variant: "ubuntu_2204"
+      build_variant: "ubuntu-jammy"
   tags:
     - all
     - ubuntu

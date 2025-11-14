@@ -4,14 +4,8 @@
     update_cache: true
     pkg:
       - gpg
-      - make
       - git
-      - qemu-kvm
-      - libvirt-daemon-system
-      - libvirt-clients
       - libguestfs-tools
-      - bridge-utils
-      - virtinst
 
 - name: Add Hashicorp apt repo
   ansible.builtin.deb822_repository:
@@ -28,52 +22,3 @@
   ansible.builtin.apt:
     name: packer
     state: present
-
-- name: Add user to required groups
-  ansible.builtin.user:
-    name: "{{ ansible_env.USER }}"
-    groups: "{{ item }}"
-    append: yes
-  loop:
-    - kvm
-    - libvirt
-
-- name: Enable libvirt service
-  service:
-    daemon_reload: yes
-    name: libvirtd
-    enabled: yes
-    state: started
-
-- name: Enable KVM module
-  community.general.modprobe:
-    name: kvm
-    state: present
-
-- name: Make Ubuntu vmlinuz readable by non-root users
-  # Workaround on literally only Ubuntu (no other OS family including debian)
-  # because keeping symbols of a public apt package, which we could just download
-  # and extract, root-only apparently makes sense to someone.
-  file:
-    path: /boot/vmlinuz-{{ ansible_kernel }}
-    mode: 0644
-    state: file
-
-- name: Ensure that Ubuntu preserves perms of new kernel on upgrade
-  copy:
-    dest: /etc/kernel/postinst.d/vmlinuz-perms
-    content: |
-      #!/bin/sh
-      # https://bugs.launchpad.net/ubuntu/+source/linux/+bug/759725
-
-      set -e
-      version="$1"
-      if [ -z "$version" ]; then
-          exit 0
-      fi
-      exec dpkg-statoverride --force-statoverride-add --update --add root root 0644 "/boot/vmlinuz-${version}"
-    mode: 0755
-    owner: root
-    group: root
-    backup: yes
-    force: yes

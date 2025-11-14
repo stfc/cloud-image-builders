@@ -15,7 +15,8 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.nano"
   security_groups   = ["default"]
-  networks          = ["5be315b7-7ebd-4254-97fe-18c1df501538"]
+  # Internal on dev-openstack
+  networks          = ["fa2f5ebe-d0e0-4465-9637-e9461de443f1"]
   image_visibility  = "private"
   ssh_timeout       = "20m"
   metadata = {
@@ -69,9 +70,7 @@ build {
     extra_arguments = [
       # Include safety checks
       "--extra-vars", "provision_this_machine=true, tidy_image=True",
-      # Workaround https://github.com/hashicorp/packer/issues/12416
       "--scp-extra-args", "'-O'",
-      #"--ssh-extra-args", "-o IdentitiesOnly=yes -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa"
     ]
   }
 }

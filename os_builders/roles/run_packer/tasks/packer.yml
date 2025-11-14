@@ -1,40 +1,22 @@
 - name: Print build variant
-  debug:
+  ansible.builtin.debug:
     msg: "Building: {{ build_variant }}"
 
-- name: Check if auto installed image exists
-  find:
-    path: "{{ playbook_dir }}/{{ auto_install_output_path }}"
-    patterns: "*{{ build_variant }}*"
-  register: auto_install_image
+- name: Error if OS_AUTH_URL is not set
+  # This also likely means other OpenStack vars are not set
+  ansible.builtin.fail:
+    msg: "OS_AUTH_URL is not set in the environment. Cannot proceed with Packer build until OpenStack app credentials are set."
+  when: lookup('env', 'OS_AUTH_URL') == ""
 
-- name: Check autoinstall image, build if it does not exist locally
-  when: not auto_install_image.matched
-  block:
-    - name: Print autoinstall command for debugging
-      debug:
-        msg: "Running: cd packfiles && packer build --only='{{ auto_install_name }}*{{ build_variant }}*' ."
-
-    - name: Running packer auto install build for {{ build_variant }}. This may take a while...
-      shell:
-        chdir: "{{ playbook_dir }}/../packfiles"
-        cmd: packer build --only='{{ auto_install_name }}*{{ build_variant }}*'  .
-      environment:
-        PKR_VAR_headless: "{{ packer_headless }}"
-      register: packer_output
-
-    - name: Auto install Output for {{ build_variant }}
-      debug:
-        msg: "{{ packer_output.stdout_lines }}"
-
-- name: (Re-)Provision image for {{ build_variant }}
-  shell:
+- name: Provision image for {{ build_variant }} on OpenStack
+  ansible.builtin.shell:
     chdir: "{{ playbook_dir }}/../packfiles"
-    cmd: packer build --force --only='{{ provisioner_name }}*{{ build_variant }}*' .
+    cmd: packer build --force --only='openstack.{{ build_variant }}' .
   environment:
     PKR_VAR_headless: "{{ packer_headless }}"
-  register: packer_output
+  changed_when: true
+  register: packer_build_result
 
-- name: Provisioner Output for {{ build_variant }}
-  debug:
-    msg: "{{ packer_output.stdout_lines }}"
+- name: Show Packer build output
+  ansible.builtin.debug:
+    var: packer_build_result.stdout_lines

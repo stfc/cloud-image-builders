@@ -33,11 +33,23 @@ First, install required ansible collections:
 ansible-galaxy install -r requirements.yml
 ```
 
-Then run the following command to install Qemu and setup the user's groups. You will need to log out and back in again for the groups to take effect.
+- Then run the following command to install packer and prep the environment:
 
 
 ```
 ansible-playbook -i inventory/localhost playbooks/prep_builder.yml --ask-become-pass
+```
+
+Note: This tooling assumes you are using dev-openstack (e.g. for Network ID), as we should not be
+building images on production, as packer will upload and delete temporary images as part of the steps.
+
+- Create OpenStack application credentials using Horizon or "openstack application credential create" . Admin is *not* required.
+- Export the following environment variables in your shell:
+
+```
+export OS_AUTH_URL=https://dev-openstack.stfc.ac.uk:5000/v3
+export OS_APPLICATION_CREDENTIAL_ID=<app_cred_id>
+export OS_APPLICATION_CREDENTIAL_SECRET=<app_cred_secret>
 ```
 
 Running the build
@@ -60,51 +72,12 @@ The following tags are available:
 - `ubuntu_2204` - Build Ubuntu 22.04
 
 
-Running builds on a VM
-----------------------
-
-By default we show a VNC window for the packer build, this is useful for debugging but will not work on a headless VM.
-
-To run a headless build, you need to set the `headless` variable to true. This can be done by passing the variable on the command line:
-
-```
-ansible-playbook -i inventory/localhost playbooks/builder.yml --extra-vars packer_headless=true
-```
-
-
-Development and Testing
-========================
-
-Packer uses a multi stage build. Stage 1 will build the VM image using auto-install. Stage 2 will provision the image with any customisations we want.
-
-This allows us to rapidly iterate on our customisations without having to wait for the OS install to complete.
 
 Directory Layout
 ----------------
 
 - `packfiles/` - Packer templates for building the VM images
-- `packfiles/ubuntu_sources.pkr.hcl` - Contains image definitions for Ubuntu
-- `packfiles/rocky_sources.pkr.hcl` - Contains image definitions for Rocky (TODO)
-- `packfiles/build.pkr.hcl` - Contains the build steps for the VM image. This uses a two stage build described below
-
-CI/CD Files:
-
-- `packfiles/headless.pkrvars.hcl` - Contains the variables for doing a headless build
-
-
-Testing New OS Variants
---------------------------
-It's recommended you run this locally, so that you can see the VNC window and debug any issues:
-
-- Ensure the builder is configured, as above
-- Add your new build to the sources file, you need to add a base step and a provisioning step. See the Ubuntu file for an example.
-- Run your new/modified stage 1 build through the auto-install step: `cd packerfiles && packer build --only=stage1*<name>*` 
-
-For example:
-`cd packerfiles && packer build --only=stage1*ubuntu_2204 .`
-
-- Test the provisioning step on your new image:
-`cd packerfiles && packer build --only=stage2*<name>*`
+- `packfiles/build.pkr.yml` - OpenStack builder definitions
 
 
 Prototyping new Ansible changes on a VM
@@ -129,4 +102,3 @@ The `provision_this_machine` variable acts as a guard from trashing your own mac
 ```
 ansible-playbook -i inventory/testing.yml playbooks/prepare_user_image.yml
 ```
-
