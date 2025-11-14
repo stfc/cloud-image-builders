@@ -8,7 +8,7 @@
     msg: "OS_AUTH_URL is not set in the environment. Cannot proceed with Packer build until OpenStack app credentials are set."
   when: lookup('env', 'OS_AUTH_URL') == ""
 
-- name: Provision image for {{ build_variant }} on OpenStack
+- name: Provision image for {{ build_variant }}
   ansible.builtin.shell:
     chdir: "{{ playbook_dir }}/../packfiles"
     cmd: packer build --force --only='openstack.{{ build_variant }}' .
@@ -16,6 +16,7 @@
     PKR_VAR_headless: "{{ packer_headless }}"
   changed_when: true
   register: packer_build_result
+  timeout: 600   # Timeout after 10 minutes, packer is probably hung
 
 - name: Show Packer build output
   ansible.builtin.debug:

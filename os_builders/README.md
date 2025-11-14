@@ -102,3 +102,14 @@ The `provision_this_machine` variable acts as a guard from trashing your own mac
 ```
 ansible-playbook -i inventory/testing.yml playbooks/prepare_user_image.yml
 ```
+
+Troubleshooting Packer Builds
+-----------------------------
+
+If packer fails or hangs you can manually run a build to get a live output and/or add debug flags:
+
+```shell
+cd os_builders/packfiles
+export PACKER_LOG=1
+packer build --force --only='openstack.os-variant' build.pkr.hcl  # variant in build.pkr.hcl
+```
