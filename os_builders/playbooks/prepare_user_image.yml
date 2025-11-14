@@ -11,5 +11,6 @@
     - role: ../roles/vm_baseline
     - role: ../roles/container_registry
     - role: ../roles/nubes_bootcontext
+    - role: ../roles/image_fixes
     - role: ../roles/tidy_image
       when: "{{ tidy_image|default(false)|bool == True }}"
