@@ -116,8 +116,9 @@ It's recommended you use an existing VM for this testing, as it will be quicker 
 ```
 all:
     hosts:
-        host-172-16-255-255.nubes.stfc.ac.uk:
+        test-vm:
             ansible_user: ubuntu  # or rocky
+            ansible_host: "172.16.255.255"
 ```
 
 **Ensure you are on a VM!**
@@ -126,6 +127,6 @@ The `provision_this_machine` variable acts as a guard from trashing your own mac
 
 - Run the playbook
 ```
-ansible-playbook -i inventory/testing.yml playbooks/provision_image.yml --extra-vars provision_this_machine=true
+ansible-playbook -i inventory/testing.yml playbooks/prepare_user_image.yml
 ```
 

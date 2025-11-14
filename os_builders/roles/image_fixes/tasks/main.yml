@@ -1,2 +1,6 @@
 # Each fix should be in its own included task file, with a short comment before to indicate
 # the problem being fixed.
+
+# Fix NVIDIA: This PCI I/O region assigned to your NVIDIA device is invalid
+- ansible.builtin.include_tasks:
+    file: nvidia-pci.yml
