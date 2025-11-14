@@ -4,7 +4,6 @@
   # E.g. update grub
   ansible.builtin.meta: flush_handlers
 
-- include_tasks: reboot.yml
 - include_tasks: get_package_facts.yml
 - include_tasks: run_quattor.yml
   when: ansible_distribution == "Rocky" 

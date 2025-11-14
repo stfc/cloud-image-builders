@@ -67,11 +67,22 @@ build {
   provisioner "ansible" {
     user          = "${build.User}"
     playbook_file = "${path.root}/../playbooks/prepare_user_image.yml"
-    extra_arguments = [
-      # Include safety checks
-      "--extra-vars", "provision_this_machine=true, tidy_image=True",
-      "--scp-extra-args", "'-O'",
-    ]
+  }
+
+  provisioner "shell" {
+    # Ansible does not handle reboots inside Packer well, so use a shell provisioner for this step
+    inline = ["sudo reboot"]
+    expect_disconnect = true
+  }
+
+  provisioner "shell" {
+    start_retry_timeout = "30s"
+    inline = ["uptime"]
+  }
+
+  provisioner "ansible" {
+    user          = "${build.User}"
+    playbook_file = "${path.root}/../playbooks/tidy_image.yml"
   }
 }
 

@@ -1,0 +1,15 @@
+- name: Tidy a pre-prepared user image
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: User warning
+      ansible.builtin.debug:
+        msg: "[Warning] Do not run on non-cloud machine"
+
+  roles:
+    # Note: This assumes the image has already been prepped with other roles
+    # and has been rebooted
+
+    # Packer cannot handle reboots so the caller is responsible for that
+    - role: ../roles/tidy_image
