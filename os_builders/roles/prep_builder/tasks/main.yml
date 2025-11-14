@@ -6,6 +6,7 @@
       - gpg
       - git
       - libguestfs-tools
+  become: true
 
 - name: Add Hashicorp apt repo
   ansible.builtin.deb822_repository:
@@ -17,8 +18,11 @@
     components: [main]
     state: present
     enabled: true
+  become: true
 
 - name: Install Packer
   ansible.builtin.apt:
     name: packer
     state: present
+    update_cache: true
+  become: true
