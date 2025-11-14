@@ -3,9 +3,37 @@
   gather_facts: false
 
   roles:
+    # Based on build.pkr.hcl
     - role: ../roles/run_packer
       build_variant: "ubuntu-jammy"
-  tags:
-    - all
-    - ubuntu
-    - ubuntu_2204
+      tags:
+        - all
+        - ubuntu
+        - ubuntu_2204
+
+    - role: ../roles/run_packer
+      build_variant: "ubuntu-noble"
+      tags:
+        - all
+        - ubuntu
+        - ubuntu_2404
+
+    - role: ../roles/run_packer
+      build_variant: "ubuntu-azimuth"
+      tags:
+        - all
+        - azimuth
+
+    - role: ../roles/run_packer
+      build_variant: "rocky-8"
+      tags:
+        - all
+        - rocky
+        - rl8
+
+    - role: ../roles/run_packer
+      build_variant: "rocky-9"
+      tags:
+        - all
+        - rocky
+        - rl9
