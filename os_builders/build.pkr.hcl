@@ -15,7 +15,7 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.nano"
   security_groups   = ["default"]
-  networks          = ["5be315b7-7ebd-4254-97fe-18c1df501538"]
+  networks          = [""]  # OpenStack External Network ID
   image_visibility  = "private"
   ssh_timeout       = "20m"
   metadata = {
