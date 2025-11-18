@@ -3,7 +3,7 @@
   gather_facts: true # Required to add user to libvirt group
 
   roles:
-    - role: ../roles/prep_builder
+    - role: prep_builder
       become: true
 
   post_tasks:

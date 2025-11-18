@@ -8,8 +8,8 @@
         msg: "[Warning] Do not run on non-cloud machine"
 
   roles:
-    - role: ../roles/vm_baseline
-    - role: ../roles/container_registry
-    - role: ../roles/nubes_bootcontext
-    - role: ../roles/tidy_image
+    - role: vm_baseline
+    - role: container_registry
+    - role: nubes_bootcontext
+    - role: tidy_image
       when: "{{ tidy_image|default(false)|bool == True }}"
