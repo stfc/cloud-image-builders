@@ -1,0 +1,4 @@
+- name: Install Quattor Onto STFC Cloud User Image
+  hosts: all
+  roles:
+    - role: quattor
