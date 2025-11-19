@@ -20,11 +20,11 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y ansible
             cd os_builders
-            ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml
+            ansible-playbook prep_builder.yml
 
         - name: Validate packer files
           run: |
-            cd os_builders/packfiles &&
+            cd os_builders &&
             packer init . &&
             packer validate -syntax-only .
 
@@ -45,11 +45,10 @@ jobs:
             pip3 install --upgrade pip
             pip3 install ansible python-debian
         - name: Run pre-prep playbook
-          # Patch the inventory to run on this machine
           run: |
            . venv/bin/activate
-           cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
-           ansible-playbook -i inventory/localhost.yml playbooks/prepare_user_image.yml --extra-vars provision_this_machine=True
+           cd os_builders
+           ansible-playbook prepare_user_image.yml --extra-vars provision_this_machine=True
 
   test_image_build_rocky:
     strategy:
@@ -62,8 +61,9 @@ jobs:
       - name: Install Ansible
         run: |
           dnf install epel-release -y
+          # These have to be separate steps as ansible is provided by epel-release
           dnf install ansible -y
       - name: Run pre-prep playbook
         run: |
-          cd os_builders && sed -i 's/all/default/g' inventory/localhost.yml
-          ansible-playbook -i inventory/localhost.yml playbooks/prepare_user_image.yml --extra-vars provision_this_machine=True
+          cd os_builders
+          ansible-playbook prepare_user_image.yml --extra-vars provision_this_machine=True
