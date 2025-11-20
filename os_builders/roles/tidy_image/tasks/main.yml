@@ -10,7 +10,6 @@
 - include_tasks: cleanup_network_conf.yml
 - include_tasks: run_update_keys.yml
 - include_tasks: set_locale.yml
-- include_tasks: wazuh.yml
 - include_tasks: cleanup_quattor.yml
   when: ansible_distribution == "Rocky" 
 - include_tasks: run_pakiti.yml
