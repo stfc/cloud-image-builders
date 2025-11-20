@@ -11,6 +11,10 @@ packer {
   }
 }
 
+locals {
+  date_suffix = "${formatdate("YYYY-MM-DD", timestamp())}"
+}
+
 source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.nano"
@@ -32,13 +36,13 @@ source "openstack" "builder" {
 build {
   source "openstack.builder" {
     name                      = "ubuntu-jammy"
-    image_name                = "ubuntu-jammy-22.04-nogui-baseline"
+    image_name                = "ubuntu-jammy-22.04-nogui-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     external_source_image_url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
   }
   source "openstack.builder" {
     name                      = "ubuntu-noble"
-    image_name                = "ubuntu-noble-24.04-nogui-baseline"
+    image_name                = "ubuntu-noble-24.04-nogui-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     external_source_image_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
   }
@@ -50,13 +54,13 @@ build {
   }
   source "openstack.builder" {
     name = "rocky-8"
-    image_name = "rocky-8-nogui-baseline"
+    image_name = "rocky-8-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"    
   }
     source "openstack.builder" {
     name = "rocky-9"
-    image_name = "rocky-9-nogui-baseline"
+    image_name = "rocky-9-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
   }
