@@ -1,34 +1,31 @@
+---
 - name: Install required packages
-  apt:
-    name: "{{ item }}"
+  ansible.builtin.apt:
+    name: 
+      - gpg 
+      - git
     state: present
     update_cache: yes
-  loop:
-    - gpg
-    - make
-    - git
-    - qemu-kvm
-    - libvirt-daemon-system
-    - libvirt-clients
-    - libguestfs-tools
-    - bridge-utils
-    - virtinst
+  become: true
 
 - name: Add Hashicorp apt key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://apt.releases.hashicorp.com/gpg
     state: present
+  become: true
 
 - name: Add Hashicorp apt repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
     state: present
     filename: hashicorp
     update_cache: yes
+  become: true
 
 - name: Install Packer
-  apt:
+  ansible.builtin.apt:
     # K8s-image-builder requires a specific version of packer
     name: packer=1.9.5-1
     state: present
     allow_downgrade: yes
+  become: true

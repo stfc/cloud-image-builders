@@ -1,7 +1,6 @@
+---
 - name: Prep STFC Cloud User Image
   hosts: all
-  become: true
-
   pre_tasks:
     - name: User warning
       ansible.builtin.debug:
@@ -12,4 +11,4 @@
     - role: container_registry
     - role: nubes_bootcontext
     - role: tidy_image
-      when: "{{ tidy_image|default(false)|bool == True }}"
+      when: "{{ tidy_image | default(false) | bool == true }}"
