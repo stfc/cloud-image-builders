@@ -1,0 +1,6 @@
+---
+all:
+  hosts:
+    test-vm:
+      ansible_host: "172.16.255.255"
+      ansible_user: "ubuntu"  # or rocky
