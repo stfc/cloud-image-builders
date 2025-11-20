@@ -78,6 +78,15 @@ build {
 
   provisioner "ansible" {
     user          = "${build.User}"
+    playbook_file = "image_fixes.yml"
+    extra_arguments = [
+      # Workaround https://github.com/hashicorp/packer/issues/12416
+      "--scp-extra-args", "'-O'",
+    ]
+  }
+  
+  provisioner "ansible" {
+    user          = "${build.User}"
     playbook_file = "tidy_image.yml"
     extra_arguments = [
       # Workaround https://github.com/hashicorp/packer/issues/12416
