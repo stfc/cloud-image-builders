@@ -13,7 +13,7 @@ jobs:
   validate_packer:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v5
+        - uses: actions/checkout@v6
 
         - name: Run prep_builder playbook
           run: |
@@ -35,7 +35,7 @@ jobs:
       runs-on: ubuntu-latest
       container: ${{ matrix.os }}
       steps:
-        - uses: actions/checkout@v5
+        - uses: actions/checkout@v6
         - name: Install Ansible
           run: |
             apt update
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install Ansible
         run: |
           dnf install epel-release -y
