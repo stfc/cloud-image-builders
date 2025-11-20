@@ -1,3 +1,4 @@
 ---
 # Each fix should be in its own included task file, with a short comment before to indicate
 # the problem being fixed.
+- include_tasks: selinux.yml
