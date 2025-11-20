@@ -1,5 +1,5 @@
 ---
-- name: Prep STFC Cloud User Image
+- name: Prepare STFC Cloud user image with our security compliance baseline
   hosts: all
   pre_tasks:
     - name: User warning
@@ -10,5 +10,3 @@
     - role: vm_baseline
     - role: container_registry
     - role: nubes_bootcontext
-    - role: tidy_image
-      when: "{{ tidy_image | default(false) | bool == true }}"

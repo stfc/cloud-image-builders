@@ -71,8 +71,15 @@ build {
     user          = "${build.User}"
     playbook_file = "vm_baseline.yml"
     extra_arguments = [
-      # Include safety checks
-      "--extra-vars", "provision_this_machine=true, tidy_image=True",
+      # Workaround https://github.com/hashicorp/packer/issues/12416
+      "--scp-extra-args", "'-O'",
+    ]
+  }
+
+  provisioner "ansible" {
+    user          = "${build.User}"
+    playbook_file = "tidy_image.yml"
+    extra_arguments = [
       # Workaround https://github.com/hashicorp/packer/issues/12416
       "--scp-extra-args", "'-O'",
     ]
