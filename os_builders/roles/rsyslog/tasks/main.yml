@@ -1,20 +1,23 @@
 - name: Ensure rsyslog is installed
-  package:
+  ansible.builtin.package:
     name: rsyslog
     state: present
+  become: true
 
 - name: Copy rsyslog.conf
-  copy:
+  ansible.builtin.copy:
     src: "etc/rsyslog.conf"
     dest: "/etc/rsyslog.conf"
     owner: root
     group: root
     mode: 0644
+  become: true
 
 - name: Copy rsyslog.d
-  copy:
+  ansible.builtin.copy:
     src: "rsyslog.d"
     dest: "/etc/rsyslog.d"
     owner: root
     group: root
     mode: 0755
+  become: true
