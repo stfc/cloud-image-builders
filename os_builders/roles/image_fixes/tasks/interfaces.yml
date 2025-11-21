@@ -1,0 +1,12 @@
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: in_container
+
+- name: Remove ens3 interface as we use eth0
+  become: true
+  ansible.builtin.command: "nmcli connection delete ens3"
+  when:
+    - ansible_distribution == "Rocky"
+    - ansible_distribution_major_version == "8"
+    - in_container.stdout != "0::/"
