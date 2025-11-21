@@ -1,7 +1,8 @@
 - name: Install openssh-server
-  package:
+  ansible.builtin.package:
     name: openssh-server
     state: present
+  become: true
 
 - name: Enable root login for authorized admins
   block:
@@ -10,55 +11,58 @@
       when: not lookup('env', 'ROOT_PASSWORD')
 
     - name: Enable root account
-      user:
+      ansible.builtin.user:
         name: cloud
         state: present
         shell: /bin/bash
         # If a password is not set in the environment, disable password based login
         password: "{{ lookup('env', 'ROOT_PASSWORD', default='!') }}"
+      become: true
 
     - name: Ensure cloud sudoers.d directory exists
-      file:
+      ansible.builtin.file:
         path: "/etc/sudoers.d"
         state: directory
         owner: root
         group: root
         mode: 0440
+      become: true
 
     - name: Add cloud user to sudoers
-      copy:
+      ansible.builtin.copy:
         dest: /etc/sudoers.d/cloud-team-user
         content: "cloud ALL=(ALL) NOPASSWD:ALL"
         mode: 0440
+      become: true
 
 - name: Ensure cloud home directory exists
-  file:
+  ansible.builtin.file:
     path: "/home/cloud/.ssh"
     state: directory
     owner: cloud
     group: cloud
     mode: 0700
+  become: true
 
 
 
 - name: Copy authorized cloud admin keys into cloud's authorized_keys
-  copy:
+  ansible.builtin.copy:
     src: "authorized_keys"
     dest: "/home/cloud/.ssh/authorized_keys"
     owner: cloud
     group: cloud
     mode: 0600
+  become: true
 
 - name: Copy authorized key update script in
-  copy:
+  ansible.builtin.copy:
     src: "update_keys.sh"
     dest: "/usr/local/sbin/update_keys.sh"
     owner: root
     group: root
     mode: 0700
-
-# ensure that cron is installed
-- include_tasks: cron.yml
+  become: true
 
 - name: Update admin keys periodically
   ansible.builtin.cron:
@@ -66,3 +70,4 @@
     minute: 0
     hour: 7
     job: "/usr/local/sbin/update_keys.sh"
+  become: true
