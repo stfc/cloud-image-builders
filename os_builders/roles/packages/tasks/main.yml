@@ -2,3 +2,4 @@
 # Include packages that must be installed for security compliance
 - include_tasks: system_updates.yml
 - include_tasks: cron.yml
+- include_tasks: qemu-guest-agent.yml
