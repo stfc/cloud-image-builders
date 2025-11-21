@@ -12,4 +12,5 @@
     - role: nubes_bootcontext
     - role: admin_keys
     - role: wazuh
+    - role: rsyslog
     - role: pakiti
