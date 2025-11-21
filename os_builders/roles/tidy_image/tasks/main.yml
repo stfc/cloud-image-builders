@@ -2,16 +2,12 @@
 
 - include_tasks: reboot.yml
 - include_tasks: get_package_facts.yml
-- include_tasks: run_quattor.yml
-  when: ansible_os_family == "RedHat" 
 - include_tasks: get_package_facts.yml
 - include_tasks: cleanout_tmp.yml
 - include_tasks: cleanout_rc_directories.yml
 - include_tasks: cleanup_network_conf.yml
 - include_tasks: run_update_keys.yml
 - include_tasks: set_locale.yml
-- include_tasks: cleanup_quattor.yml
-  when: ansible_os_family == "RedHat" 
 - include_tasks: run_pakiti.yml
 - include_tasks: cleanup_users.yml
 - include_tasks: cleanup_old_kernels.yml
