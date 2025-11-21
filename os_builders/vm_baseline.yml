@@ -10,5 +10,6 @@
     - role: vm_baseline
     - role: container_registry
     - role: nubes_bootcontext
+    - role: admin_keys
     - role: wazuh
     - role: pakiti
