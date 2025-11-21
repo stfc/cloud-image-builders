@@ -4,8 +4,5 @@
 
 - include_tasks: ssh.yml
 - include_tasks: rsyslog.yml
-- include_tasks: openscap.yml
 
-# Include Pakiti last, so it will report on the state of a complete system
 - include_tasks: ukescienceca.yml
-- include_tasks: pakiti.yml
