@@ -5,11 +5,11 @@
     state: present
     update_cache: yes
   become: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install cron on RL
   ansible.builtin.yum:
     name: "cronie"
     state: present
   become: true
-  when: ansible_distribution == "Rocky" 
+  when: ansible_os_family == "RedHat" 

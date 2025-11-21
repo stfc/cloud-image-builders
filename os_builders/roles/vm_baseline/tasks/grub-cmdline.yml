@@ -31,12 +31,12 @@
   become: true
   shell: "grub2-mkconfig -o /etc/grub2.cfg"
   when: 
-    - ansible_distribution == "Rocky"
+    - ansible_os_family == "RedHat"
     - in_container.stdout != "0::/"
 
 - name: run updated grub config for ubuntu
   become: true
   shell: "update-grub"
   when: 
-    - ansible_distribution == "Ubuntu"
+    - ansible_os_family == "Debian"
     - in_container.stdout != "0::/"

@@ -9,7 +9,7 @@
     state: latest
     update_cache: yes
   become: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_os_family == "RedHat"
   register: result
   until: result is not failed
   retries: 5

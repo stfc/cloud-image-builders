@@ -35,14 +35,14 @@
     - name: Update apt-cache
       apt:
         update_cache: yes
-  when: ansible_distribution == "Ubuntu" and 'pakiti-client' not in ansible_facts.packages
+  when: ansible_os_family == "Debian" and 'pakiti-client' not in ansible_facts.packages
 
 - name: Install Pakiti on RL
   yum:
     name: "/tmp/pakiti-client-2.1.4-3.RAL.noarch.rpm"
     state: present
     disable_gpg_check: true
-  when: ansible_distribution == "Rocky" 
+  when: ansible_os_family == "RedHat" 
 
 - name: Ensure pakiti config directory exists
   file:

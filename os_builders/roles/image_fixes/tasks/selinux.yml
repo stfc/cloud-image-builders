@@ -5,4 +5,4 @@
     line: SELINUX=permissive
     state: present
     create: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_os_family == "RedHat"

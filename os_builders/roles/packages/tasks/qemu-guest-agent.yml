@@ -4,14 +4,14 @@
     state: present
     update_cache: yes
   become: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install Qemu Guest Agent on RL
   ansible.builtin.yum:
     name: "qemu-guest-agent"
     state: present
   become: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_os_family == "RedHat"
 
 - name: Enable Qemu Guest Agent
   ansible.builtin.systemd_service:

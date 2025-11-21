@@ -10,9 +10,9 @@
 
 - name: clean yum/dnf
   command: yum clean all
-  when: ansible_distribution == "Rocky"
+  when: ansible_os_family == "RedHat"
 
 - name: clean apt cache
   ansible.builtin.apt:
     clean: yes
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"

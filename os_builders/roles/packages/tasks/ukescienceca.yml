@@ -30,7 +30,7 @@
         state: present
         update_cache: yes
       become: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Install UK eScience Root CA on RL
   block:
@@ -52,4 +52,4 @@
         - ca_UKeScienceCA-2B
         state: present
       become: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_os_family == "RedHat"

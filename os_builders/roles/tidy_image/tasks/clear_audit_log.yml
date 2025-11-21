@@ -2,7 +2,7 @@
   block:
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/audit/audit.log"
-  when: ansible_distribution == "Rocky"
+  when: ansible_os_family == "RedHat"
 
 - name: Clear Audit log
   shell: "/bin/cat /dev/null > /var/log/wtmp"
@@ -11,4 +11,4 @@
   block:
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/auth.log"
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_os_family == "Debian"
