@@ -7,10 +7,10 @@
         msg: "[Warning] Do not run on non-cloud machine"
 
   roles:
-    - role: container_registry
-    - role: nubes_bootcontext
-    - role: grub
-    - role: admin_keys
-    - role: wazuh
-    - role: rsyslog
-    - role: pakiti
+    - role: common/container_registry
+    - role: common/nubes_bootcontext
+    - role: common/grub
+    - role: common/admin_keys
+    - role: common/wazuh
+    - role: common/pakiti
+    - role: common/rsyslog
