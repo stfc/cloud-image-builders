@@ -4,10 +4,11 @@
   when: ansible_distribution != "Rocky" and ansible_distribution != "Ubuntu"
 
 - name: Install system updates for RL systems
-  yum:
+  ansible.builtin.yum:
     name: "*"
     state: latest
     update_cache: yes
+  become: true
   when: ansible_distribution == "Rocky"
   register: result
   until: result is not failed
