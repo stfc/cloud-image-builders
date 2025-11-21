@@ -129,7 +129,9 @@ The pipeline consists of the following steps:
   ```
 6. Run any other custom playbooks against the VM which you want to test
   ```shell
-  ansible-playbook -i inventory <other-playbook.yml>
+  ansible-playbook -i inventory image_fixes.yml
+  ansible-playbook -i inventory tidy_image.yml
+  ansible-playbook -i inventory <playbook.yml>
   ```
 
 7. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working.
@@ -142,6 +144,8 @@ os_builders
 ├── galaxy.yml  # Ansible Galaxy collection metadata
 ├── prep_builder.yml  # Playbook to install Packer
 ├── vm_baseline.yml  # Playbook to configure the images
+├── image_fixes.yml  # Playbook to apply fixes to the images
+├── tidy_image.yml  # Playbook to tidy the image before snapshotting
 ├── requirements.txt  # Specifies Ansible version
 └── roles  # Roles to configure the image
     ├── container_registry/
