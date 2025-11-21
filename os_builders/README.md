@@ -145,6 +145,7 @@ os_builders
 ├── prep_builder.yml  # Playbook to install Packer
 ├── vm_baseline.yml  # Playbook to configure the images
 ├── image_fixes.yml  # Playbook to apply fixes to the images
+├── quattor.yml  # Playbook to install quattor onto the image
 ├── tidy_image.yml  # Playbook to tidy the image before snapshotting
 ├── requirements.txt  # Specifies Ansible version
 └── roles  # Roles to configure the image
