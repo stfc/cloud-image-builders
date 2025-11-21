@@ -3,5 +3,3 @@
 - include_tasks: grub-cmdline.yml
 
 - include_tasks: rsyslog.yml
-
-- include_tasks: ukescienceca.yml
