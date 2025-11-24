@@ -1,0 +1,2 @@
+- include_tasks: selinux.yml
+- include_tasks: interfaces.yml

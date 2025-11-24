@@ -1,83 +1,31 @@
+---
 - name: Install required packages
-  apt:
-    name: "{{ item }}"
+  ansible.builtin.apt:
+    name: 
+      - gpg 
+      - git
     state: present
     update_cache: yes
-  loop:
-    - gpg
-    - make
-    - git
-    - qemu-kvm
-    - libvirt-daemon-system
-    - libvirt-clients
-    - libguestfs-tools
-    - bridge-utils
-    - virtinst
+  become: true
 
 - name: Add Hashicorp apt key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://apt.releases.hashicorp.com/gpg
     state: present
+  become: true
 
 - name: Add Hashicorp apt repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
     state: present
     filename: hashicorp
     update_cache: yes
+  become: true
 
 - name: Install Packer
-  apt:
+  ansible.builtin.apt:
     # K8s-image-builder requires a specific version of packer
     name: packer=1.9.5-1
     state: present
     allow_downgrade: yes
-
-- name: Add user to required groups
-  user:
-    name: "{{ ansible_env.USER }}"
-    groups: "{{ item }}"
-    append: yes
-  loop:
-    - kvm
-    - libvirt
-
-- name: Enable libvirt service
-  service:
-    daemon_reload: yes
-    name: libvirtd
-    enabled: yes
-    state: started
-
-- name: Enable KVM module
-  community.general.modprobe:
-    name: kvm
-    state: present
-
-- name: Make Ubuntu vmlinuz readable by non-root users
-  # Workaround on literally only Ubuntu (no other OS family including debian)
-  # because keeping symbols of a public apt package, which we could just download
-  # and extract, root-only apparently makes sense to someone.
-  file:
-    path: /boot/vmlinuz-{{ ansible_kernel }}
-    mode: 0644
-    state: file
-
-- name: Ensure that Ubuntu preserves perms of new kernel on upgrade
-  copy:
-    dest: /etc/kernel/postinst.d/vmlinuz-perms
-    content: |
-      #!/bin/sh
-      # https://bugs.launchpad.net/ubuntu/+source/linux/+bug/759725
-
-      set -e
-      version="$1"
-      if [ -z "$version" ]; then
-          exit 0
-      fi
-      exec dpkg-statoverride --force-statoverride-add --update --add root root 0644 "/boot/vmlinuz-${version}"
-    mode: 0755
-    owner: root
-    group: root
-    backup: yes
-    force: yes
+  become: true

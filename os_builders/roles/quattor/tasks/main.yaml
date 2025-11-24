@@ -1,0 +1,77 @@
+- name: Add EPEL repository
+  ansible.builtin.yum_repository:
+    name: epel-{{ ansible_facts.distribution_major_version }}-x86_64
+    description: "EPEL {{ ansible_facts.distribution_major_version }} Repository"
+    baseurl: "http://mirrors.gridpp.rl.ac.uk/current/epel-{{ ansible_facts.distribution_major_version }}-x86_64/RPMS.base/"
+    enabled: true
+    gpgcheck: false
+    state: present
+  become: true
+
+- name: Add Powertools repository
+  ansible.builtin.yum_repository:
+    name: rocky-{{ ansible_facts.distribution_major_version }}x-x86_64-powertools
+    description: Rocky Mirror powertools
+    baseurl: "http://mirrors.gridpp.rl.ac.uk/current/rocky-{{ ansible_facts.distribution_major_version }}-x86_64/RPMS.powertools/"
+    enabled: true
+    gpgcheck: true
+    state: present
+    module_hotfixes: true
+  become: true
+
+- name: Add Rocky mirror repositories crb
+  ansible.builtin.yum_repository:
+    name: rocky-{{ ansible_facts.distribution_major_version }}x-x86_64-crb
+    description: Rocky Mirror crb
+    baseurl: "http://mirrors.gridpp.rl.ac.uk/current/rocky-{{ ansible_facts.distribution_major_version }}-x86_64/RPMS.crb/"
+    enabled: true
+    gpgcheck: true
+    state: present
+    module_hotfixes: true
+  become: true
+  when: ansible_facts.distribution_major_version == '9'
+
+- name: Add Rocky mirror repositories
+  ansible.builtin.yum_repository:
+    name: rocky-{{ ansible_facts.distribution_major_version }}x-x86_64-{{ item }}
+    description: Rocky Mirror {{ item }}
+    baseurl: "http://mirrors.gridpp.rl.ac.uk/current/rocky-{{ ansible_facts.distribution_major_version }}-x86_64/RPMS.{{ item }}/"
+    enabled: true
+    gpgcheck: true
+    state: present
+    module_hotfixes: true
+  with_items:
+    - appstream
+    - extras
+    - os
+  become: true
+
+
+- name: Add Quattor repositories
+  ansible.builtin.yum_repository:
+    name: "{{ item }}"
+    description: "{{ item }} Repository"
+    baseurl: "http://mirrors.gridpp.rl.ac.uk/live/quattor-noarch/RPMS.{{ item }}/"
+    enabled: true
+    gpgcheck: false
+    state: present
+  become: true
+  loop:
+    - externals-el{{ ansible_facts.distribution_major_version }}
+    - quattor-{{ quattor_version }}-el{{ ansible_facts.distribution_major_version }}
+
+- name: Install packages
+  ansible.builtin.yum:
+    name:
+      - ncm-ncd
+      - ncm-spma
+  become: true
+
+- name: Create cloud-init config to run the script
+  ansible.builtin.copy:
+    src: 99-set-aquilon-profile.cfg
+    dest: /etc/cloud/cloud.cfg.d/
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
