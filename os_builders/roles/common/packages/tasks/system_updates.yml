@@ -1,0 +1,29 @@
+- name: Error for unknown distributions
+  fail:
+    msg: "Unknown distribution {{ ansible_distribution }}"
+  when: ansible_distribution != "Rocky" and ansible_distribution != "Ubuntu"
+
+- name: Install system updates for RL systems
+  ansible.builtin.yum:
+    name: "*"
+    state: latest
+    update_cache: yes
+  become: true
+  when: ansible_os_family == "RedHat"
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 30
+
+- name: Install system updates for Ubuntu systems
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: yes
+    autoremove: yes
+    autoclean: yes
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+  register: result
+  until: result is not failed
+  retries: 5
+  delay: 30

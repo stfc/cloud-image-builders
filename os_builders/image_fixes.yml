@@ -1,0 +1,8 @@
+- name: Apply fixes to STFC Cloud user image
+  hosts: all
+  pre_tasks:
+    - name: User warning
+      ansible.builtin.debug:
+        msg: "[Warning] Do not run on non-cloud machine"
+  roles:
+    - role: image_fixes

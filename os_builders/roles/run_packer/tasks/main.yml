@@ -1,2 +1,0 @@
-- include_tasks: packer.yml
-- include_tasks: sysprep.yml

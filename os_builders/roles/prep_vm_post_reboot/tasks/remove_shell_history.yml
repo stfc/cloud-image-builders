@@ -1,9 +1,0 @@
-- name: Cleanout Host SSH Keys
-  file:
-    path: "/home/*/.bash_history"
-    state: absent
-
-- name: Cleanout Host SSH Keys
-  file:
-    path: "/root/.bash_history"
-    state: absent

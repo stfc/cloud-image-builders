@@ -1,7 +1,0 @@
-- name: Install UK eScience CA
-  ansible.builtin.include_tasks: ukscienceca/install_ukscienceca_ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
-
-- name: Install UK eScience Root CA on RL
-  ansible.builtin.include_tasks: ukscienceca/install_ukscienceca_rocky.yml
-  when: ansible_distribution == "Rocky"

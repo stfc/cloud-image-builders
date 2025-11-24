@@ -1,0 +1,16 @@
+---
+- name: Prepare STFC Cloud user image with our security compliance baseline
+  hosts: all
+  pre_tasks:
+    - name: User warning
+      ansible.builtin.debug:
+        msg: "[Warning] Do not run on non-cloud machine"
+
+  roles:
+    - role: common/container_registry
+    - role: common/nubes_bootcontext
+    - role: common/grub
+    - role: common/admin_keys
+    - role: common/wazuh
+    - role: common/pakiti
+    - role: common/rsyslog
