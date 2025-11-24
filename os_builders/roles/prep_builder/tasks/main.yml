@@ -24,8 +24,6 @@
 
 - name: Install Packer
   ansible.builtin.apt:
-    # K8s-image-builder requires a specific version of packer
-    name: packer=1.9.5-1
+    name: packer
     state: present
-    allow_downgrade: yes
   become: true

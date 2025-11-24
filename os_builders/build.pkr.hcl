@@ -19,7 +19,7 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.nano"
   security_groups   = ["default"]
-  networks          = [""]  # OpenStack External Network ID
+  networks          = ["0dc30001-edfb-4137-be76-8e51f38fd650"]  # Dev OpenStack External Network ID
   image_visibility  = "private"
   ssh_timeout       = "20m"
   metadata = {
@@ -73,8 +73,6 @@ build {
     extra_arguments = [
       # Include safety checks
       "--extra-vars", "provision_this_machine=true, tidy_image=True",
-      # Workaround https://github.com/hashicorp/packer/issues/12416
-      "--scp-extra-args", "'-O'",
     ]
   }
 }

@@ -20,7 +20,7 @@ The pipeline consists of the following steps:
 
 ## Setting up the environment
 
-1. Install pip, Ansible, Packer and OpenStack CLI
+1. Create virtual environment to install packages to
   ```shell
   # Ubuntu
   sudo apt install python3-pip python3-venv -y
@@ -30,6 +30,12 @@ The pipeline consists of the following steps:
 
   python3 -m venv image_builders
   source image_builder/bin/activate
+  ```
+2. Clone the repository and prepare machine
+  ```shell
+  git clone https://github.com/stfc/cloud-image-builders.git
+  cd cloud-image-builders/os_builders
+
   pip install -r requirements.txt
 
   ansible-playbook prep_builder.yml
@@ -48,11 +54,6 @@ The pipeline consists of the following steps:
   export OS_APPLICATION_CREDENTIAL_ID=<app_cred_id>
   export OS_APPLICATION_CREDENTIAL_SECRET=<app_cred_secret>
   ```
-3. Git clone repository
-  ```shell
-  git clone https://github.com/stfc/cloud-image-builders.git
-  cd cloud-image-builders/os_builders
-  ```
 
 ## Building Images for Release
 
@@ -60,19 +61,13 @@ The pipeline consists of the following steps:
   ```shell
   source image_builder/bin/activate  # As made in the set up steps
   ```
-
-2. Edit OpenStack External Network ID
-  ```shell
-  # Contents of: build.pkr.hcl
-  18 networks          = [""]  # OpenStack External Network ID
-  ```
-3. Run Packer
+2. Run Packer
   ```shell
   packer build .
   # Or to build only certain images
   packer build -only openstack.<builder-name>,openstack.<builder-name> .
   ```
-4. Rename the current images to warehoused and new images to current name
+3. Rename the current images to warehoused and new images to current name
   ```shell
   # REQUIRES ADMIN
   # For each image you are releasing
@@ -103,19 +98,12 @@ The pipeline consists of the following steps:
   ```shell
   source image_builder/bin/activate  # As made in the set up steps
   ```
-2. Generate a temporary SSH key to use on the VMs and add to OpenStack
+2. Create a VM using the current latest image for the OS you are fixing
   ```shell
-  passphrase=$(pwgen 10 1)
-  fed_id=<fed-id>
-  ssh-keygen -t rsa -f image_testing_key -N $passphrase
-  openstack keypair create --public-key=./image_testing_key.pub "image-testing-key-${fed_id}"
-  ```
-3. Create a VM using the current latest image for the OS you are fixing
-  ```shell
-  openstack server create <server-name> --image <os-image> --key-name "image-testing-key-${fed_id}" \
+  openstack server create <server-name> --image <os-image> --key-name "<your-openstack-key>" \
   --flavor l3.nano --network Internal  --wait
   ```
-4. Edit `inventory.yml` and add your hosts IP
+3. Edit `inventory.yml` and add your hosts IP
   ```shell
   # Get IP of VM
   openstack server show <server-name> -f json | jq .addresses.Internal | jq first
@@ -123,16 +111,16 @@ The pipeline consists of the following steps:
   # Contents of: inventory.yml
   5 ansible_host: "172.16.255.255"  # Your hosts IP
   ```
-5. Run the baseline against the VM
+4. Run the baseline against the VM
   ```shell
   ansible-playbook -i inventory vm_baseline.yml
   ```
-6. Run any other custom playbooks against the VM which you want to test
+5. Run any other custom playbooks against the VM which you want to test
   ```shell
   ansible-playbook -i inventory <other-playbook.yml>
   ```
 
-7. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working.
+6. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working.
 
 ## Project Layout
 ```shell
