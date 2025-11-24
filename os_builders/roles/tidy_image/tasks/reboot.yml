@@ -1,7 +1,0 @@
-- name: Reboot machine
-  ansible.builtin.reboot:
-    reboot_command: "shutdown -r"
-    post_reboot_delay: 30
-    connect_timeout: 3600
-
-  
