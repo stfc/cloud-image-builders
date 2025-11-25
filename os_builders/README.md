@@ -73,19 +73,12 @@ The pipeline consists of the following steps:
   ```shell
   # REQUIRES ADMIN
   # For each image you are releasing
-  current_image_name="<current-image-name>"
-  new_image_id="<new-image-name>"
-  timestamp=$(date +%F)
-  openstack image set --deactivate --name "warehoused-${current_image_name}-${timestamp}" $current_image_name
-  openstack image set --public --name "${current_image_name}" $new_image_id
+  ./rename_images.sh <current-image-name> <new-image-id>
 
-  # For example, this may look like the below
-  current_image_name="ubuntu-noble-24.04-nogui"
-  new_image_id="ubuntu-noble-24.04-nogui-2025-11-20-abcde"
-  timestamp=$(date +%F)
-  openstack image set --deactivate --name "warehoused-${current_image_name}-${timestamp}" $current_image_name
-  openstack image set --public --name "${current_image_name}" $new_image_id
+  # For example,
 
+  ./rename_images.sh "ubuntu-noble-24.04-nogui" "519ee8c6-9b40-4853-9d2b-f8c8391a68b3"
+  
   # ubuntu-noble-24.04-nogui is:
   #  - deactivated
   #  - renamed to warehoused-ubuntu-noble-24.04-nogui-2025-22-20
