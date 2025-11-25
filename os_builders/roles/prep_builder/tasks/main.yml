@@ -1,29 +1,55 @@
 ---
-- name: Install required packages
-  ansible.builtin.apt:
-    name: 
-      - gpg 
-      - git
-    state: present
-    update_cache: yes
-  become: true
+- name: Set up repository on Debian
+  block:
+    - name: Install required packages
+      ansible.builtin.apt:
+        name: 
+          - gpg 
+          - git
+          - python3-debian
+        state: present
+        update_cache: yes
+      become: true
 
-- name: Add Hashicorp apt key
-  ansible.builtin.apt_key:
-    url: https://apt.releases.hashicorp.com/gpg
-    state: present
-  become: true
+    - name: Add Hashicorp Stable APT repository
+      ansible.builtin.deb822_repository:
+        name: hashicorp
+        types: [deb]
+        uris: "https://apt.releases.hashicorp.com"
+        signed_by: "https://apt.releases.hashicorp.com/gpg"
+        suites: ["{{ ansible_distribution_release|lower }}"]
+        components: [main]
+        state: present
+        enabled: yes
+      vars:
+        ansible_python_interpreter: "/usr/bin/python3"
+      become: true
 
-- name: Add Hashicorp apt repository
-  ansible.builtin.apt_repository:
-    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
-    state: present
-    filename: hashicorp
-    update_cache: yes
-  become: true
+    - name: Install Packer
+      ansible.builtin.apt:
+        name: packer
+        state: present
+        update_cache: true
+      become: true
+  when: ansible_os_family == "Debian"
 
-- name: Install Packer
-  ansible.builtin.apt:
-    name: packer
-    state: present
+- name: Set up repository on RedHat
+  block:
+    - name: Add Hashicorp Stable yum repository
+      ansible.builtin.yum_repository:
+        name: hashicorp
+        file: hashicorp
+        description: "Repository to install wazuh"
+        baseurl: "https://apt.releases.hashicorp.com"
+        enabled: true
+        gpgcheck: true
+        gpgkey: "https://apt.releases.hashicorp.com/gpg"
+
+    - name: Install Packer
+      ansible.builtin.yum:
+        name: packer
+        state: present
   become: true
+  when: ansible_os_family == "RedHat"
+
+
