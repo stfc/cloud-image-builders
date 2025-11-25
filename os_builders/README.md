@@ -64,8 +64,10 @@ The pipeline consists of the following steps:
 2. Run Packer
   ```shell
   packer build .
-  # Or to build only certain images
+  # Or to build only certain images, where the image names can be found in build.pkr.hcl
   packer build -only openstack.<builder-name>,openstack.<builder-name> .
+  # Or with debug logging
+  PACKER_LOG=1 packer build -only openstack.<builder-name> .
   ```
 3. Rename the current images to warehoused and new images to current name
   ```shell
