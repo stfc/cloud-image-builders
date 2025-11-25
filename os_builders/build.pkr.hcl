@@ -73,6 +73,9 @@ build {
     extra_arguments = [
       # Include safety checks
       "--extra-vars", "provision_this_machine=true, tidy_image=True",
+      # Workaround https://github.com/hashicorp/packer/issues/12416
+      # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default
+      "--scp-extra-args", "'-O'",
     ]
   }
 }
