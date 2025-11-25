@@ -3,18 +3,22 @@
     path: "/etc/logrotate.d/btmp"
     state: absent
   when: ansible_distribution == "Rocky" 
+  become: true
 
 - name: Remove duplicate /etc/logrotate.d/wtmp
   file:
     path: "/etc/logrotate.d/wtmp"
     state: absent
   when: ansible_distribution == "Rocky" 
+  become: true
 
 
 - name: Clear Audit log
   shell: "sudo logrotate -f /etc/logrotate.conf"
+  become: true
 
 - name: Cleanout /var/log/*.gz
   file:
     path: "/var/log/*.gz"
     state: absent
+  become: true

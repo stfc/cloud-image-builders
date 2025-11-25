@@ -36,6 +36,7 @@
       apt:
         update_cache: yes
   when: ansible_distribution == "Ubuntu" and 'pakiti-client' not in ansible_facts.packages
+  become: true
 
 - name: Install Pakiti on RL
   yum:
@@ -43,6 +44,7 @@
     state: present
     disable_gpg_check: true
   when: ansible_distribution == "Rocky" 
+  become: true
 
 - name: Ensure pakiti config directory exists
   file:
@@ -51,6 +53,7 @@
     owner: root
     group: root
     mode: 0644
+  become: true
 
 
 - name: Copy pakiti config file
@@ -60,3 +63,4 @@
     owner: root
     group: root
     mode: 0644
+  become: true

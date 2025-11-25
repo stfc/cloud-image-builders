@@ -5,7 +5,8 @@
     owner: root
     group: root
     mode: 0644
-
+  become: true
+  
 - name: Copy in docker registry config
   copy:
     src: "docker.json"
@@ -13,3 +14,4 @@
     owner: root
     group: root
     mode: 0644
+  become: true

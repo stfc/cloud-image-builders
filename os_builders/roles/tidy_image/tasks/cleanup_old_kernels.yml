@@ -12,4 +12,5 @@
     command:
       cmd: "dnf remove --oldinstallonly kernel -y"
     when: ( ansible_facts.packages['kernel'] | length > 1)
+    become: true
   when: ansible_distribution == "Rocky" and "kernel" in ansible_facts.packages

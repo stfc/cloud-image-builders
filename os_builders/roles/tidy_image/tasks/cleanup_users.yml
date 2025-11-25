@@ -16,8 +16,10 @@
     state: absent
     remove: yes
   loop: "{{ users_to_remove }}"
+  become: true
 
 - name: mark next boot as first boot
   file:
-      path: /var/lock/firstboot
-      state: touch
+    path: /var/lock/firstboot
+    state: touch
+  become: true

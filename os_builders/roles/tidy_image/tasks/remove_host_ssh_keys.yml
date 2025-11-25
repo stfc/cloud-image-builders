@@ -2,3 +2,4 @@
   file:
     path: "/etc/ssh/*key*"
     state: absent
+  become: true

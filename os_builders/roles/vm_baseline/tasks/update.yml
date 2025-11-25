@@ -13,6 +13,7 @@
   until: result is not failed
   retries: 5
   delay: 30
+  become: true
 
 - name: Install system updates for Ubuntu systems
   ansible.builtin.apt:
@@ -20,12 +21,12 @@
     update_cache: yes
     autoremove: yes
     autoclean: yes
-  become: true
   when: ansible_distribution == 'Ubuntu'
   register: result
   until: result is not failed
   retries: 5
   delay: 30
+  become: true
 
 - name: get IP
   shell: hostname -I

@@ -8,8 +8,10 @@
     cmd: "systemctl stop wazuh-agent.service"
   when: wazuh_package_name in ansible_facts.packages
   ignore_errors: True
+  become: true
 
 - name: Clean Wazuh agent history
   file:
     path: "/var/ossec/etc/client.keys"
     state: absent
+  become: true

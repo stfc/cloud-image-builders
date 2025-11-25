@@ -2,13 +2,16 @@
   file:
     path: "/etc/rc.d/rc.local"
     state: absent
+  become: true
 
 - name: Cleanout /etc/nubes-bootcontext.sh
   file:
     path: "/etc/nubes-bootcontext.sh"
     state: absent
+  become: true
 
 - name: Cleanout /etc/nubes-bootcontext.sh
   file:
     path: "/etc/rc*/S99-nubes-boot*"
     state: absent
+  become: true

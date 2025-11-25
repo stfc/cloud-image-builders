@@ -2,8 +2,10 @@
   file:
     path: "/tmp/*"
     state: absent
+  become: true
 
 - name: Cleanout /var/tmp/*
   file:
     path: "/var/tmp/*"
     state: absent
+  become: true

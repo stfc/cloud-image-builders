@@ -7,9 +7,11 @@
     enabled: true
     gpgcheck: true
     gpgkey: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+  become: true
 
 - name: Install wazuh
   yum:
     name:
       - wazuh-agent-4.14.*
     state: present
+  become: true

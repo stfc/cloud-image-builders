@@ -3,6 +3,7 @@
   package:
     name: "jq"
     state: present
+  become: true
 
 
 - name: Copy in update_cloud_users script
@@ -12,6 +13,7 @@
     owner: root
     group: root
     mode: 0755
+  become: true
 
 
 - name: Update cloud users periodically
@@ -20,3 +22,4 @@
     minute: 0
     hour: 6
     job: "/usr/local/sbin/update_cloud_users.sh"
+  become: true

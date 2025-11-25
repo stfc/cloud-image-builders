@@ -3,12 +3,15 @@
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/audit/audit.log"
   when: ansible_distribution == "Rocky"
+  become: true
 
 - name: Clear Audit log
   shell: "/bin/cat /dev/null > /var/log/wtmp"
+  become: true
 
 - name: Clear Ubuntu audits
   block:
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/auth.log"
   when: ansible_distribution == "Ubuntu"
+  become: true

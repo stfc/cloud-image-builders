@@ -2,3 +2,4 @@
   file:
     path: "/etc/sudoers.d/cloud"
     state: absent
+  become: true
