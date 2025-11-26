@@ -47,12 +47,6 @@ build {
     external_source_image_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
   }
   source "openstack.builder" {
-    name                      = "ubuntu-azimuth"
-    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-desktop-250701-1116.qcow2"
-    image_name                = "test-azimuth"
-    ssh_username              = "ubuntu"
-  }
-  source "openstack.builder" {
     name = "rocky-8"
     image_name = "rocky-8-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
@@ -68,19 +62,19 @@ build {
   source "openstack.builder" {
     name                      = "azimuth-workstation"
     external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-desktop-251013-0938.qcow2"
-    image_name                = "azimuth-workstation"
+    image_name                = "azimuth-workstation-${ local.date_suffix }"
     ssh_username              = "ubuntu"
   }
   source "openstack.builder" {
     name                      = "azimuth-rstudio"
     external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-linux-rstudio-251013-0937.qcow2"
-    image_name                = "azimuth-rstudio"
+    image_name                = "azimuth-rstudio-${ local.date_suffix }"
     ssh_username              = "ubuntu"
   }
   source "openstack.builder" {
     name                      = "azimuth-jupyter-repo2docker"
     external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-jupyter-repo2docker-251013-0937.qcow2"
-    image_name                = "azimuth-jupyter-repo2docker"
+    image_name                = "azimuth-jupyter-repo2docker-${ local.date_suffix }"
     ssh_username              = "ubuntu"
   }
 
