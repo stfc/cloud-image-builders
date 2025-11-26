@@ -3,6 +3,7 @@
     name: python3-debian
     update_cache: true
     state: present
+  become: true
 
 - name: Add Wazuh repo
   ansible.builtin.deb822_repository:
@@ -12,6 +13,7 @@
     suites: stable
     components: main
     state: present
+  become: true
 
 - name: Install Wazuh agent
   ansible.builtin.apt:
@@ -19,8 +21,10 @@
     state: present
     allow_downgrade: true
     update_cache: yes
+  become: true
 
 - name: Remove Wazuh repo
   ansible.builtin.deb822_repository:
     name: wazuh
     state: absent
+  become: true

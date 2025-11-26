@@ -2,6 +2,7 @@
   package:
     name: openssh-server
     state: present
+  become: true
 
 - name: Enable root login for authorized admins
   block:
@@ -30,6 +31,7 @@
         dest: /etc/sudoers.d/cloud-team-user
         content: "cloud ALL=(ALL) NOPASSWD:ALL"
         mode: 0440
+  become: true
 
 - name: Ensure cloud home directory exists
   file:
@@ -38,6 +40,7 @@
     owner: cloud
     group: cloud
     mode: 0700
+  become: true
 
 
 
@@ -48,6 +51,7 @@
     owner: cloud
     group: cloud
     mode: 0600
+  become: true
 
 - name: Copy authorized key update script in
   copy:
@@ -56,6 +60,7 @@
     owner: root
     group: root
     mode: 0700
+  become: true
 
 # ensure that cron is installed
 - include_tasks: cron.yml
@@ -66,3 +71,4 @@
     minute: 0
     hour: 7
     job: "/usr/local/sbin/update_keys.sh"
+  become: true

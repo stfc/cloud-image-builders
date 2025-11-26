@@ -8,6 +8,7 @@
     state: present
     update_cache: true
   when: ansible_distribution == "Rocky"
+  become: true
 
 - name: Copy in nubes-bootcontext script
   copy:
@@ -16,6 +17,7 @@
     owner: root
     group: root
     mode: 0755
+  become: true
 
 - name: Copy in nubes-boot systemd unit
   copy:
@@ -24,6 +26,7 @@
     owner: root
     group: root
     mode: 0644
+  become: true
 
 - name: Copy in motd
   copy:
@@ -32,10 +35,12 @@
     owner: root
     group: root
     mode: 0644
+  become: true
 
 - name: Start systemd service
   become: true
   ansible.builtin.command:
     cmd: "systemctl enable nubes-boot.service"
+  become: true
 
 - include_tasks: update_cloud_users.yml

@@ -2,3 +2,4 @@
   shell: "sudo quattor-fetch && sudo quattor-configure --all --verbose"
   ignore_errors: true
   when: ansible_distribution == "Rocky" 
+  become: true

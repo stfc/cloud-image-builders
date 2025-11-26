@@ -1,131 +1,135 @@
-Image Building
-==============
+# Image Building
 
-This directory contains the Ansible playbooks and Packer templates for building the VM images.
-It sets a baseline for all VMs to comply with our security policies, in an OS agnostic way.
+## Contents:
 
-Pipeline
---------
+- [Pipeline](#pipeline)
+- [Setting Up the Environment](#setting-up-the-environment)
+- [Building Images for Release](#building-images-for-release)
+- [Testing Changes to Images (Troubleshoot or Bug Fixing)](#testing-changes-to-images-troubleshoot-or-bug-fixing)
+- [Project Layout](#project-layout)
+
+## Pipeline
 
 The pipeline consists of the following steps:
 
-- Packer builds the VM image, with a packer user and password set to `packer`
-- The VM is booted and Ansible is run to configure the VM using the `image_prep.yml` playbook
-- The image is tidied, the packer user is deleted and the VM shuts down. 
-- Packer converts this to a qcow2 image ready for upload.
+- Packer pulls the latest generic image from the OS mirror into OpenStack
+- Packer generates a SSH key and uploads it to OpenStack
+- The VM is booted with the public key and uses the app creds user
+- Ansible is run to configure the VM using the [prep_user_image](prep_user_image.yml) playbook
+- Packer snapshots the VM and deletes the VM, SSH key and generic image
 
-*Note: This script does not upload or test the image, this is done separately currently*
+## Setting up the environment
 
-Building Locally
-=================
+1. Create virtual environment to install packages to
+  ```shell
+  # Ubuntu
+  sudo apt install python3-pip python3-venv -y
 
-The easiest way is to run the Ansible playbooks which will prepare the current machine, and
-also handle the multi-stage builds.
+  # Rocky
+  sudo dnf install python3-pip python3-venv -y
 
-Preparing a builder
--------------------
+  python3 -m venv image_builders
+  source image_builder/bin/activate
+  ```
+2. Clone the repository and prepare machine
+  ```shell
+  git clone https://github.com/stfc/cloud-image-builders.git
+  cd cloud-image-builders/os_builders
 
-To build locally, you need to have the following installed:
-- ansible
+  pip install -r requirements.txt
 
-First, install required ansible collections:
+  ansible-playbook prep_builder.yml
+  ```
+2. Create an applications credential (admin is only required to make images public)
+  ```shell
+  # Either place app creds in directory
+
+  mkdir -p ~/.config/openstack
+  mv clouds.yaml ~/.config/openstack/clouds.yaml
+
+  # Or
+
+  # Export credentials
+  export OS_AUTH_URL=https://<openstack_url>:5000/v3
+  export OS_APPLICATION_CREDENTIAL_ID=<app_cred_id>
+  export OS_APPLICATION_CREDENTIAL_SECRET=<app_cred_secret>
+  ```
+
+## Building Images for Release
+
+1. Activate virtual environment if not already
+  ```shell
+  source image_builder/bin/activate  # As made in the set up steps
+  ```
+2. Run Packer
+  ```shell
+  packer build .
+  # Or to build only certain images, where the image names can be found in build.pkr.hcl
+  packer build -only openstack.<builder-name>,openstack.<builder-name> .
+  # Or with debug logging
+  PACKER_LOG=1 packer build -only openstack.<builder-name> .
+  ```
+3. Rename the current images to warehoused and new images to current name
+  ```shell
+  # REQUIRES ADMIN
+  # For each image you are releasing
+  ./rename_images.sh <current-image-name> <new-image-id>
+
+  # For example,
+
+  ./rename_images.sh "ubuntu-noble-24.04-nogui" "519ee8c6-9b40-4853-9d2b-f8c8391a68b3"
+  
+  # ubuntu-noble-24.04-nogui is:
+  #  - deactivated
+  #  - renamed to warehoused-ubuntu-noble-24.04-nogui-2025-22-20
+  # ubuntu-noble-24.04-nogui-2025-11-20-abcde is:
+  #  - set to public
+  #  - renamed to ubuntu-noble-24.04-nogui
+  ```
+
+## Testing Changes to Images (Troubleshoot or Bug Fixing)
+
+1. Activate virtual environment if not already
+  ```shell
+  source image_builder/bin/activate  # As made in the set up steps
+  ```
+2. Create a VM using the current latest image for the OS you are fixing
+  ```shell
+  openstack server create <server-name> --image <os-image> --key-name "<your-openstack-key>" \
+  --flavor l3.nano --network Internal  --wait
+  ```
+3. Edit `inventory.yml` and add your hosts IP
+  ```shell
+  # Get IP of VM
+  openstack server show <server-name> -f json | jq .addresses.Internal | jq first
+
+  # Contents of: inventory.yml
+  5 ansible_host: "172.16.255.255"  # Your hosts IP
+  ```
+4. Run the baseline against the VM
+  ```shell
+  ansible-playbook -i inventory vm_baseline.yml
+  ```
+5. Run any other custom playbooks against the VM which you want to test
+  ```shell
+  ansible-playbook -i inventory <other-playbook.yml>
+  ```
+
+6. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working.
+
+## Project Layout
+```shell
+os_builders
+├── README.md
+├── build.pkr.hcl  # Packer build file
+├── galaxy.yml  # Ansible Galaxy collection metadata
+├── prep_builder.yml  # Playbook to install Packer
+├── prepare_user_image.yml  # Playbook to configure the images
+├── requirements.txt  # Specifies Ansible version
+└── roles  # Roles to configure the image
+    ├── container_registry/
+    ├── nubes_bootcontext/
+    ├── prep_builder/
+    ├── tidy_image/
+    └── vm_baseline/
 ```
-ansible-galaxy install -r requirements.yml
-```
-
-Then run the following command to install Qemu and setup the user's groups. You will need to log out and back in again for the groups to take effect.
-
-
-```
-ansible-playbook -i inventory/localhost playbooks/prep_builder.yml --ask-become-pass
-```
-
-Running the build
---------------------
-
-Images can be built with the following command
-```
-ansible-playbook -i inventory/localhost playbooks/builder.yml
-````
-
-This will build all images (it implies the `all` tag). Individual tags can be selected as follows
-
-```
-ansible-playbook -i inventory/localhost playbooks/builder.yml -t <tag>
-````
-
-The following tags are available:
-- `all` - Build all images (default)
-- `ubuntu` - Build all Ubuntu variants
-- `ubuntu_2204` - Build Ubuntu 22.04
-
-
-Running builds on a VM
-----------------------
-
-By default we show a VNC window for the packer build, this is useful for debugging but will not work on a headless VM.
-
-To run a headless build, you need to set the `headless` variable to true. This can be done by passing the variable on the command line:
-
-```
-ansible-playbook -i inventory/localhost playbooks/builder.yml --extra-vars packer_headless=true
-```
-
-
-Development and Testing
-========================
-
-Packer uses a multi stage build. Stage 1 will build the VM image using auto-install. Stage 2 will provision the image with any customisations we want.
-
-This allows us to rapidly iterate on our customisations without having to wait for the OS install to complete.
-
-Directory Layout
-----------------
-
-- `packfiles/` - Packer templates for building the VM images
-- `packfiles/ubuntu_sources.pkr.hcl` - Contains image definitions for Ubuntu
-- `packfiles/rocky_sources.pkr.hcl` - Contains image definitions for Rocky (TODO)
-- `packfiles/build.pkr.hcl` - Contains the build steps for the VM image. This uses a two stage build described below
-
-CI/CD Files:
-
-- `packfiles/headless.pkrvars.hcl` - Contains the variables for doing a headless build
-
-
-Testing New OS Variants
---------------------------
-It's recommended you run this locally, so that you can see the VNC window and debug any issues:
-
-- Ensure the builder is configured, as above
-- Add your new build to the sources file, you need to add a base step and a provisioning step. See the Ubuntu file for an example.
-- Run your new/modified stage 1 build through the auto-install step: `cd packerfiles && packer build --only=stage1*<name>*` 
-
-For example:
-`cd packerfiles && packer build --only=stage1*ubuntu_2204 .`
-
-- Test the provisioning step on your new image:
-`cd packerfiles && packer build --only=stage2*<name>*`
-
-
-Prototyping new Ansible changes on a VM
-----------------------------------------
-It's recommended you use an existing VM for this testing, as it will be quicker than running an OS install and uploading :
-
-- Add your hosts to a testing inventory file, e.g. `cat inventory/testing.yml`:
-
-```
-all:
-    hosts:
-        host-172-16-255-255.nubes.stfc.ac.uk:
-            ansible_user: ubuntu  # or rocky
-```
-
-**Ensure you are on a VM!**
-
-The `provision_this_machine` variable acts as a guard from trashing your own machine. 
-
-- Run the playbook
-```
-ansible-playbook -i inventory/testing.yml playbooks/provision_image.yml --extra-vars provision_this_machine=true
-```
-

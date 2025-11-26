@@ -2,17 +2,21 @@
   file:
     path: "*.rpm"
     state: absent
+  become: true
 
 - name: Cleanout *.deb
   file:
     path: "*.deb"
     state: absent
+  become: true
 
 - name: clean yum/dnf
   command: yum clean all
   when: ansible_distribution == "Rocky"
+  become: true
 
 - name: clean apt cache
   ansible.builtin.apt:
     clean: yes
   when: ansible_distribution == "Ubuntu"
+  become: true

@@ -2,13 +2,16 @@
   file:
     path: "/etc/sysconfig/network-scripts/ifcfg-e*"
     state: absent
+  become: true
 
 - name: Cleanout /etc/udev/rules.d/70*
   file:
     path: "/etc/udev/rules.d/70*"
     state: absent
+  become: true
 
 - name: Cleanout /etc/sysconfig/network
   file:
     path: "/etc/sysconfig/network"
     state: absent
+  become: true
