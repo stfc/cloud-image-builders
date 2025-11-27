@@ -24,7 +24,7 @@
 
 - name: Install openscap
   package:
-    name: openscap
+    name: openscap-scanner
     state: present
   when: ansible_distribution == "Rocky" 
   register: result
