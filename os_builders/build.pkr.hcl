@@ -83,6 +83,12 @@ build {
     image_name                = "azimuth-jupyter-repo2docker"
     ssh_username              = "ubuntu"
   }
+  source "openstack.builder" {
+    name                      = "azimuth-slurm"
+    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_3a06571936a0424bb40bc5c672c4ccb1/openhpc-images/openhpc-RL9-250925-1639-62d67ae3"
+    image_name                = "azimuth-slurm"
+    ssh_username              = "rocky"
+  }
 
   sources = ["openstack.builder"]
 
