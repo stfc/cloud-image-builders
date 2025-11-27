@@ -1,0 +1,20 @@
+- name: install pam (ubuntu)
+  ansible.builtin.apt:
+    name: libpwquality-tools
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: update pam-auth
+  shell:
+    command: pam-auth-update
+  when: ansible_distribution == "Ubuntu"
+  become: true
+
+- name: copy over pwquality.conf
+  copy:
+    src: pwquality.conf
+    dest: /etc/security/pwquality.conf
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
