@@ -1,5 +1,5 @@
 ---
-- name: Prep STFC Cloud User Image
+- name: Prepare the image with the STFC security baseline
   hosts: all
   pre_tasks:
     - name: User warning

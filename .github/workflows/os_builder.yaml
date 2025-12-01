@@ -44,11 +44,12 @@ jobs:
             . venv/bin/activate
             pip3 install --upgrade pip
             pip3 install ansible python-debian
-        - name: Run pre-prep playbook
+            cd os_builders
+        - name: Run vm baseline playbook
           run: |
            . venv/bin/activate
            cd os_builders
-           ansible-playbook prepare_user_image.yml --extra-vars provision_this_machine=True
+           ansible-playbook vm_baseline.yml --extra-vars provision_this_machine=True
 
   test_image_build_rocky:
     strategy:
@@ -66,4 +67,4 @@ jobs:
       - name: Run pre-prep playbook
         run: |
           cd os_builders
-          ansible-playbook prepare_user_image.yml --extra-vars provision_this_machine=True
+          ansible-playbook vm_baseline.yml --extra-vars provision_this_machine=True

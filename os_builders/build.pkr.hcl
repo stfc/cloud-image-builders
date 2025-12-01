@@ -82,7 +82,7 @@ build {
 
   provisioner "ansible" {
     user          = "${build.User}"
-    playbook_file = "prepare_user_image.yml"
+    playbook_file = "vm_baseline.yml"
     extra_arguments = [
       # Include safety checks
       "--extra-vars", "provision_this_machine=true, tidy_image=True",

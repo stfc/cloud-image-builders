@@ -124,7 +124,7 @@ os_builders
 ├── build.pkr.hcl  # Packer build file
 ├── galaxy.yml  # Ansible Galaxy collection metadata
 ├── prep_builder.yml  # Playbook to install Packer
-├── prepare_user_image.yml  # Playbook to configure the images
+├── vm_baseline.yml  # Playbook to configure the images
 ├── requirements.txt  # Specifies Ansible version
 └── roles  # Roles to configure the image
     ├── container_registry/
