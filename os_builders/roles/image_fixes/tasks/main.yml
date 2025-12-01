@@ -5,3 +5,6 @@
 # Fix NVIDIA: This PCI I/O region assigned to your NVIDIA device is invalid
 - ansible.builtin.include_tasks:
     file: nvidia-pci.yml
+
+# Fix Wazuh: Wazuh stores its system files in /var which is not allowed by SELinux
+- ansible.builtin.include_tasks: disable_selinux.yml
