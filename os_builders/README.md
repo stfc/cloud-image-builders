@@ -131,5 +131,6 @@ os_builders
     ├── nubes_bootcontext/
     ├── prep_builder/
     ├── tidy_image/
+    ├── image_fixes/
     └── vm_baseline/
 ```
