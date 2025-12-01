@@ -8,6 +8,7 @@
 
   roles:
     - role: vm_baseline
+    - role: image_fixes
     - role: container_registry
     - role: nubes_bootcontext
     - role: tidy_image
