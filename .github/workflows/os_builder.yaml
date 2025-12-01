@@ -48,8 +48,7 @@ jobs:
         - name: Run vm baseline playbook
           run: |
            . venv/bin/activate
-           cd os_builders
-           ansible-playbook vm_baseline.yml --extra-vars provision_this_machine=True
+           ansible-playbook vm_baseline.yml
 
   test_image_build_rocky:
     strategy:
@@ -64,7 +63,7 @@ jobs:
           dnf install epel-release -y
           # These have to be separate steps as ansible is provided by epel-release
           dnf install ansible -y
-      - name: Run pre-prep playbook
-        run: |
           cd os_builders
-          ansible-playbook vm_baseline.yml --extra-vars provision_this_machine=True
+      - name: Run vm baseline playbook
+        run: |
+          ansible-playbook vm_baseline.yml
