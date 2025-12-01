@@ -1,0 +1,72 @@
+# This resolved the NVIDIA PCI I/O region error seen in dmesg with the following
+# "This PCI I/O region assigned to your NVIDIA device is invalid"
+
+# Based on the comment from OVMF here (which is used for EFI images, but also applies
+# to BIOS images too) the kernel used to handle PCI BAR itself, which should be the
+# ideal default. However, this broke some older hardware so the kernel instead trusts
+# the firmware settings by default. In our case we know what the firmware will do
+# (OVMF) so we can safely tell the kernel to handle PCI BAR itself:
+# https://bugs.launchpad.net/ubuntu/+source/edk2/+bug/1849563/comments/16
+
+- name: Ensure grub command line has 'pci=nocrs,realloc' for NVIDIA PCI BAR fix
+  when: ansible_os_family == "Debian"
+  become: true
+  block:
+  - name: Ensure grub2-common is installed for default grub file
+    ansible.builtin.apt:
+      name: grub2-common
+      state: present
+      update_cache: yes
+  - name: Restore default grub file
+    # As we incrementally build images theres a mixture of grub files with some subtle bugs
+    # we should restore the default file to ensure we have a clean base to work from
+    # then use the /etc/default/grub.d/ to add our custom settings
+    ansible.builtin.copy:
+      src: /usr/share/grub/default/grub
+      dest: /etc/default/grub
+      remote_src: true
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Ensure pcie=nocrs,realloc is in the grub cmdline
+    ansible.builtin.copy:
+      # Need to be higher than 50 to override the cloud image default settings from Canonical
+      # which discards any GRUB cmdline settings in 50-cloudimg-settings.cfg
+      dest: /etc/default/grub.d/60-nvidia-pci-bar.cfg
+      content: |
+         # Added to fix NVIDIA PCI BAR I/O region error on OVMF firmware
+         # This file is managed by the STFC Cloud Team
+         GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT pcie=nocrs,realloc"
+      owner: root
+      group: root
+      mode: '0644'
+    register: grub_updated
+
+  - name: Check if we're booted with UEFI
+    # While RH makes this easy to check, Debian based systems don't have a
+    # symlink or similar so we have to do the legwork ourselves
+    set_fact:
+      uefi_boot: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot/efi') | list | length > 0 }}"
+
+- name: Check if we are in a container from the GitHub workflows
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: in_container
+
+- name: Update grub configuration
+  when: ansible_os_family == "Debian" and in_container.stdout != "0::/"
+  block:
+  - name: Update grub configuration for Debian BIOS boot
+    ansible.builtin.command: "grub-mkconfig -o /boot/grub2/grub.cfg"
+    when: grub_updated.changed and not uefi_boot
+
+  - name: Update grub configuration for Debian UEFI boot
+    ansible.builtin.command: "grub-mkconfig -o /boot/efi/EFI/{{ ansible_distribution | lower }}/grub.cfg"
+    when: grub_updated.changed and uefi_boot
+  become: true
+
+- name: Update grub configuration for RedHat based systems
+  # We could be on EFI or BIOS so need to find the correct grub config location
+  ansible.builtin.shell: 'grub2-mkconfig -o "$(readlink -e /etc/grub2.conf)"'
+  when: grub_updated.changed and ansible_os_family == "RedHat" and in_container.stdout != "0::/"
+  become: true
