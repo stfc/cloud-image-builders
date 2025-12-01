@@ -7,7 +7,7 @@
   when: ansible_distribution == "Ubuntu"
 
 - name: Update pam-auth
-  ansible.builtin.command: pam-auth-update
+  ansible.builtin.command: pam-auth-update --enable capability systemd unix pwquality
   when: ansible_distribution == "Ubuntu"
   become: true
 
