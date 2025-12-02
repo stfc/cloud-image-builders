@@ -1,4 +1,11 @@
 ---
+- name: Check if we have any hosts in the inventory
+  hosts: localhost
+  tasks:
+    - fail:
+        msg: "[ERROR] Empty inventory. No host available."
+      when: groups.all|length == 0
+      
 - name: Prep STFC Cloud User Image
   hosts: all
   pre_tasks:

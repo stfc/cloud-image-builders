@@ -1,10 +1,18 @@
-- name: Install pam on Ubuntu
+- name: Install pwquality on Ubuntu 22.04
+  ansible.builtin.apt:
+    name: libpam-pwquality
+    state: present
+    update_cache: true
+  become: true
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "22"
+
+- name: Install pwquality on Ubuntu 24.04
   ansible.builtin.apt:
     name: libpwquality-tools
     state: present
     update_cache: true
   become: true
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "24"
 
 - name: Update pam-auth
   ansible.builtin.command: pam-auth-update --enable capability systemd unix pwquality

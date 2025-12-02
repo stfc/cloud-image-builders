@@ -1,0 +1,12 @@
+# This inventory file is required to get ansible to work on localhost
+# specifying localhost on the command line with "-i localhost,"
+# throws errors about not being able to ssh into itself.
+# https://github.com/stfc/cloud-image-builders/pull/85
+all:
+    hosts:
+        localhost:
+            ansible_connection: local
+default:
+    hosts:
+        localhost:
+            ansible_connection: local
