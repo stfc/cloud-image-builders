@@ -6,7 +6,7 @@
         msg: "[ERROR] Empty inventory. No host available."
       when: groups.all|length == 0
       
-- name: Prep STFC Cloud User Image
+- name: Prepare the image with the STFC security baseline
   hosts: all
   pre_tasks:
     - name: User warning
@@ -18,4 +18,4 @@
     - role: container_registry
     - role: nubes_bootcontext
     - role: tidy_image
-      when: "{{ tidy_image | default(false) | bool == true }}"
+      when: "{{ tidy_image | default(true) | bool == true }}"

@@ -108,7 +108,7 @@ The pipeline consists of the following steps:
   ```
 4. Run the baseline against the VM
   ```shell
-  ansible-playbook -i inventory vm_baseline.yml
+  ansible-playbook -i inventory configure_os_images.yml
   ```
 5. Run any other custom playbooks against the VM which you want to test
   ```shell
@@ -124,7 +124,7 @@ os_builders
 ├── build.pkr.hcl  # Packer build file
 ├── galaxy.yml  # Ansible Galaxy collection metadata
 ├── prep_builder.yml  # Playbook to install Packer
-├── prepare_user_image.yml  # Playbook to configure the images
+├── configure_os_images.yml  # Playbook to configure the images
 ├── requirements.txt  # Specifies Ansible version
 └── roles  # Roles to configure the image
     ├── container_registry/

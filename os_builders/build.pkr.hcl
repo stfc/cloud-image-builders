@@ -82,10 +82,8 @@ build {
 
   provisioner "ansible" {
     user          = "${build.User}"
-    playbook_file = "prepare_user_image.yml"
+    playbook_file = "configure_os_images.yml"
     extra_arguments = [
-      # Include safety checks
-      "--extra-vars", "provision_this_machine=true, tidy_image=True",
       # Workaround https://github.com/hashicorp/packer/issues/12416
       # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default
       "--scp-extra-args", "'-O'",
