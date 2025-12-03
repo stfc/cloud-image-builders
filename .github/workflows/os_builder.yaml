@@ -44,11 +44,11 @@ jobs:
             . venv/bin/activate
             pip3 install --upgrade pip
             pip3 install ansible python-debian
-        - name: Run pre-prep playbook
+        - name: Run configure_os_images playbook
           run: |
-           . venv/bin/activate
-           cd os_builders
-           ansible-playbook prepare_user_image.yml --extra-vars provision_this_machine=True -i ../.github/localhost.yml
+            . venv/bin/activate
+            cd os_builders
+            ansible-playbook configure_os_images.yml -i ../.github/localhost.yml --extra-vars tidy_image=false
 
   test_image_build_rocky:
     strategy:
@@ -63,7 +63,7 @@ jobs:
           dnf install epel-release -y
           # These have to be separate steps as ansible is provided by epel-release
           dnf install ansible -y
-      - name: Run pre-prep playbook
+      - name: Run configure_os_images playbook
         run: |
           cd os_builders
-          ansible-playbook prepare_user_image.yml --extra-vars provision_this_machine=True -i ../.github/localhost.yml
+          ansible-playbook configure_os_images.yml -i ../.github/localhost.yml --extra-vars tidy_image=false
