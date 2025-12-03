@@ -1,0 +1,14 @@
+{
+    "extra_debs": "nfs-common open-iscsi",
+    "firstboot_custom_roles_post": "vm_baseline containerd",
+    "volume_type": "446c92c3-9f5e-43eb-8afd-10726a1b3f9c",
+    "_volume_type_comment": "UUID of volume type cinder # openstack volume type list",
+    "source_image":  "",
+    "source_image_filter_name": "ubuntu-jammy-22.04-nogui",
+    "flavor": "l3.nano",
+    "volume_size": "50",
+    "networks": "5be315b7-7ebd-4254-97fe-18c1df501538",
+    "use_blockstorage_volume": "false",
+    "image_disk_format": "",
+    "floating_ip_network": ""
+}

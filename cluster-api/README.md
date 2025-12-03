@@ -9,10 +9,10 @@ Setup
 - Install Ansible, if the version of Ansible core is too old it can be upgraded with:
 
 ```shell
-sudo apt-get install python3.9-venv unzip -y
-python3.9 -m venv venv
+sudo apt-get install python3-venv unzip -y
+python3 -m venv venv
 source venv/bin/activate
-pip install "ansible" "ansible-core" --upgrade
+pip install -r os_builders/requirements.txt
 ```
 
 - cd to the `os_builders` directory
@@ -22,17 +22,10 @@ pip install "ansible" "ansible-core" --upgrade
 cd os_builders
 
 # If sudo is passwordless:
-ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml
+ansible-playbook prep_builder.yml
 
 # If password is required for sudo:
-ansible-playbook -i inventory/localhost.yml playbooks/prep_builder.yml --ask-become-pass
-```
-- Log out and back in again to ensure the groups are applied
-```shell
-groups | grep -i kvm  # no output
-exit
-# ssh <user>@<host>
-groups | grep -i kvm  # output: kvm
+ansible-playbook prep_builder.yml --ask-become-pass
 ```
 
 Rate Limiting
@@ -43,6 +36,11 @@ You may run into GitHub rate limiting issues when building images. To avoid this
 `PACKER_GITHUB_API_TOKEN=<token>`
 
 The token can be generated from your GitHub settings, under developer access, and only needs the `public_repo` scope (i.e. the default).
+
+OpenStack authentication
+------------------------
+
+You needm to set up credentials for OpenStack authentication as we are using a remote builder. You can either put your clouds.yaml application credential into `~/.config/openstack/clouds.yaml` or use a `.openrc` to set up the environment variables.
 
 Building the latest image
 =========================
@@ -55,10 +53,10 @@ git submodule update --init --recursive --remote
 
 # Point to our custom roles:
 export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
-export PACKER_VAR_FILES="$(pwd)/cluster-api/ansible_stfc_roles.json"
+export PACKER_VAR_FILES="$(pwd)/cluster-api/<environment>_vars.json"
 
 # Run build
-make -C k8s-image-builder/images/capi build-qemu-ubuntu-2204
+make -C k8s-image-builder/images/capi build-openstack-ubuntu-2204
 ```
 
 Building a custom version
@@ -71,11 +69,11 @@ To build a custom version of the image, you can specify the version of the image
 cd .. # back to repo root
 export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
 export K8S_VERSION="cluster-api/versions/v1_25.json"
-export ROLE_DEFINITION="cluster-api/ansible_stfc_roles.json"
+export ROLE_DEFINITION="cluster-api/<environment>_vars.json"
 
 export PACKER_VAR_FILES="$(pwd)/${K8S_VERSION} $(pwd)/${ROLE_DEFINITION}"
 
-make -C k8s-image-builder/images/capi build-qemu-ubuntu-2204
+make -C k8s-image-builder/images/capi build-openstack-ubuntu-2204
 ```
 
 Adding a new version
