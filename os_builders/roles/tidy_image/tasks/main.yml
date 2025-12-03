@@ -1,6 +1,13 @@
 # Cleanup machine
 
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: in_container
+
 - include_tasks: reboot.yml
+  when: in_container.stdout != "0::/"
+  
 - include_tasks: get_package_facts.yml
 - include_tasks: run_quattor.yml
   when: ansible_distribution == "Rocky" 
