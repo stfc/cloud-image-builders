@@ -18,4 +18,4 @@
     - role: container_registry
     - role: nubes_bootcontext
     - role: tidy_image
-      when: "{{ tidy_image | default(true) | bool == true }}"
+    

@@ -1,5 +1,5 @@
 - name: run quattor
-  shell: "sudo quattor-fetch && sudo quattor-configure --all --verbose"
+  shell: "quattor-fetch && quattor-configure --all --verbose"
   ignore_errors: true
   when: ansible_distribution == "Rocky" 
   become: true

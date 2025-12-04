@@ -1,6 +1,17 @@
 # Cleanup machine
 
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: in_container_check
+
+- name: set_fact for checking container
+  ansible.builtin.set_fact:
+    in_container: "{{ in_container_check.stdout != '0::/' }}"
+
 - include_tasks: reboot.yml
+  when: in_container
+  
 - include_tasks: get_package_facts.yml
 - include_tasks: run_quattor.yml
   when: ansible_distribution == "Rocky" 
@@ -8,7 +19,6 @@
 - include_tasks: cleanout_tmp.yml
 - include_tasks: cleanout_rc_directories.yml
 - include_tasks: cleanup_network_conf.yml
-- include_tasks: run_update_keys.yml
 - include_tasks: set_locale.yml
 - include_tasks: wazuh.yml
 - include_tasks: cleanup_quattor.yml

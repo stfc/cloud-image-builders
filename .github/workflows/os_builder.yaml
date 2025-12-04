@@ -27,6 +27,8 @@ jobs:
             cd os_builders &&
             packer init . &&
             packer validate -syntax-only .
+          env:
+            PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
 
   test_image_build_ubuntu:
       strategy:
@@ -48,7 +50,7 @@ jobs:
           run: |
             . venv/bin/activate
             cd os_builders
-            ansible-playbook configure_os_images.yml -i ../.github/localhost.yml --extra-vars tidy_image=false
+            ansible-playbook configure_os_images.yml -i ../.github/localhost.yml
 
   test_image_build_rocky:
     strategy:
@@ -66,4 +68,4 @@ jobs:
       - name: Run configure_os_images playbook
         run: |
           cd os_builders
-          ansible-playbook configure_os_images.yml -i ../.github/localhost.yml --extra-vars tidy_image=false
+          ansible-playbook configure_os_images.yml -i ../.github/localhost.yml

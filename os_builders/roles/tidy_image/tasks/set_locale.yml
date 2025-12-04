@@ -32,28 +32,31 @@
   when: not ansible_check_mode and found_language.rc != 0
   become: true
 
-- name: Get current locale and language configuration
-  command: localectl status
-  register: locale_status
-  changed_when: false
-  become: true
+- name: configure locale
+  block:
+    - name: Get current locale and language configuration
+      command: localectl status
+      register: locale_status
+      changed_when: false
+      become: true
 
-- name: Parse 'LANG' from current locale and language configuration
-  set_fact:
-    locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
+    - name: Parse 'LANG' from current locale and language configuration
+      set_fact:
+        locale_lang: "{{ locale_status.stdout | regex_search('LANG=([^\n]+)', '\\1') | first }}"
 
-- name: Parse 'LANGUAGE' from current locale and language configuration
-  set_fact:
-    locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
+    - name: Parse 'LANGUAGE' from current locale and language configuration
+      set_fact:
+        locale_language: "{{ locale_status.stdout | regex_search('LANGUAGE=([^\n]+)', '\\1') | default([locale_lang], true) | first }}"
 
-- name: Configure locale to '{{ config_system_locale }}' and language to '{{ config_system_language }}'
-  command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
-  become: true
+    - name: Configure locale to '{{ config_system_locale }}' and language to '{{ config_system_language }}'
+      command: localectl set-locale LANG={{ config_system_locale }} LANGUAGE={{ config_system_language }}
+      become: true
 
-- name: Set locale keymap
-  command: localectl set-keymap gb
-  when: ansible_distribution == "Rocky"
-  become: true
+    - name: Set locale keymap
+      command: localectl set-keymap gb
+      when: ansible_distribution == "Rocky"
+      become: true
+  when: in_container
 
 # - name: Set locale keymap
 #   command: loadkeys uk
