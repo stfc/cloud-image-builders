@@ -9,6 +9,7 @@
   when: wazuh_package_name in ansible_facts.packages
   ignore_errors: True
   become: true
+  when: in_container
 
 - name: Clean Wazuh agent history
   file:
