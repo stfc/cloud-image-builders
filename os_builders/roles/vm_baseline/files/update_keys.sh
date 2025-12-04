@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 if ls /home/cloud
 then
     KEYSPATH=/home/cloud
