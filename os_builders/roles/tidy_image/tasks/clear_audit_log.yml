@@ -2,6 +2,7 @@
   block:
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/audit/audit.log"
+  ignore_errors: true
   when: ansible_distribution == "Rocky"
   become: true
 
