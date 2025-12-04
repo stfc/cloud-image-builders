@@ -27,6 +27,8 @@ jobs:
             cd os_builders &&
             packer init . &&
             packer validate -syntax-only .
+          env:
+            PACKER_GITHUB_API_TOKEN: ${{ secrets.PACKER_GITHUB_API_TOKEN }}
 
   test_image_build_ubuntu:
       strategy:
