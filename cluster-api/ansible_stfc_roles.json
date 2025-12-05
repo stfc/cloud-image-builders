@@ -1,4 +1,0 @@
-{
-    "extra_debs": "nfs-common open-iscsi",
-    "firstboot_custom_roles_post": "vm_baseline containerd"
-}
