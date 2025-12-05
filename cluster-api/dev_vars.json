@@ -1,6 +1,6 @@
 {
     "extra_debs": "nfs-common open-iscsi",
-    "firstboot_custom_roles_post": "vm_baseline containerd",
+    "node_custom_roles_post": "vm_baseline containerd",
     "volume_type": "f7afc62e-999d-4812-9bf3-7f4f93680bad",
     "_volume_type_comment": "UUID of volume type cinder # openstack volume type list",
     "source_image":  "",
