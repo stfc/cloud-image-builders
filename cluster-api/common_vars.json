@@ -1,0 +1,12 @@
+{
+    "extra_debs": "nfs-common open-iscsi",
+    "node_custom_roles_post": "vm_baseline containerd",
+    "source_image":  "",
+    "source_image_filter_name": "ubuntu-jammy-22.04-nogui",
+    "flavor": "l3.nano",
+    "volume_size": "50",
+    "use_blockstorage_volume": "false",
+    "image_disk_format": "",
+    "floating_ip_network": "",
+    "goss_inspect_mode": "true",
+}

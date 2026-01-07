@@ -53,7 +53,7 @@ git submodule update --init --recursive --remote
 
 # Point to our custom roles:
 export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
-export PACKER_VAR_FILES="$(pwd)/cluster-api/<environment>_vars.json"
+export PACKER_VAR_FILES="$(pwd)/cluster-api/<environment>_vars.json $(pwd)/cluster-api/common_vars.json"
 
 # Run build
 make -C k8s-image-builder/images/capi build-openstack-ubuntu-2204
@@ -70,8 +70,7 @@ cd .. # back to repo root
 export ANSIBLE_ROLES_PATH="$(pwd)/os_builders/roles:$(pwd)/cluster-api/roles"
 export K8S_VERSION="cluster-api/versions/v1_25.json"
 export ROLE_DEFINITION="cluster-api/<environment>_vars.json"
-
-export PACKER_VAR_FILES="$(pwd)/${K8S_VERSION} $(pwd)/${ROLE_DEFINITION}"
+export PACKER_VAR_FILES="$(pwd)/${K8S_VERSION} $(pwd)/${ROLE_DEFINITION} $(pwd)/cluster-api/common_vars.json"
 
 make -C k8s-image-builder/images/capi build-openstack-ubuntu-2204
 ```
