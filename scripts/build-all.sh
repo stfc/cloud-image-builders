@@ -10,7 +10,16 @@ REPO_ROOT="$(dirname "$(dirname "$(readlink -fm "$0")")")"
 # Store the location to the custom roles which are shared from our OS builder...
 
 CUSTOM_ROLE_PATH="${REPO_ROOT}/cluster-api/${env}_vars.json"
+
+# Update the image name in vars file to include date
 COMMON_VARS_PATH="${REPO_ROOT}/cluster-api/common_vars.json"
+if grep -E "[0-9]{4}-[0-9]{2}-[0-9]{2}" "${COMMON_VARS_PATH}"; then
+    sed -i -E "s/[0-9]{4}-[0-9]{2}-[0-9]{2}/$(date +%F)/" "${COMMON_VARS_PATH}"
+else
+    echo "Date not found in common_vars.json"
+    exit 1
+fi
+
 # ... and make sure Ansible knows where to find on this machine
 export ANSIBLE_ROLES_PATH="${REPO_ROOT}/os_builders/roles:${REPO_ROOT}/cluster-api/roles"
 

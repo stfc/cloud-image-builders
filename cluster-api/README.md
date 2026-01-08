@@ -28,6 +28,8 @@ ansible-playbook prep_builder.yml
 ansible-playbook prep_builder.yml --ask-become-pass
 ```
 
+- Update the date in the common_vars.json file for `image_name`
+
 Rate Limiting
 -------------
 
