@@ -15,7 +15,7 @@ The pipeline consists of the following steps:
 - Packer pulls the latest generic image from the OS mirror into OpenStack
 - Packer generates a SSH key and uploads it to OpenStack
 - The VM is booted with the public key and uses the app creds user
-- Ansible is run to configure the VM using the [prep_user_image](prep_user_image.yml) playbook
+- Ansible is run to configure the VM using the [configure_os_images.yml](configure_os_images.yml) playbook
 - Packer snapshots the VM and deletes the VM, SSH key and generic image
 
 ## Setting up the environment

@@ -1,5 +1,9 @@
 # Cleanup machine
 
+- name: Run any pending handlers
+  # E.g. update grub
+  ansible.builtin.meta: flush_handlers
+
 - name: Check if we are in a container from the GitHub workflows
   become: true
   ansible.builtin.command: "cat /proc/self/cgroup"
