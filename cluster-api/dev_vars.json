@@ -1,0 +1,5 @@
+{
+    "volume_type": "f7afc62e-999d-4812-9bf3-7f4f93680bad",
+    "_volume_type_comment": "UUID of volume type cinder # openstack volume type list",
+    "networks": "fa2f5ebe-d0e0-4465-9637-e9461de443f1"
+}
