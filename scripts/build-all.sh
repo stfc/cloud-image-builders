@@ -13,8 +13,8 @@ CUSTOM_ROLE_PATH="${REPO_ROOT}/cluster-api/${env}_vars.json"
 
 # Update the image name in vars file to include date
 COMMON_VARS_PATH="${REPO_ROOT}/cluster-api/common_vars.json"
-if grep -E "[0-9]{4}-[0-9]{2}-[0-9]{2}" "${COMMON_VARS_PATH}"; then
-    sed -i -E "s/[0-9]{4}-[0-9]{2}-[0-9]{2}/$(date +%F)/" "${COMMON_VARS_PATH}"
+if grep -E "YYYY-MM-DD" "${COMMON_VARS_PATH}"; then
+    sed -i -E "s/YYYY-MM-DD/$(date +%F)/" "${COMMON_VARS_PATH}"
 else
     echo "Date not found in common_vars.json"
     exit 1
