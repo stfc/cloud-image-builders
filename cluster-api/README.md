@@ -64,7 +64,7 @@ You need to set up credentials for OpenStack authentication as we are using a re
    #    - name: capi-ubuntu-22.04-kube-<k8s-version>-<todays-date>
    #    - visibility: private
    ```
-4. Follow steps to update image for release [here](#update-an-image-for-release)
+4. Follow steps for release [here](#update-an-image-for-release)
 
 ## Adding a new version
 1. Update the image builder:
@@ -76,9 +76,8 @@ You need to set up credentials for OpenStack authentication as we are using a re
     1. Navigate to https://kubernetes.io/releases/
     2. Find the version you want to add or update
     3. Create/Update the semver in the relevant JSON file. There should be a 1:1 mapping of JSON files to major versions of Kubernetes. E.g. a file for 1.24, 1.25, etc.
-
 3. Follow steps to build a specific version [here](#build-a-specific-version)
-4. Follow steps to update image for release [here](#update-an-image-for-release)
+4. Follow steps for release [here](#update-an-image-for-release)
 
 ## Rebuild all images
 1. Update the image builder:
@@ -100,26 +99,14 @@ You need to set up credentials for OpenStack authentication as we are using a re
    cd scripts
    ./build-all.sh <env>  # dev or prod
    ```
-4. Update image properties for each image following [Update and image for release](#update-an-image-for-release)
+4. Follow steps for release for each image [Update and image for release](#update-an-image-for-release)
 
 ## Update an image for release
-If you need to release an individual image or need to update an existing image you must follow these steps
-1. Check the image before you make any changes
+1. Check the image you are working with before you make any changes
    ```shell
    openstack image show <image-name>
    ```
-2. Update image properties
-   ```shell
-   openstack image set \
-   --property hw_machine_type=q35 \
-   --property hw_disk_bus=scsi \ 
-   --property hw_firmware_type=uefi \
-   --property hw_qemu_guest_agent=yes \
-   --property hw_scsi_model=virtio-scsi \
-   --property hw_vif_multiqueue_enabled=true \
-   --property os_require_quiesce=yes \
-   <image-name>
-    ```
+2. Build a cluster with the new image [here](https://stfc.atlassian.net/wiki/spaces/CLOUDKB/pages/211878034/Cluster+API+Setup) and check it builds successfully
 3. Set image to public
    ```shell
    openstack image set --public <image-name>
@@ -131,3 +118,4 @@ Since we cannot add comments to JSON files I've documented some points here:
 - Currently we need to manually update minor versions of Kubernetes. We need to investigate how to update this long-term.
 - We need to maintain multiple images in the past, as an upgrade can only do n+1 versions at a time.
 - There's no check that git-submodules are up to date, so we need to manually update them.
+- Image properties are inherited from the base image, in this case `ubuntu-jammy-22.04-nogui`, so they will always be correct if we assume that image is true
