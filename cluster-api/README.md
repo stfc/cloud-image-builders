@@ -38,6 +38,10 @@ The token can be generated from your GitHub settings, under developer access, an
 
 You need to set up credentials for OpenStack authentication as we are using a remote builder. Create a clouds.yaml application credential and place it into `~/.config/openstack/clouds.yaml`. See [here](https://stfc.atlassian.net/wiki/spaces/CLOUDKB/pages/211484774/Application+Credentials) for help.
 
+Addtionally, you will need to specify the cloud name in your session by exporting it. By default this will be `openstack` as seen in the standard `clouds.yaml` file:
+
+`export OS_CLOUD=<cloud-name>`
+
 ## Build a specific version
 
 1. Grab the latest version of the K8s Image Builder submodule:
