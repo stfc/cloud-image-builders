@@ -43,11 +43,21 @@
       mode: '0644'
     register: grub_updated
 
-  - name: Check if we're booted with UEFI
-    # While RH makes this easy to check, Debian based systems don't have a
-    # symlink or similar so we have to do the legwork ourselves
-    set_fact:
-      uefi_boot: "{{ ansible_mounts | selectattr('mount', 'equalto', '/boot/efi') | list | length > 0 }}"
+- name: Check if machine supports UEFI boot
+  become: true
+  # While RH makes this easy to check, Debian based systems don't have a
+  # symlink or similar so we have to do the legwork ourselves
+  ansible.builtin.stat:
+    path: /boot/efi/EFI
+  register: efi_dir
+
+- name: Check if machine supports BIOS boot
+  # While RH makes this easy to check, Debian based systems don't have a
+  # symlink or similar so we have to do the legwork ourselves
+  become: true
+  ansible.builtin.stat:
+    path: /boot/grub
+  register: bios_dir
 
 - name: Check if we are in a container from the GitHub workflows
   ansible.builtin.command: "cat /proc/self/cgroup"
@@ -58,12 +68,12 @@
   become: true
   block:
   - name: Update grub configuration for Debian BIOS boot
-    ansible.builtin.command: "grub-mkconfig -o /boot/grub2/grub.cfg"
-    when: grub_updated.changed and not uefi_boot
+    ansible.builtin.command: "grub-mkconfig -o /boot/grub/grub.cfg"
+    when: grub_updated.changed and bios_dir.stat.exists
 
   - name: Update grub configuration for Debian UEFI boot
     ansible.builtin.command: "grub-mkconfig -o /boot/efi/EFI/{{ ansible_distribution | lower }}/grub.cfg"
-    when: grub_updated.changed and uefi_boot
+    when: grub_updated.changed and efi_dir.stat.exists
 
 - name: Update grub configuration for RedHat based systems
   become: true
