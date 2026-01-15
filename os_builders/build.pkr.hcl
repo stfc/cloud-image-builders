@@ -25,11 +25,17 @@ source "openstack" "builder" {
   metadata = {
     "hw_machine_type" : "q35",
     "hw_disk_bus" : "scsi",
-    "hw_firmware_type" : "uefi",
     "hw_qemu_guest_agent" : "yes",
     "hw_scsi_model" : "virtio-scsi",
     "hw_vif_multiqueue_enabled" : "true",
-    "os_require_quiesce" : "yes"
+    "os_require_quiesce" : "yes",
+    # This must be set to BIOS to avoid problems where NVIDIA drivers expect BAR support
+    # (as we are in EFI mode) but our host HVs are still in BIOS mode.
+    # "NVRM: This PCI I/O region assigned to your NVIDIA device is invalid:"
+    # "NVRM: BAR0 is 0M @ 0x0", where the BAR offered is a 0MB region so obviously invalid.
+    # Once we're RL9 + EFI + Above 4GB decoding everywhere we can enable EFI which gives
+    # some perf benefits for GPU passthrough where REBAR can be used
+    "hw_firmware_type" : "bios"
   }
 }
 
