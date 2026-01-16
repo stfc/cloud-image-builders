@@ -55,7 +55,9 @@ for ID in $FEDID $FEDIDS; do
     chown "$ID" /home/"$ID"
     chown "$ID" /home/"$ID"/.ssh
     if [[ "$ID" == "$FEDID" ]]; then
-        echo "$SSH_PUBLIC_KEY "| sed 's/\\n//g' >> /home/"$ID"/.ssh/authorized_keys
+        if ! grep -qF "${SSH_PUBLIC_KEY//\\n/}" /home/"$ID"/.ssh/authorized_keys; then
+            echo "${SSH_PUBLIC_KEY//\\n/}" >> /home/"$ID"/.ssh/authorized_keys
+        fi
     fi
     chown "$ID" /home/"$ID"/.ssh/authorized_keys
 done
