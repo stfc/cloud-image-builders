@@ -15,4 +15,4 @@
    # Specify dev or prod OpenStack
    ./scripts/build-all.sh <env>
    ```
-3. This will build all new images and upload them to OpenStack in the form `ubuntu-2204-kube-<k8s_semver>
+3. This will build all new images and upload them to OpenStack in the form `capi-ubuntu-2204-kube-<k8s_semver>`

@@ -24,8 +24,6 @@ This project contains the current versions of Kubernetes that the Cloud Group wi
    ansible-playbook prep_builder.yml --ask-become-pass
    ```
 
-3. Update the date in the [common_vars.json](./common_vars.json#L12) file for `image_name`
-
 ## Rate Limiting
 
 You may run into GitHub rate limiting issues when building images. To avoid this, you can set the following environment variable:
@@ -108,12 +106,16 @@ Addtionally, you will need to specify the cloud name in your session by exportin
 ## Update an image for release
 1. Check the image you are working with before you make any changes
    ```shell
-   openstack image show <image-name>
+   openstack image show <image-id>
    ```
 2. Build a cluster with the new image [here](https://stfc.atlassian.net/wiki/spaces/CLOUDKB/pages/211878034/Cluster+API+Setup) and check it builds successfully
 3. Set image to public
    ```shell
-   openstack image set --public <image-name>
+   openstack image set --public <image-id>
+   ```
+4. If this is the last supported patch version append `-eol` to the end of the image name
+   ```shell
+   openstack image set --name capi-ubuntu-2204-kube-v1.33.4-eol <image-id>
    ```
 
 ### Developer Notes
