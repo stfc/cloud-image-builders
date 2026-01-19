@@ -13,12 +13,6 @@ CUSTOM_ROLE_PATH="${REPO_ROOT}/cluster-api/${env}_vars.json"
 
 # Update the image name in vars file to include date
 COMMON_VARS_PATH="${REPO_ROOT}/cluster-api/common_vars.json"
-if grep -E "YYYY-MM-DD" "${COMMON_VARS_PATH}"; then
-    sed -i -E "s/YYYY-MM-DD/$(date +%F)/" "${COMMON_VARS_PATH}"
-else
-    echo "Date not found in common_vars.json"
-    exit 1
-fi
 
 # ... and make sure Ansible knows where to find on this machine
 export ANSIBLE_ROLES_PATH="${REPO_ROOT}/os_builders/roles:${REPO_ROOT}/cluster-api/roles"

@@ -9,6 +9,6 @@
     "image_disk_format": "",
     "floating_ip_network": "",
     "goss_inspect_mode": "true",
-    "image_name": "capi-{{user `build_name`}}-kube-{{user `kubernetes_semver`}}-YYYY-MM-DD",
+    "image_name": "capi-{{user `build_name`}}-kube-{{user `kubernetes_semver`}}",
     "image_visibility": "private"
 }
