@@ -64,7 +64,7 @@ Addtionally, you will need to specify the cloud name in your session by exportin
    # Run build
    make -C k8s-image-builder/images/capi build-openstack-ubuntu-2204
    # It will be released with the following properties:
-   #    - name: capi-ubuntu-22.04-kube-<k8s-version>-<todays-date>
+   #    - name: capi-ubuntu-22.04-kube-<k8s-version>
    #    - visibility: private
    ```
 4. Follow steps for release [here](#update-an-image-for-release)
