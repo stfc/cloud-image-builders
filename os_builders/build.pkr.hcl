@@ -67,19 +67,19 @@ build {
 
   source "openstack.builder" {
     name                      = "azimuth-workstation"
-    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-desktop-251013-0938.qcow2"
+    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-desktop-251029-1115.qcow2"
     image_name                = "azimuth-workstation-${ local.date_suffix }"
     ssh_username              = "ubuntu"
   }
   source "openstack.builder" {
     name                      = "azimuth-rstudio"
-    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-linux-rstudio-251013-0937.qcow2"
+    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-linux-rstudio-251029-1117.qcow2"
     image_name                = "azimuth-rstudio-${ local.date_suffix }"
     ssh_username              = "ubuntu"
   }
   source "openstack.builder" {
     name                      = "azimuth-jupyter-repo2docker"
-    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-jupyter-repo2docker-251013-0937.qcow2"
+    external_source_image_url = "https://object.arcus.openstack.hpc.cam.ac.uk/swift/v1/AUTH_f0dc9cb312144d0aa44037c9149d2513/azimuth-images/ubuntu-jammy-jupyter-repo2docker-251029-1115.qcow2"
     image_name                = "azimuth-jupyter-repo2docker-${ local.date_suffix }"
     ssh_username              = "ubuntu"
   }
