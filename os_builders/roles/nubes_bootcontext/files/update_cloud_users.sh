@@ -13,17 +13,16 @@ fi
 [[ -d /mnt/context/openstack ]] || mount /dev/sr0 /mnt/context
 INSTANCEID=$(jq .uuid /mnt/context/openstack/latest/meta_data.json | sed "s/\"//g")
 
-if curl -s http://openstack.nubes.rl.ac.uk:9999/cgi-bin/get_username.sh?"$INSTANCEID" | grep ".";
+if curl -s https://openstack.stfc.ac.uk:9999/getusername?serverID="$INSTANCEID" | grep ".";
 then
-    OPENSTACK_URL='openstack.nubes.rl.ac.uk'
+    OPENSTACK_URL='openstack.stfc.ac.uk'
 else
-    OPENSTACK_URL='dev-openstack.nubes.rl.ac.uk'
+    OPENSTACK_URL='dev-openstack.stfc.ac.uk'
 fi
 
 echo $OPENSTACK_URL
 
-FEDIDS=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username_list.sh?"$INSTANCEID")
-FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
+FEDID=$(curl -s https://$OPENSTACK_URL:9999/getusername?serverID="$INSTANCEID")
 
 while [ -z "$FEDID" ]
    do
@@ -31,7 +30,7 @@ while [ -z "$FEDID" ]
     then
         INSTANCEID=$(dmidecode | grep UUID | tr '[:upper:]' '[:lower:]' | sed "s/\\tuuid: //")
     fi
-    FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
+    FEDID=$(curl -s https://$OPENSTACK_URL:9999/getusername?serverID="$INSTANCEID")
     ((c++)) && ((c==3)) && c=0 && break
    done
 
@@ -39,7 +38,7 @@ SSH_PUBLIC_KEY=$(jq .keys[0].data /mnt/context/openstack/latest/meta_data.json |
 
 groupadd wheel
 
-for ID in $FEDID $FEDIDS; do
+for ID in $FEDID; do
     id -u "$ID" || useradd "$ID" -g wheel -m -s /bin/bash
     usermod "$ID" -a -G wheel
     if ! visudo -c -f /etc/sudoers.d/cloud;
