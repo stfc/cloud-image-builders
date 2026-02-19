@@ -29,7 +29,7 @@ The pipeline consists of the following steps:
   sudo dnf install python3-pip python3-venv -y
 
   python3 -m venv image_builders
-  source image_builder/bin/activate
+  source image_builders/bin/activate
   ```
 2. Clone the repository and prepare machine
   ```shell
@@ -59,7 +59,7 @@ The pipeline consists of the following steps:
 
 1. Activate virtual environment if not already
   ```shell
-  source image_builder/bin/activate  # As made in the set up steps
+  source image_builders/bin/activate  # As made in the set up steps
   ```
 2. Run Packer
   ```shell
@@ -91,7 +91,7 @@ The pipeline consists of the following steps:
 
 1. Activate virtual environment if not already
   ```shell
-  source image_builder/bin/activate  # As made in the set up steps
+  source image_builders/bin/activate  # As made in the set up steps
   ```
 2. Create a VM using the current latest image for the OS you are fixing
   ```shell
