@@ -22,6 +22,12 @@ fi
 
 echo $OPENSTACK_URL
 
+FEDID_RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
+if [[ $FEDID_RESPONSE_CODE != 200 ]]; then
+    echo "$FEDID_RESPONSE_CODE expected 200"
+    exit
+fi
+
 FEDIDS=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username_list.sh?"$INSTANCEID")
 FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
 
