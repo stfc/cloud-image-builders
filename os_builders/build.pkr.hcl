@@ -22,6 +22,7 @@ source "openstack" "builder" {
   networks          = ["fa2f5ebe-d0e0-4465-9637-e9461de443f1"]  # Dev OpenStack Network ID
   image_visibility  = "private"
   ssh_timeout       = "20m"
+  image_min_disk    = "20"
   metadata = {
     "hw_machine_type" : "q35",
     "hw_disk_bus" : "scsi",
