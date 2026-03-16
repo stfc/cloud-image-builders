@@ -1,10 +1,22 @@
-
 - name: Install jq
   package:
     name: "jq"
     state: present
   become: true
 
+- name: Create cloud group
+  ansible.builtin.group:
+    name: cloud
+    state: present
+  become: true
+
+- name: Create cloud group for passwordless sudo
+  community.general.sudoers:
+    name: cloud
+    group: cloud
+    commands: ALL
+    nopassword: true
+  become: true
 
 - name: Copy in update_cloud_users script
   copy:
@@ -14,7 +26,6 @@
     group: root
     mode: 0755
   become: true
-
 
 - name: Update cloud users periodically
   ansible.builtin.cron:
