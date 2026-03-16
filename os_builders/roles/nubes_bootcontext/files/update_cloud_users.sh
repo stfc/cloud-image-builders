@@ -47,16 +47,8 @@ groupadd wheel
 
 for ID in $FEDID $FEDIDS; do
     id -u "$ID" || useradd "$ID" -g wheel -m -s /bin/bash
-    usermod "$ID" -a -G wheel
-    if ! visudo -c -f /etc/sudoers.d/cloud;
-    then
-        echo " $ID  ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/cloud
-    fi
-    if ! grep -q "$ID" /etc/sudoers.d/cloud
-    then
-        echo " $ID  ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/cloud
-    fi
-    chmod 0440 /etc/sudoers.d/cloud
+    usermod "$ID" -a -G wheel,cloud
+
     [[ -d /home/"$ID"/.ssh ]] || mkdir -p /home/"$ID"/.ssh
     chown "$ID" /home/"$ID"
     chown "$ID" /home/"$ID"/.ssh
