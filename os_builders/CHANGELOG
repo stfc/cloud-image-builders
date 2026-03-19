@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Changed image build flavor to l6.c2 to enable images to be used on VMs with less than 50GB disk.
+- Changed update_cloud_users.sh to use the new username service. This script is more reslient to failures. [#138](https://github.com/stfc/cloud-image-builders/pull/138)
 
 ### Fixed
 - Fix user creation on VMs with 10.10 or 192.168 IP address.
