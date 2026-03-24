@@ -13,8 +13,9 @@ RUN apt-get update && \
 COPY ./ /opt/cloud-image-builders
 
 # Clone octavia and install its diskimage-create requirements
-RUN git clone https://opendev.org/openstack/octavia.git /opt/octavia \
- && pip3 install --no-cache-dir -r /opt/octavia/diskimage-create/requirements.txt
+RUN git clone https://opendev.org/openstack/octavia.git /opt/octavia && \
+ git --git-dir=/opt/octavia/.git checkout 08003bb7263aef0ff74d30dc1540bfe18d330f9a && \
+ pip3 install --no-cache-dir -r /opt/octavia/diskimage-create/requirements.txt
 
 COPY amphora-image-builder/entrypoint.sh entrypoint.sh
 RUN chmod +x /entrypoint.sh
