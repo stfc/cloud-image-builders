@@ -4,6 +4,12 @@
     state: present
   become: true
 
+- name: Install wget
+  package:
+    name: wget
+    state: present
+  become: true
+
 - name: Enable root login for authorized admins
   block:
     - debug:
@@ -41,8 +47,6 @@
     group: cloud
     mode: 0700
   become: true
-
-
 
 - name: Copy authorized cloud admin keys into cloud's authorized_keys
   copy:
