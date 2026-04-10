@@ -19,5 +19,6 @@ do
 done;
 
 /usr/local/sbin/update_cloud_users.sh
+/usr/local/sbin/update_keys.sh
 
 systemctl restart wazuh-agent
