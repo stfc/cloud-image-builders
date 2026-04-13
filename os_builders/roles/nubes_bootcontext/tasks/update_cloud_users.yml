@@ -10,12 +10,11 @@
     state: present
   become: true
 
-- name: Create cloud group for passwordless sudo
-  community.general.sudoers:
-    name: cloud
-    group: cloud
-    commands: ALL
-    nopassword: true
+- name: Create cloud sudoers file
+  copy:
+    dest: /etc/sudoers.d/cloud
+    content: "%cloud ALL=(ALL) NOPASSWD: ALL"
+    mode: 0440
   become: true
 
 - name: Copy in update_cloud_users script
