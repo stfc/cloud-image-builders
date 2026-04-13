@@ -29,7 +29,7 @@ Enabling this for the Amphora
 - Share this image with the admin project so the control plane can see it after it's tagged
 
 ```
-openstack image set --shared --project admin amphora-x64-$(date +%Y-%m-%d)-haproxy
+openstack image set --shared amphora-x64-$(date +%Y-%m-%d)-haproxy
 openstack image add project amphora-x64-$(date +%Y-%m-%d)-haproxy admin
 openstack image set --accept --project admin amphora-x64-$(date +%Y-%m-%d)-haproxy 
 ```
