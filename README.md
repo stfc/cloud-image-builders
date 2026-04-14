@@ -1,44 +1,27 @@
 # cloud-image-builders
-Builders for various cloud images. Each folder has a README
-which walks through the process of setting up and building the image.
+Builders for all our Cloud images. Each builder has it's own README.md which contains the technical doccumentation on set up and usage.
 
-Handy Documentation
-===================
+## Contents
 
-The following documentation is useful for all builders:
+- [amphora-image-builder](#amphora-image-builder)
+- [cluster-api](#cluster-api)
+- [os_builders](#os_builders) 
+- [Non-Build Directories](#non-build-directories)
 
-- [Uploading an image to OpenStack](https://docs.openstack.org/python-openstackclient/latest/cli/command-objects/image-v1.html#image-create)
+## amphora-image-builder
 
+The [amphora-image-builder](amphora-image-builder) is a container used to build an image used by the OpenStack Octavia VMs called Amphora.
 
-Contents
-========
+## cluster-api
 
-amphora-image-builder
----------------------
+The [cluster-api](cluster-api) directory contains configuration to extend the upstream Kubernetes image builder.It includes references to our [os_builder](os_builder/roles) roles. This ensures our CAPI images contain the VM baseline we apply to all images such as security policy.
 
-This is a container to build an amphora image for use with OpenStack Octavia.
+## os_builders
 
-cluster-api
------------
+The [os_builders](os_builders) directory contains our bespoke image building pipeline utilising Packer and Ansible to remotely build images for OpenStack virtual machines. This is where we build all Ubuntu and Rocky images used on the Cloud.
 
-This directory contains customisations to extend the upstream Kubernetes image builder
-to include custom STFC roles. It uses the roles found in the `os_builders` directory
-to share common roles between the two (e.g. security policy, etc.), and also includes
-some CAPI specific customisations such as a pull-through cache.
+## Non-Build Directories
 
-os_builders
------------
+- [scripts](scripts) - A directory containing helper scripts to make building and testing easier when performed manually.
 
-A directory containing all publicly available generic images (excluding Cluster API)
-which share common packer build roles
-
-Non-Build Directories
-=====================
-
-- script
-
-Contains various helper scripts to make building and testing easier when performed manually.
-
-- K8s Image Builder
-
-A git submodule containing the upstream Kubernetes image builder.
+- [k8s-image-builder](k8s-image-builder) - A git submodule containing the upstream Kubernetes image builder.
