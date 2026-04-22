@@ -115,7 +115,7 @@ The pipeline consists of the following steps:
   ansible-playbook -i inventory <other-playbook.yml>
   ```
 
-6. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working.
+6. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working. Make sure to update the changelog with changes.
 
 ## Project Layout
 ```shell
