@@ -41,6 +41,7 @@ The pipeline consists of the following steps:
   ansible-playbook prep_builder.yml
   ```
 2. Create an applications credential (admin is only required to make images public)
+   > **NOTE:** The project you are building in must have access to the **l6.c2** flavor.
   ```shell
   # Either place app creds in directory
 

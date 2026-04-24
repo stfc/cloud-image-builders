@@ -17,7 +17,7 @@ locals {
 
 source "openstack" "builder" {
   domain_name       = "Default"
-  flavor            = "l3.nano"
+  flavor            = "l6.c2"
   security_groups   = ["default"]
   networks          = ["fa2f5ebe-d0e0-4465-9637-e9461de443f1"]  # Dev OpenStack Network ID
   image_visibility  = "private"
