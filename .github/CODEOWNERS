@@ -1,4 +1,2 @@
 ** @stfc/cloud
 os_builders/** @khalford
-os_builders/roles/vm_baseline/** @jacob-ward
-amphora-image-builder/** @DavidFair
