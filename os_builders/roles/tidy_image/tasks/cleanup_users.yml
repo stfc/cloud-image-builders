@@ -11,9 +11,3 @@
     remove: true
   loop: "{{ ansible_facts.getent_group.cloud[2] | split(',') }}"
   become: true
-
-- name: Mark next boot as first boot
-  ansible.builtin.file:
-    path: /var/lock/firstboot
-    state: touch
-  become: true
