@@ -36,7 +36,8 @@ source "openstack" "builder" {
     # "NVRM: BAR0 is 0M @ 0x0", where the BAR offered is a 0MB region so obviously invalid.
     # Once we're RL9 + EFI + Above 4GB decoding everywhere we can enable EFI which gives
     # some perf benefits for GPU passthrough where REBAR can be used
-    "hw_firmware_type" : "bios"
+    "hw_firmware_type" : "bios",
+    "image_builder_version": "0.1.0"
   }
 }
 

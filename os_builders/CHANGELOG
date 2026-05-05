@@ -9,10 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added:
 
-- Added this CHANGELOG file to track changes to the images.
+### Changed:
 
-### Changed
+### Fixed:
+
+
+## [0.1.0]
+
+### Added:
+
+- Added this CHANGELOG file to track changes to the images.
+- Image metadata value "image_builder_version" to track the version of the image builders used when making the image.
+
+### Changed:
 - Changed image build flavor to l6.c2 to enable images to be used on VMs with less than 50GB disk.
 
-### Fixed
+### Fixed:
 - Fix user creation on VMs with 10.10 or 192.168 IP address.
