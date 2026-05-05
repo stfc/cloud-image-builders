@@ -37,3 +37,10 @@
 - include_tasks: logrotate.yml
 - include_tasks: clear_audit_log.yml
 - include_tasks: remove_shell_history.yml
+
+- name: Mark next boot as first boot
+  ansible.builtin.file:
+    path: /var/lock/firstboot
+    state: touch
+    mode: 0644
+  become: true
