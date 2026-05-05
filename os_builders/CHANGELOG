@@ -16,3 +16,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix user creation on VMs with 10.10 or 192.168 IP address.
+- Fix cleaning up users after image creation, resolves issue[#125](https://github.com/stfc/cloud-image-builders/issues/125)

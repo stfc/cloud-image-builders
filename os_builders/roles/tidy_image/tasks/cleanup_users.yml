@@ -1,24 +1,18 @@
-- name: Get list of current users
+- name: Get cloud group info
   ansible.builtin.getent:
-    database: passwd
+    database: group
+    split: ":"
+    key: cloud
 
-- name: Extract usernames with 'admin-' prefix
-  set_fact:
-    current_users: "{{ getent_passwd | select('search', 'admin-')}}"
-
-- name: Determine users to remove
-  set_fact:
-    users_to_remove: '{{ current_users | difference(["cloud","ubuntu","rocky"]) }}'
-
-- name: Remove users with 'admin-' prefix
+- name: Remove users in cloud group
   ansible.builtin.user:
     name: "{{ item }}"
     state: absent
-    remove: yes
-  loop: "{{ users_to_remove }}"
+    remove: true
+  loop: "{{ ansible_facts.getent_group.cloud[2] | split(',') }}"
   become: true
 
-- name: mark next boot as first boot
+- name: Mark next boot as first boot
   file:
     path: /var/lock/firstboot
     state: touch
