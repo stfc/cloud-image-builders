@@ -55,9 +55,25 @@ The pipeline consists of the following steps:
   export OS_APPLICATION_CREDENTIAL_ID=<app_cred_id>
   export OS_APPLICATION_CREDENTIAL_SECRET=<app_cred_secret>
   ```
+3. Move on to [Using the correct Image Builders version](#using-the-correct-image-builders-version)
 
-## Building Images for Release
+## Using the correct Image Builders version
+Before building any images you should check if you need to make a new release. If the [changelog](./CHANGELOG) contains any unreleased changes **affecting** the image you are releasing then do the following:
+1. Create a new branch **release_<version>**
+2. In [CHANGELOG](./CHANGELOG) update the "unreleased" to the next version following [SemVer](https://semver.org)
+3. Add a new unreleased version, always at the top
+4. Update the **image_builder_version** in the metadata in [build.pkr.hcl](./build.pkr.hcl)
+5. Commit and make a pull request for review
+6. Move on to [Building image for release](#building-images-for-release)
 
+If you **do not** need to make a new release you should:
+1. Reset your local branch to the last version update commit
+  ```shell
+  git reset --hard $(git rev-list -1 HEAD -- version.txt)
+  ```
+6. Move on to [Building image for release](#building-images-for-release)
+
+## Building images for release
 1. Activate virtual environment if not already
   ```shell
   source image_builders/bin/activate  # As made in the set up steps
