@@ -88,7 +88,7 @@ The pipeline consists of the following steps:
   #  - renamed to ubuntu-noble-24.04-nogui
   ```
 
-## Testing Changes to Images (Troubleshoot or Bug Fixing)
+## Testing changes to images (troubleshoot or bug fixing)
 
 1. Activate virtual environment if not already
   ```shell
@@ -115,13 +115,15 @@ The pipeline consists of the following steps:
   ```shell
   ansible-playbook -i inventory <other-playbook.yml>
   ```
+6. Repeat step 5/6 making changes to the playbooks
+7. Commit any changes you have made and update the [changelog](./CHANGELOG)
+8. Make a pull request adding the relevant labels and linking, if any, the GitHub issue
 
-6. Repeat step 5/6 making changes to the playbooks and commit and PR any changes that are working. Make sure to update the changelog with changes.
-
-## Project Layout
+## Project layout
 ```shell
 os_builders
 ├── README.md
+├── CHANGELOG
 ├── build.pkr.hcl  # Packer build file
 ├── galaxy.yml  # Ansible Galaxy collection metadata
 ├── prep_builder.yml  # Playbook to install Packer
