@@ -13,7 +13,7 @@
   become: true
 
 - name: Mark next boot as first boot
-  file:
+  ansible.builtin.file:
     path: /var/lock/firstboot
     state: touch
   become: true
