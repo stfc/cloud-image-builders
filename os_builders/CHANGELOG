@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added:
 
 - Added this CHANGELOG file to track changes to the images.
+- Added the Ubuntu 26 builder. [#139](https://github.com/stfc/cloud-image-builders/pull/139)
 
 ### Changed
  Changed image build flavor to l6.c2 to enable images to be used on VMs with less than 50GB disk [#130](https://github.com/stfc/cloud-image-builders/issues/130)

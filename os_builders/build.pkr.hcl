@@ -54,6 +54,12 @@ build {
     external_source_image_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
   }
   source "openstack.builder" {
+    name                      = "ubuntu-resolute"
+    image_name                = "ubuntu-resolute-26.04-nogui-${ local.date_suffix }"
+    ssh_username              = "ubuntu"
+    external_source_image_url = "https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img"
+  }
+  source "openstack.builder" {
     name = "rocky-8"
     image_name = "rocky-8-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
