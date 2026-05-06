@@ -4,15 +4,10 @@ set -euxo pipefail
 
 mkdir -p /mnt/context
 if [[ ! -d "/mnt/context/openstack" ]]; then
-    mount /dev/sro /mnt/context
+    mount /dev/sr0 /mnt/context
 fi
 
 INSTANCEID=$(jq -r .uuid /mnt/context/openstack/latest/meta_data.json)
-
-# fallback to dmidecode if needed
-if [[ -z "$INSTANCEID" ]]; then
-    INSTANCEID=$(dmidecode | awk -F': ' '/UUID/ {print tolower($2)}')
-fi
 
 BASE_URLS=(
     "https://openstack.stfc.ac.uk"
