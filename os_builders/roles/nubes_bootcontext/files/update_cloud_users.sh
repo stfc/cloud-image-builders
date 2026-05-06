@@ -17,7 +17,7 @@ BASE_URLS=(
 
 OPENSTACK_URL=""
 for base in  "${BASE_URLS[@]}"; do
-    url="${base}/getusername?serverID=${INSTANCEID}"
+    url="${base}:9999/getusername?serverID=${INSTANCEID}"
     HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$url")
     if [[ $HTTP_CODE = 200 ]]; then
         OPENSTACK_URL="$url"
@@ -59,15 +59,15 @@ SSH_PUBLIC_KEY=$(jq -r .keys[0].data /mnt/context/openstack/latest/meta_data.jso
 
 groupadd wheel
 
-id -u "$ID" || useradd "$ID" -g wheel -m -s /bin/bash
-usermod "$ID" -a -G wheel,cloud
+id -u "$FEDID" || useradd "$FEDID" -g wheel -m -s /bin/bash
+usermod "$FEDID" -a -G wheel,cloud
 
-[[ -d /home/"$ID"/.ssh ]] || mkdir -p /home/"$ID"/.ssh
-chown "$ID" /home/"$ID"
-chown "$ID" /home/"$ID"/.ssh
-if [[ "$ID" == "$FEDID" ]]; then
-    if ! grep -qF "${SSH_PUBLIC_KEY//\\n/}" /home/"$ID"/.ssh/authorized_keys; then
-        echo "${SSH_PUBLIC_KEY//\\n/}" >> /home/"$ID"/.ssh/authorized_keys
+[[ -d /home/"$FEDID"/.ssh ]] || mkdir -p /home/"$FEDID"/.ssh
+chown "$FEDID" /home/"$FEDID"
+chown "$FEDID" /home/"$FEDID"/.ssh
+if [[ "$FEDID" == "$FEDFEDID" ]]; then
+    if ! grep -qF "${SSH_PUBLIC_KEY//\\n/}" /home/"$FEDID"/.ssh/authorized_keys; then
+        echo "${SSH_PUBLIC_KEY//\\n/}" >> /home/"$FEDID"/.ssh/authorized_keys
     fi
 fi
-chown "$ID" /home/"$ID"/.ssh/authorized_keys
+chown "$FEDID" /home/"$FEDID"/.ssh/authorized_keys
