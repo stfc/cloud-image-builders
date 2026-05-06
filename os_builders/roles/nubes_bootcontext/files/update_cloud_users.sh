@@ -9,6 +9,11 @@ fi
 
 INSTANCEID=$(jq -r .uuid /mnt/context/openstack/latest/meta_data.json)
 
+# fallback to dmidecode if needed
+if [[ -z "$INSTANCEID" ]]; then
+    INSTANCEID=$(dmidecode | awk -F': ' '/UUID/ {print tolower($2)}')
+fi
+
 BASE_URLS=(
     "https://openstack.stfc.ac.uk"
     "https://dev-openstack.stfc.ac.uk"
@@ -41,12 +46,6 @@ for _ in {1..3}; do
     if [[ -n "$FEDID" ]]; then
         break
     fi
-
-    # fallback to dmidecode if needed
-    if [[ -z "$INSTANCEID" ]]; then
-        INSTANCEID=$(dmidecode | awk -F': ' '/UUID/ {print tolower($2)}')
-    fi
-
     sleep 1
 done
 
