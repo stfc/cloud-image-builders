@@ -1,61 +1,67 @@
 #!/bin/bash
 
-if [[ -f /var/lock/firstboot ]] ;
-then
-    for i in packer packer-test;
-    do
-        id -u $i && userdel $i -r;
-    done
-    rm -f /var/lock/firstboot
+set -euxo pipefail
+
+mkdir -p /mnt/context
+if [[ ! -d "/mnt/context/openstack" ]]; then
+    mount /dev/sr0 /mnt/context
 fi
 
-[[ -d /mnt/context ]] || mkdir /mnt/context
-[[ -d /mnt/context/openstack ]] || mount /dev/sr0 /mnt/context
-INSTANCEID=$(jq .uuid /mnt/context/openstack/latest/meta_data.json | sed "s/\"//g")
+INSTANCEID=$(jq -r .uuid /mnt/context/openstack/latest/meta_data.json)
 
-if curl -s http://openstack.nubes.rl.ac.uk:9999/cgi-bin/get_username.sh?"$INSTANCEID" | grep ".";
-then
-    OPENSTACK_URL='openstack.nubes.rl.ac.uk'
-else
-    OPENSTACK_URL='dev-openstack.nubes.rl.ac.uk'
-fi
+BASE_URLS=(
+    "https://openstack.stfc.ac.uk"
+    "https://dev-openstack.stfc.ac.uk"
+)
 
-echo $OPENSTACK_URL
 
-FEDID_RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
-if [[ $FEDID_RESPONSE_CODE != 200 ]]; then
-    echo "$FEDID_RESPONSE_CODE expected 200"
-    exit
-fi
-
-FEDIDS=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username_list.sh?"$INSTANCEID")
-FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
-
-while [ -z "$FEDID" ]
-   do
-    if [ -z "$INSTANCEID" ]
-    then
-        INSTANCEID=$(dmidecode | grep UUID | tr '[:upper:]' '[:lower:]' | sed "s/\\tuuid: //")
+OPENSTACK_URL=""
+for base in  "${BASE_URLS[@]}"; do
+    url="${base}:9999/getusername?serverID=${INSTANCEID}"
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+    if [[ $HTTP_CODE = 200 ]]; then
+        OPENSTACK_URL="$url"
+        break
+    else
+        echo "Error Connecting to ${OPENSTACK_URL}: Expected 200 got ${HTTP_CODE}, trying another"
     fi
-    FEDID=$(curl -s http://$OPENSTACK_URL:9999/cgi-bin/get_username.sh?"$INSTANCEID")
-    ((c++)) && ((c==3)) && c=0 && break
-   done
+done
 
-SSH_PUBLIC_KEY=$(jq .keys[0].data /mnt/context/openstack/latest/meta_data.json | sed "s/\"//g")
+if [[ -z "$OPENSTACK_URL" ]]; then
+    echo "Failed to get valid OpenStack endpoint"
+    exit 1
+fi
+
+
+# --- Fetch FEDID with retries ---
+FEDID=""
+for _ in {1..3}; do
+    FEDID=$(curl -fs "$OPENSTACK_URL" || true)
+
+    if [[ -n "$FEDID" ]]; then
+        break
+    fi
+    sleep 1
+done
+
+if [[ -z "$FEDID" ]]; then
+    echo "Failed to retrieve FEDID from ${OPENSTACK_URL}"
+    exit 1
+fi
+
+SSH_PUBLIC_KEY=$(jq -r .keys[0].data /mnt/context/openstack/latest/meta_data.json)
 
 groupadd wheel
 
-for ID in $FEDID $FEDIDS; do
-    id -u "$ID" || useradd "$ID" -g wheel -m -s /bin/bash
-    usermod "$ID" -a -G wheel,cloud
+id -u "$FEDID" || useradd "$FEDID" -g wheel -m -s /bin/bash
+usermod "$FEDID" -a -G wheel,cloud
 
-    [[ -d /home/"$ID"/.ssh ]] || mkdir -p /home/"$ID"/.ssh
-    chown "$ID" /home/"$ID"
-    chown "$ID" /home/"$ID"/.ssh
-    if [[ "$ID" == "$FEDID" ]]; then
-        if ! grep -qF "${SSH_PUBLIC_KEY//\\n/}" /home/"$ID"/.ssh/authorized_keys; then
-            echo "${SSH_PUBLIC_KEY//\\n/}" >> /home/"$ID"/.ssh/authorized_keys
-        fi
+[[ -d /home/"$FEDID"/.ssh ]] || mkdir -p /home/"$FEDID"/.ssh
+chown "$FEDID" /home/"$FEDID"
+chown "$FEDID" /home/"$FEDID"/.ssh
+if [[ "$FEDID" == "$FEDFEDID" ]]; then
+    if ! grep -qF "${SSH_PUBLIC_KEY//\\n/}" /home/"$FEDID"/.ssh/authorized_keys; then
+        echo "${SSH_PUBLIC_KEY//\\n/}" >> /home/"$FEDID"/.ssh/authorized_keys
     fi
-    chown "$ID" /home/"$ID"/.ssh/authorized_keys
-done
+fi
+chown "$FEDID" /home/"$FEDID"/.ssh/authorized_keys
