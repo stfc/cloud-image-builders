@@ -59,7 +59,7 @@ usermod "$FEDID" -a -G wheel,cloud
 [[ -d /home/"$FEDID"/.ssh ]] || mkdir -p /home/"$FEDID"/.ssh
 chown "$FEDID" /home/"$FEDID"
 chown "$FEDID" /home/"$FEDID"/.ssh
-if [[ "$FEDID" == "$FEDFEDID" ]]; then
+if [[ "$FEDID" == "$FEDID" ]]; then
     if ! grep -qF "${SSH_PUBLIC_KEY//\\n/}" /home/"$FEDID"/.ssh/authorized_keys; then
         echo "${SSH_PUBLIC_KEY//\\n/}" >> /home/"$FEDID"/.ssh/authorized_keys
     fi
