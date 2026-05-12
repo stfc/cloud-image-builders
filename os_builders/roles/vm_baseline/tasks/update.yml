@@ -1,13 +1,13 @@
 - name: Error for unknown distributions
-  fail:
+  ansible.builtin.fail:
     msg: "Unknown distribution {{ ansible_distribution }}"
   when: ansible_distribution != "Rocky" and ansible_distribution != "Ubuntu"
 
 - name: Install system updates for RL systems
-  yum:
+  ansible.builtin.dnf:
     name: "*"
     state: latest
-    update_cache: yes
+    update_cache: true
   when: ansible_distribution == "Rocky"
   register: result
   until: result is not failed
@@ -18,9 +18,9 @@
 - name: Install system updates for Ubuntu systems
   ansible.builtin.apt:
     upgrade: dist
-    update_cache: yes
-    autoremove: yes
-    autoclean: yes
+    update_cache: true
+    autoremove: true
+    autoclean: true
   when: ansible_distribution == 'Ubuntu'
   register: result
   until: result is not failed
@@ -29,9 +29,9 @@
   become: true
 
 - name: get IP
-  shell: hostname -I
+  ansible.builtin.shell: hostname -I
   register: my_hostname
 
 - name: print IP
-  debug:
+  ansible.builtin.debug:
     msg: "{{ my_hostname }}"

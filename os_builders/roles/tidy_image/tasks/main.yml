@@ -5,38 +5,38 @@
   ansible.builtin.meta: flush_handlers
 
 - name: Check if we are in a container from the GitHub workflows
-  become: true
   ansible.builtin.command: "cat /proc/self/cgroup"
   register: in_container_check
+  become: true
 
-- name: set_fact for checking container
+- name: Set_fact for checking container
   ansible.builtin.set_fact:
     in_container: "{{ in_container_check.stdout != '0::/' }}"
 
-- include_tasks: reboot.yml
+- ansible.builtin.include_tasks: reboot.yml
   when: in_container
 
-- include_tasks: get_package_facts.yml
-- include_tasks: run_quattor.yml
+- ansible.builtin.include_tasks: get_package_facts.yml
+- ansible.builtin.include_tasks: run_quattor.yml
   when: ansible_distribution == "Rocky"
-- include_tasks: get_package_facts.yml
-- include_tasks: cleanout_tmp.yml
-- include_tasks: cleanout_rc_directories.yml
-- include_tasks: cleanup_network_conf.yml
-- include_tasks: set_locale.yml
-- include_tasks: wazuh.yml
-- include_tasks: cleanup_quattor.yml
+- ansible.builtin.include_tasks: get_package_facts.yml
+- ansible.builtin.include_tasks: cleanout_tmp.yml
+- ansible.builtin.include_tasks: cleanout_rc_directories.yml
+- ansible.builtin.include_tasks: cleanup_network_conf.yml
+- ansible.builtin.include_tasks: set_locale.yml
+- ansible.builtin.include_tasks: wazuh.yml
+- ansible.builtin.include_tasks: cleanup_quattor.yml
   when: ansible_distribution == "Rocky"
-- include_tasks: run_pakiti.yml
-- include_tasks: cleanup_users.yml
-- include_tasks: cleanup_old_kernels.yml
-- include_tasks: remove_host_ssh_keys.yml
-- include_tasks: cleanup_packages.yml
+- ansible.builtin.include_tasks: run_pakiti.yml
+- ansible.builtin.include_tasks: cleanup_users.yml
+- ansible.builtin.include_tasks: cleanup_old_kernels.yml
+- ansible.builtin.include_tasks: remove_host_ssh_keys.yml
+- ansible.builtin.include_tasks: cleanup_packages.yml
 
 # Cleanup history of build
-- include_tasks: logrotate.yml
-- include_tasks: clear_audit_log.yml
-- include_tasks: remove_shell_history.yml
+- ansible.builtin.include_tasks: logrotate.yml
+- ansible.builtin.include_tasks: clear_audit_log.yml
+- ansible.builtin.include_tasks: remove_shell_history.yml
 
 - name: Mark next boot as first boot
   ansible.builtin.file:

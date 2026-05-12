@@ -1,5 +1,5 @@
-- name: add wazuh repo
-  yum_repository:
+- name: Add wazuh repo
+  ansible.builtin.yum_repository:
     name: wazuh
     file: wazuh
     description: "Repository to install wazuh"
@@ -10,7 +10,7 @@
   become: true
 
 - name: Install wazuh
-  yum:
+  ansible.builtin.dnf:
     name:
       - wazuh-agent-4.14.*
     state: present
