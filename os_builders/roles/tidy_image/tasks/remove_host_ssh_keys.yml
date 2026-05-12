@@ -1,5 +1,5 @@
 - name: Cleanout Host SSH Keys
-  file:
+  ansible.builtin.file:
     path: "/etc/ssh/*key*"
     state: absent
   become: true

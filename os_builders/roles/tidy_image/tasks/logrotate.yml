@@ -1,24 +1,23 @@
 - name: Remove duplicate /etc/logrotate.d/btmp
-  file:
+  ansible.builtin.file:
     path: "/etc/logrotate.d/btmp"
     state: absent
-  when: ansible_distribution == "Rocky" 
+  when: ansible_distribution == "Rocky"
   become: true
 
 - name: Remove duplicate /etc/logrotate.d/wtmp
-  file:
+  ansible.builtin.file:
     path: "/etc/logrotate.d/wtmp"
     state: absent
-  when: ansible_distribution == "Rocky" 
+  when: ansible_distribution == "Rocky"
   become: true
 
-
 - name: Clear Audit log
-  shell: "logrotate -f /etc/logrotate.conf"
+  ansible.builtin.shell: "logrotate -f /etc/logrotate.conf"
   become: true
 
 - name: Cleanout /var/log/*.gz
-  file:
+  ansible.builtin.file:
     path: "/var/log/*.gz"
     state: absent
   become: true

@@ -1,17 +1,17 @@
-- include_tasks: update.yml
-- include_tasks: get-package-facts.yml
+- ansible.builtin.include_tasks: update.yml
+- ansible.builtin.include_tasks: get-package-facts.yml
 
-- include_tasks: cron.yml
-- include_tasks: locale.yml
+- ansible.builtin.include_tasks: cron.yml
+- ansible.builtin.include_tasks: locale.yml
 
-- include_tasks: ssh.yml
-- include_tasks: rsyslog.yml
-- include_tasks: wazuh.yml
+- ansible.builtin.include_tasks: ssh.yml
+- ansible.builtin.include_tasks: rsyslog.yml
+- ansible.builtin.include_tasks: wazuh.yml
 
 # Include Pakiti last, so it will report on the state of a complete system
-- include_tasks: ukescienceca.yml
-- include_tasks: pakiti.yml
-- include_tasks: qemu-guest-agent.yml
+- ansible.builtin.include_tasks: ukescienceca.yml
+- ansible.builtin.include_tasks: pakiti.yml
+- ansible.builtin.include_tasks: qemu-guest-agent.yml
 
-- include_tasks: disable_selinux.yml
-- include_tasks: add_user_security.yml
+- ansible.builtin.include_tasks: disable_selinux.yml
+- ansible.builtin.include_tasks: add_user_security.yml

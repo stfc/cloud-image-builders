@@ -20,7 +20,7 @@
     name: wazuh-agent=4.14.*
     state: present
     allow_downgrade: true
-    update_cache: yes
+    update_cache: true
   become: true
 
 - name: Remove Wazuh repo

@@ -1,11 +1,11 @@
 - name: Cleanout Host SSH Keys
-  file:
+  ansible.builtin.file:
     path: "/home/*/.bash_history"
     state: absent
   become: true
 
 - name: Cleanout Host SSH Keys
-  file:
+  ansible.builtin.file:
     path: "/root/.bash_history"
     state: absent
   become: true

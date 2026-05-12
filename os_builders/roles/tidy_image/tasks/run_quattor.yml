@@ -1,5 +1,5 @@
-- name: run quattor
-  shell: "quattor-fetch && quattor-configure --all --verbose"
+- name: Run quattor
+  ansible.builtin.shell: "quattor-fetch && quattor-configure --all --verbose"
   ignore_errors: true
-  when: ansible_distribution == "Rocky" 
+  when: ansible_distribution == "Rocky"
   become: true
