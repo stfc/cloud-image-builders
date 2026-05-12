@@ -9,7 +9,7 @@
 # https://bugs.launchpad.net/ubuntu/+source/edk2/+bug/1849563/comments/16
 
 - name: Ensure grub command line has 'pci=nocrs,realloc' for NVIDIA PCI BAR fix
-  when: ansible_os_family == "Debian"
+  when: ansible_facts['os_family']  == "Debian"
   become: true
   block:
   - name: Ensure grub2-common is installed for default grub file
@@ -64,7 +64,7 @@
   register: in_container
 
 - name: Update grub configuration
-  when: ansible_os_family == "Debian" and in_container.stdout != "0::/"
+  when: ansible_facts['os_family']  == "Debian" and in_container.stdout != "0::/"
   become: true
   block:
   - name: Update grub configuration for Debian BIOS boot
@@ -72,12 +72,11 @@
     when: grub_updated.changed and bios_dir.stat.exists
 
   - name: Update grub configuration for Debian UEFI boot
-    ansible.builtin.command: "grub-mkconfig -o /boot/efi/EFI/{{ ansible_distribution | lower }}/grub.cfg"
-    when: grub_updated.changed and efi_dir.stat.exists
+      ansible.builtin.command: "grub-mkconfig -o /boot/efi/EFI/{{ ansible_facts['distribution'] | lower }}/grub.cfg"
+      when: grub_updated.changed and efi_dir.stat.exists
 
 - name: Update grub configuration for RedHat based systems
   become: true
   # We could be on EFI or BIOS so need to find the correct grub config location
   ansible.builtin.shell: 'grub2-mkconfig -o "$(readlink -e /etc/grub2.conf)"'
-  when: grub_updated.changed and ansible_os_family == "RedHat" and in_container.stdout != "0::/"
-  
+  when: grub_updated.changed and ansible_facts['os_family']  == "RedHat" and in_container.stdout != "0::/"

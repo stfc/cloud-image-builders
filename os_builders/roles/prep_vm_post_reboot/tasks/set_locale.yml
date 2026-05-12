@@ -41,13 +41,11 @@
 
 - name: Set locale keymap
   command: localectl set-keymap gb
-  when: ansible_distribution == "Rocky"
+  when: ansible_facts['distribution'] == "Rocky"
 
 - name: Set locale keymap
   command: loadkeys uk
-  when: ansible_distribution == "Ubuntu"
-
-
+  when: ansible_facts['distribution'] == "Ubuntu"
 # - name: Set locale x11 keymap
 #   command: localeclt set-x11-keymap gb
-#   when: ansible_distribution == "Rocky"
+#   when: ansible_facts['distribution'] == "Rocky"

@@ -5,5 +5,5 @@
     line: SELINUX=permissive
     state: present
     create: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_facts['distribution'] == "Rocky"
   become: true

@@ -4,7 +4,7 @@
     state: present
     update_cache: true
   become: true
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "22"
+  when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts["distribution_major_version"]== "22"
 
 - name: Install pwquality on Ubuntu 24.04
   ansible.builtin.apt:
@@ -12,11 +12,11 @@
     state: present
     update_cache: true
   become: true
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "24"
+  when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts["distribution_major_version"]== "24"
 
 - name: Update pam-auth
   ansible.builtin.command: pam-auth-update --enable capability systemd unix pwquality
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts['distribution'] == "Ubuntu"
   become: true
 
 - name: Copy over pwquality.conf
@@ -25,5 +25,5 @@
     dest: /etc/security/pwquality.conf
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   become: true
