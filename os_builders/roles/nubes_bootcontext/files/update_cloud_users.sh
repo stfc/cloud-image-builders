@@ -51,7 +51,7 @@ fi
 
 SSH_PUBLIC_KEY=$(jq -r .keys[0].data /mnt/context/openstack/latest/meta_data.json)
 
-groupadd wheel
+getent group wheel > /dev/null || groupadd wheel
 
 id -u "$FEDID" || useradd "$FEDID" -g wheel -m -s /bin/bash
 usermod "$FEDID" -a -G wheel,cloud
