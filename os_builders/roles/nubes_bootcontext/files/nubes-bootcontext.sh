@@ -17,8 +17,6 @@ do
             hostname="networktest";
         fi;
         sleep 5s
-        ((c++)) && ((c==3)) && c=0 && break
-
 
     else
         break;
