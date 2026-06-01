@@ -3,7 +3,7 @@
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/audit/audit.log"
   ignore_errors: true
-  when: ansible_distribution == "Rocky"
+  when: ansible_facts['distribution'] == "Rocky"
   become: true
 
 - name: Clear Audit log
@@ -14,5 +14,5 @@
   block:
   - name: Clear Audit log
     shell: "/bin/cat /dev/null > /var/log/auth.log"
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_facts['distribution'] == "Ubuntu"
   become: true

@@ -1,14 +1,14 @@
 - name: Error for unknown distributions
   fail:
-    msg: "Unknown distribution {{ ansible_distribution }}"
-  when: ansible_distribution != "Rocky" and ansible_distribution != "Ubuntu"
+    msg: "Unknown distribution {{ ansible_facts['distribution'] }}"
+  when: ansible_facts['distribution'] != "Rocky" and ansible_facts['distribution'] != "Ubuntu"
 
 - name: Install system updates for RL systems
   yum:
     name: "*"
     state: latest
     update_cache: yes
-  when: ansible_distribution == "Rocky"
+  when: ansible_facts['distribution'] == "Rocky"
   register: result
   until: result is not failed
   retries: 5
@@ -21,7 +21,7 @@
     update_cache: yes
     autoremove: yes
     autoclean: yes
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_facts['distribution'] == 'Ubuntu'
   register: result
   until: result is not failed
   retries: 5
