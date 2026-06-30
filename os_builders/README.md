@@ -37,6 +37,7 @@ The pipeline consists of the following steps:
   cd cloud-image-builders/os_builders
 
   pip install -r requirements.txt
+  # If you are building the RL8 image use requirements-rl8.txt
 
   ansible-playbook prep_builder.yml
   ```
