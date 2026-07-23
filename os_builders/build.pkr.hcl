@@ -41,7 +41,7 @@ locals {
 
 source "openstack" "builder" {
   domain_name       = "Default"
-  flavor            = "l6.c2"
+  flavor            = "l3.imagecreate"
   security_groups   = ["default"]
   networks          = ["fa2f5ebe-d0e0-4465-9637-e9461de443f1"]  # Dev OpenStack Network ID
   image_visibility  = "private"
@@ -51,28 +51,28 @@ source "openstack" "builder" {
 
 build {
   source "openstack.builder" {
-    name                      = "ubuntu-jammy"
+    name                      = "ubuntu-jammy-22.04-nogui"
     image_name                = "ubuntu-jammy-22.04-nogui-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     external_source_image_url = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
     metadata = local.metadata
   }
   source "openstack.builder" {
-    name                      = "ubuntu-noble"
+    name                      = "ubuntu-noble-24.04-nogui"
     image_name                = "ubuntu-noble-24.04-nogui-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     external_source_image_url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
     metadata = local.metadata
   }
   source "openstack.builder" {
-    name = "rocky-8"
+    name = "rocky-8-nogui"
     image_name = "rocky-8-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
     source "openstack.builder" {
-    name = "rocky-9"
+    name = "rocky-9-nogui"
     image_name = "rocky-9-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
