@@ -7,13 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added:
+See branch [0.3.X](https://github.com/stfc/cloud-image-builders/tree/0.3.X) for upcoming changes.
 
-### Changed:
-
-### Fixed:
-
-## [0.2.0]
+## [0.2.0] - 2026-07-15
 
 ### Added:
 - Added new builders for Rocky 8 and 9 AQ images. [#148](https://github.com/stfc/cloud-image-builders/pull/148)
@@ -25,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed:
 - Ubuntu 22 stuck at reboot when building image. [#153](https://github.com/stfc/cloud-image-builders/pull/153)
 
-## [0.1.0]
+## [0.1.0] - 2026-05-05
 
 ### Added:
 
