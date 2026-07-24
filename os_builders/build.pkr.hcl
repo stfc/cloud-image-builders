@@ -11,7 +11,13 @@ packer {
   }
 }
 
+variable "env" {
+  type    = string
+  default = "dev"
+}
+
 locals {
+  env_network_id = var.env == "prod" ? "5be315b7-7ebd-4254-97fe-18c1df501538" : "fa2f5ebe-d0e0-4465-9637-e9461de443f1"
   date_suffix = "${formatdate("YYYY-MM-DD", timestamp())}"
   metadata = {
     "hw_machine_type" : "q35",
@@ -43,7 +49,7 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.imagecreate"
   security_groups   = ["default"]
-  networks          = ["fa2f5ebe-d0e0-4465-9637-e9461de443f1"]  # Dev OpenStack Network ID
+  networks          = ["${local.env_network_id}"]  
   image_visibility  = "private"
   ssh_timeout       = "20m"
   image_min_disk    = "20"

@@ -91,21 +91,21 @@ The following steps assume you have set up your VM correctly as in the previous 
 
 2. Initiate Packer image build for all images
    ```shell
-   packer build build.pkr.hcl
+   packer build --var env=dev build.pkr.hcl
    ```
 3. Intiate Packer image build for multiple images
    ```shell
    # Replace image-name with the actual image name. "openstack." is required
-   packer build -only <openstack.image-name>,<openstack.image-name>... build.pkr.hcl
+   packer build --var env=dev -only <openstack.image-name>,<openstack.image-name>... build.pkr.hcl
    # e.g.
-   packer build -only openstack.ubuntu-jammy-22.04-nogui,openstack.rocky-8-nogui build.pkr.hcl
+   packer build --var env=dev -only openstack.ubuntu-jammy-22.04-nogui,openstack.rocky-8-nogui build.pkr.hcl
    ```
 4. Initiate Packer image build for a single image
    ```shell
    # Replace image-name with the actual image name. "openstack." is required
-   packer build -only <openstack.image-name> build.pkr.hcl
+   packer build --var env=dev -only <openstack.image-name> build.pkr.hcl
    # e.g.
-   packer build -only openstack.ubuntu-jammy-22.04-nogui build.pkr.hcl
+   packer build --var env=dev -only openstack.ubuntu-jammy-22.04-nogui build.pkr.hcl
    ```
 5. Once the build completes successfully you should get a UUID of the new image
 
