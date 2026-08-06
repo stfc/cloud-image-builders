@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -euxo pipefail
 
 if ls /home/cloud
 then
@@ -13,7 +13,7 @@ if lsattr $KEYSPATH/.ssh/authorized_keys | grep "\-i\-"
 then
     echo "file $KEYSPATH/.ssh/authorized_keys is immutable, cannot write admin key list to it. Generated from \`update_keys.sh\`." #| mail -s "Error during VM authorized_keys update" cloud-support@stfc.ac.uk
 else
-    wget http://openstack.nubes.rl.ac.uk:9999/admin_key_list
+    wget -t 5 http://openstack.nubes.rl.ac.uk:9999/admin_key_list
     if [ -f admin_key_list ]
     then
         mv admin_key_list $KEYSPATH/.ssh/authorized_keys

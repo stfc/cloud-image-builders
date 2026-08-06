@@ -1,6 +1,15 @@
 ---
 all:
   hosts:
-    test-vm:
-      ansible_host: "172.16.255.255"  # Placeholder
+    test-vm0:
+      ansible_host: "172.16.103.104"  # Placeholder
       ansible_user: "ubuntu"  # or rocky
+    test-vm1:
+      ansible_host: "172.16.103.237"  # Placeholder
+      ansible_user: "ubuntu"  # or rocky
+    # test-vm2:
+    #   ansible_host: "172.16.114.80"  # Placeholder
+    #   ansible_user: "rocky"  # or rocky
+    test-vm3:
+      ansible_host: "172.16.103.234"  # Placeholder
+      ansible_user: "rocky"  # or rocky
