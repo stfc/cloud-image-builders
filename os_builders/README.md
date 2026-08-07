@@ -242,15 +242,17 @@ This only requires Git and you do not need the environment set up to build image
 
 4. Add a new unreleased section at the top linking to the next branch name
 
-5. Update the [version.txt](./version.txt) if not already done
+5. In [RELEASES.md](./RELEASES.md) add the releasing version with the date and summarise **changes that users** using the format of previous releases.
 
-6. Commit and push the changes as the following, updating where needed:
+6. Update the [version.txt](./version.txt) if not already done
+
+7. Commit and push the changes as the following, updating where needed:
    ```markdown
    RELEASE: Version 0.3.0
 
    Brief summary of changes. Including breaking changes or unexpected new beaviour.
    ```
 
-7. In GitHub, create a pull request from the next version branch to main [here](https://github.com/stfc/cloud-image-builders/compare/main...main)
+8. In GitHub, create a pull request from the next version branch to main [here](https://github.com/stfc/cloud-image-builders/compare/main...main)
 
-8. Once pull request is merged create a new branch from main with the next version
+9. Once pull request is merged create a new branch from main with the next version
