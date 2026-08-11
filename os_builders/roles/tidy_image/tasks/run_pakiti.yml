@@ -1,5 +1,0 @@
-- name: Run pakiti
-  command:
-    cmd: "pakiti2-client"
-  become: true
-  when: in_container

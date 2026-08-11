@@ -27,7 +27,6 @@
 - include_tasks: wazuh.yml
 - include_tasks: cleanup_quattor.yml
   when: ansible_facts['distribution'] == "Rocky"
-- include_tasks: run_pakiti.yml
 - include_tasks: cleanup_users.yml
 - include_tasks: cleanup_old_kernels.yml
 - include_tasks: remove_host_ssh_keys.yml
