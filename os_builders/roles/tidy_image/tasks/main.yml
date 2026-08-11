@@ -11,10 +11,10 @@
 
 - name: set_fact for checking container
   ansible.builtin.set_fact:
-    in_container: "{{ in_container_check.stdout != '0::/' }}"
+    in_container: "{{ in_container_check.stdout == '0::/' }}"
 
 - include_tasks: reboot.yml
-  when: in_container
+  when: not in_container
 
 - include_tasks: get_package_facts.yml
 - include_tasks: run_quattor.yml

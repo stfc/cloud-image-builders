@@ -5,7 +5,7 @@
 
 - name: Set_fact for checking container for subsequent steps
   ansible.builtin.set_fact:
-    vm_baseline_in_container: "{{ vm_baseline_in_container_check.stdout != '0::/' }}"
+    vm_baseline_in_container: "{{ vm_baseline_in_container_check.stdout == '0::/' }}"
 
 - include_tasks: update.yml
 - include_tasks: get-package-facts.yml
