@@ -1,0 +1,29 @@
+# Contains mitigations for CVEs or security vulnerabilities not addressed by upstream
+
+- name: Switch to hwe-6.8 kernel for Ubuntu 22.04 GhostLock
+  when: ansible_facts['distribution'] == "Ubuntu" and ansible_facts["distribution_major_version"]== "22"
+  block:
+    # As of writing https://ubuntu.com/security/CVE-2026-43499
+    # is only patched for linux-hwe-6.8
+    # since we use VMs which are well tested against HWE vs not switch to the HWE pinned kernel
+      - name: Install hwe-6.8 kernel on Ubuntu 22.04 for GhostLock mitigation
+        ansible.builtin.apt:
+            name: linux-generic-6.8
+            state: latest
+            update_cache: true
+        become: true
+
+      - name: Uninstall the non-hwe kernel on Ubuntu 22.04
+        ansible.builtin.apt:
+            pkg:
+                - linux-generic
+                - linux-signed
+            state: absent
+            update_cache: true
+        become: true
+
+      - name: Reboot to check the VM kernel still boots
+        ansible.builtin.reboot:
+            reboot_timeout: 60
+        become: true
+        when: not vm_baseline_in_container

@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed:
 
+## [0.2.1]
+
+### Changed:
+- Ubuntu 22.04 and All Kubernetes images (which are based on Ubuntu 22.04) now use the HWE 6.8 Kernel to mitigate CVE-2026-43499
+
 ## [0.2.0]
 
 ### Added:

@@ -1,5 +1,15 @@
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: vm_baseline_in_container_check
+
+- name: Set_fact for checking container for subsequent steps
+  ansible.builtin.set_fact:
+    vm_baseline_in_container: "{{ vm_baseline_in_container_check.stdout == '0::/' }}"
+
 - include_tasks: update.yml
 - include_tasks: get-package-facts.yml
+- include_tasks: security-mitigations.yml
 
 - include_tasks: cron.yml
 - include_tasks: locale.yml

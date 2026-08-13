@@ -56,7 +56,7 @@
       command: localectl set-keymap gb
       when: ansible_facts['distribution'] == "Rocky"
       become: true
-  when: in_container
+  when: not in_container
 # - name: Set locale keymap
 #   command: loadkeys uk
 #   when: ansible_facts['distribution'] == "Ubuntu"
