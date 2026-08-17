@@ -2,26 +2,9 @@
 
 ## Contents:
 
-- [How it works](#how-it-works)
 - [How to build images](#how-to-build-images)
 - [How to update the playbooks](#how-to-update-the-playbooks)
 - [How to release a new version](#how-to-release-a-new-verison)
-
-## How it works
-
-There are 3 major phases in the build and release of OS images.
-
-### Phase 1: Building the image
-
-![Phase 1](phase_1.svg)
-
-### Phase 2: Testing the image
-
-![Phase 2](phase_2.svg)
-
-### Phase 3: Releasing the image
-
-![Phase 3](phase_3.svg)
 
 ## How to build images
 
