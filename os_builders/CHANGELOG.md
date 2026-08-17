@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed:
 - update_keys.sh hangs indefinitely. Added a retry limit to the wget command to error and exit.
-
+- Hostname does not get set permanently. Switch to using hostnamectl.
 
 ### Removed:
 
