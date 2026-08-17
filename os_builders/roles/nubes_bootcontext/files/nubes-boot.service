@@ -1,14 +1,15 @@
 [Unit]
-Description=basic boot script
-After=network.service
+Description=Set hostname and start ssh keys scripts
+
+Wants=network-online.target
+After=network-online.target systemd-hostnamed.service
 Before=sshd.service
 
 [Service]
-WorkingDirectory=/usr/local/bin/
+Type=oneshot
+WorkingDirectory=/usr/local/bin
 ExecStart=/usr/local/sbin/nubes-bootcontext.sh
-Restart=on-failure
-RestartSec=5
-StartLimitBurst=3
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target

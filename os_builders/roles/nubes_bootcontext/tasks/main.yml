@@ -48,7 +48,9 @@
 
 - name: Start systemd service
   become: true
-  ansible.builtin.command:
-    cmd: "systemctl enable nubes-boot.service"
+  ansible.builtin.systemd_service:
+    name: nubes-boot.service
+    state: started
+    enabled: true
 
 - include_tasks: update_cloud_users.yml
