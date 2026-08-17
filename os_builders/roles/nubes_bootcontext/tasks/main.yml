@@ -19,6 +19,15 @@
     mode: 0755
   become: true
 
+- name: Copy in set_hostname.sh script
+  copy:
+    src: "set_hostname.sh"
+    dest: "/usr/local/sbin/set_hostname.sh"
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
 - name: Copy in nubes-boot systemd unit
   copy:
     src: "nubes-boot.service"
