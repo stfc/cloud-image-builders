@@ -7,18 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-See branch [0.3.X](https://github.com/stfc/cloud-image-builders/tree/0.3.X) for upcoming changes.
+### Added:
 
-## [0.2.0] - 2026-07-15
+### Changed:
 
 ### Fixed:
 
-## [0.2.1]
+### Removed:
+
+## [0.2.1] - 2026-08-13
 
 ### Changed:
-- Ubuntu 22.04 and All Kubernetes images (which are based on Ubuntu 22.04) now use the HWE 6.8 Kernel to mitigate CVE-2026-43499
+- Ubuntu 22.04 now uses the HWE 6.8 Kernel to mitigate CVE-2026-43499. [#175](https://github.com/stfc/cloud-image-builders/pull/175)
 
-## [0.2.0]
+## [0.2.0] - 2026-07-15
 
 ### Added:
 - Added new builders for Rocky 8 and 9 AQ images. [#148](https://github.com/stfc/cloud-image-builders/pull/148)
@@ -37,10 +39,10 @@ See branch [0.3.X](https://github.com/stfc/cloud-image-builders/tree/0.3.X) for 
 - Added this CHANGELOG file to track changes to the images.
 - Image metadata value "image_builder_version" to track the version of the image builders used when making the image [#135](https://github.com/stfc/cloud-image-builders/pull/135)
 
-### Changed
+### Changed:
 - Changed image build flavor to l6.c2 to enable images to be used on VMs with less than 50GB disk [#130](https://github.com/stfc/cloud-image-builders/issues/130)
 - Changed update_cloud_users.sh to use the new username service. This script is more reslient to failures. [#138](https://github.com/stfc/cloud-image-builders/pull/138)
 
-### Fixed
+### Fixed:
 - Fix user creation on VMs with 10.10 or 192.168 IP address [#126](https://github.com/stfc/cloud-image-builders/issues/126)
 - Fix cleaning up users after image creation [#125](https://github.com/stfc/cloud-image-builders/issues/125)
