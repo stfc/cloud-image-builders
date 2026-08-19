@@ -2,6 +2,8 @@
   ansible.builtin.package_facts:
     manager: auto
 
+- include_tasks: update_cloud_users.yml
+
 - name: Install dnsutils for dig
   ansible.builtin.package:
     name: dnsutils
@@ -52,5 +54,3 @@
     name: nubes-boot.service
     state: started
     enabled: true
-
-- include_tasks: update_cloud_users.yml
