@@ -13,10 +13,11 @@
     owner: 'root'
     group: 'root'
 
-- name: Create a cron entry to run the client
+- name: Copy the run script to cron.daily
   become: true
-  ansible.builtin.cron:
-    name: Report to Pakiti Server
-    minute: 17
-    hour: 7
-    job: '/usr/sbin/pakiti3 --url "https://pakiti.stfc.ac.uk/feed/" --site Cloud'
+  ansible.builtin.copy:
+    src: run-pakiti
+    dest: /etc/cron.daily/run-pakiti
+    mode: '0554'
+    owner: 'root'
+    group: 'root'
