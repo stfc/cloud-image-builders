@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed:
 - Switched from Pakiti 2 to Pakiti 3. Virtual machines will now report to Pakiti correctly.
+- nubes-bootcontext.sh script renamed to nubes-boot.sh to match the service name.
 
 ### Fixed:
 - update_keys.sh hangs indefinitely. Added a retry limit to the wget command to error and exit.

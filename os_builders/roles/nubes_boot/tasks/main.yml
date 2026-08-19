@@ -10,10 +10,10 @@
   when: ansible_facts['distribution'] == "Rocky"
   become: true
 
-- name: Copy in nubes-bootcontext script
+- name: Copy in nubes-boot script
   copy:
-    src: "nubes-bootcontext.sh"
-    dest: "/usr/local/sbin/nubes-bootcontext.sh"
+    src: "nubes-boot.sh"
+    dest: "/usr/local/sbin/nubes-boot.sh"
     owner: root
     group: root
     mode: 0755
