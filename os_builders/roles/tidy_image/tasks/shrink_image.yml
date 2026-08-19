@@ -1,0 +1,5 @@
+- name: fstrim all free blocks before image creation
+  ansible.builtin.command: fstrim /
+  become: true
+  changed_when: true
+  when: not in_container
