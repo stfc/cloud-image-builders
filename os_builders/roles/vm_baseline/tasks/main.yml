@@ -10,6 +10,7 @@
 - include_tasks: update.yml
 - include_tasks: get-package-facts.yml
 - include_tasks: security-mitigations.yml
+- include_tasks: packages.yml
 
 - include_tasks: cron.yml
 - include_tasks: locale.yml
