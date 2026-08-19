@@ -2,6 +2,15 @@
   ansible.builtin.package_facts:
     manager: auto
 
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: nubes_boot_in_container_check
+
+- name: Set_fact for checking container for subsequent steps
+  ansible.builtin.set_fact:
+    nubes_boot_in_container: "{{ nubes_boot_in_container_check.stdout == '0::/' }}"
+
 - include_tasks: update_cloud_users.yml
 
 - name: Install dnsutils for dig
@@ -48,8 +57,9 @@
     mode: 0644
   become: true
 
-- name: Start systemd service
+- name: Enable systemd service
   become: true
   ansible.builtin.systemd_service:
     name: nubes-boot.service
     enabled: true
+  when: not nubes_boot_in_container
