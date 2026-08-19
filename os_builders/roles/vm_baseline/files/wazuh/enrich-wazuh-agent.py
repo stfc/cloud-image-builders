@@ -71,6 +71,9 @@ if response == 0:
         response = requests.get(metadata_url)
         openstack_metadata = response.json()
         metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
+        # IMPORTANT NOTE:
+        # the label "openstack.uuid" is now used by a stackstorm automation
+        # and therefore it cannot be removed
         for vm_attr in metadata_to_parse:
             labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
         agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
