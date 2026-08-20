@@ -1,0 +1,23 @@
+---
+- name: Install apt-transport-https package
+  become: true
+  ansible.builtin.apt:
+    name: apt-transport-https
+    state: latest
+
+- name: Get list of files from /etc/apt/sources.list.d
+  become: true
+  ansible.builtin.find:
+    paths: /etc/apt/sources.list.d
+    patterns: '*.list'
+  register: image_fixes_apt_sources_list_files
+
+- name: Switch to University of Kent mirror service
+  become: true
+  ansible.builtin.replace:
+    regexp: 'http:\/\/.*ubuntu.com\/ubuntu\/'
+    replace: 'https://www.mirrorservice.org/ubuntu/'
+    path: "{{ item }}"
+  with_items:
+    - /etc/apt/sources.list
+    - "{{ image_fixes_apt_sources_list_files.files | map(attribute='path') | list }}"
