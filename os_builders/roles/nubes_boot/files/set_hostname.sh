@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -xeuo pipefail
+set -euxo pipefail
 
 hostname="networktest"
 
@@ -11,8 +11,8 @@ do
 
     if [[ "$ipaddress" == "130."* ]] || [[ $ipaddress == "172."*  ]]; then
         hostname=$(dig -x "$ipaddress" +short | sed "s/.ac.uk./.ac.uk/g");
-        if echo "$hostname" | grep -q "ac"; then
-            hostname "$hostname";
+        if [[ "$hostname" == *ac* ]]; then
+            hostnamectl set-hostname "$hostname";
         else
             hostname="networktest";
         fi;
@@ -23,8 +23,3 @@ do
     fi;
 
 done;
-
-/usr/local/sbin/update_cloud_users.sh
-/usr/local/sbin/update_keys.sh
-
-systemctl restart wazuh-agent

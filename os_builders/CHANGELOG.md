@@ -13,12 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed:
 - Switched from Pakiti 2 to Pakiti 3. Virtual machines will now report to Pakiti correctly.
 - Image build flavor changed to l3.imagecreate. This flavor is on dev and prod and has a disk size of 20GB
+- nubes-bootcontext.sh script renamed to nubes-boot.sh to match the service name.
 
 ### Fixed:
 - update_keys.sh hangs indefinitely. Added a retry limit to the wget command to error and exit.
-
+- Hostname does not get set permanently. Switch to using hostnamectl.
 
 ### Removed:
+- Revert Ubuntu 22 back to mainstream kernel 5.15.0 as it is now patched. 
 
 ## [0.2.1] - 2026-08-13
 
