@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hostname does not get set permanently. Switch to using hostnamectl.
 
 ### Removed:
+- Revert Ubuntu 22 back to mainstream kernel 5.15.0 as it is now patched. 
 
 ## [0.2.1] - 2026-08-13
 
