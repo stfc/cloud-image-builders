@@ -5,22 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
+
+See branch [0.4.X](https://github.com/stfc/cloud-image-builders/tree/0.4.X) for upcoming changes.
+
+## [0.3.0] - 2026-08-20
 
 ### Added:
-- Install epel-release to provide EPEL repositories
+- Install epel-release to provide EPEL repositories. [#181](https://github.com/stfc/cloud-image-builders/pull/181)
 
 ### Changed:
-- Switched from Pakiti 2 to Pakiti 3. Virtual machines will now report to Pakiti correctly.
-- Image build flavor changed to l3.imagecreate. This flavor is on dev and prod and has a disk size of 20GB
-- nubes-bootcontext.sh script renamed to nubes-boot.sh to match the service name.
+- Switched from Pakiti 2 to Pakiti 3. Virtual machines will now report to Pakiti correctly. [#180](https://github.com/stfc/cloud-image-builders/pull/180)
+- Image build flavor changed to l3.imagecreate. This flavor is on dev and prod and has a disk size of 20GB. [#176](https://github.com/stfc/cloud-image-builders/pull/176)
+- nubes-bootcontext.sh script renamed to nubes-boot.sh to match the service name. [#172](https://github.com/stfc/cloud-image-builders/pull/172)
 
 ### Fixed:
-- update_keys.sh hangs indefinitely. Added a retry limit to the wget command to error and exit.
-- Hostname does not get set permanently. Switch to using hostnamectl.
+- update_keys.sh hangs indefinitely. Added a retry limit to the wget command to error and exit. [#179](https://github.com/stfc/cloud-image-builders/pull/179)
+- Hostname does not get set permanently. Switch to using hostnamectl. [#172](https://github.com/stfc/cloud-image-builders/pull/172)
 
 ### Removed:
-- Revert Ubuntu 22 back to mainstream kernel 5.15.0 as it is now patched. 
+- Revert Ubuntu 22 back to mainstream kernel 5.15.0 as it is now patched. [#182](https://github.com/stfc/cloud-image-builders/pull/182)
 
 ## [0.2.1] - 2026-08-13
 
