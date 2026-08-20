@@ -2,24 +2,7 @@
 
 set -euxo pipefail
 
-hostname="networktest"
+ipaddress=$(hostname -I | sed -e "s/ //g" -e "s/\./-/g")
+FQDN="host-${ipaddress}-nubes.stfc.ac.uk"
 
-while [[ "$hostname" == "networktest" ]];
-do
-    
-    ipaddress=$(hostname -I | sed "s/ //g")
-
-    if [[ "$ipaddress" == "130."* ]] || [[ $ipaddress == "172."*  ]]; then
-        hostname=$(dig -x "$ipaddress" +short | sed "s/.ac.uk./.ac.uk/g");
-        if [[ "$hostname" == *ac* ]]; then
-            hostnamectl set-hostname "$hostname";
-        else
-            hostname="networktest";
-        fi;
-        sleep 5s
-
-    else
-        break;
-    fi;
-
-done;
+hostnamectl set-hostname "${FQDN}";
