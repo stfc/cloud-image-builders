@@ -1,0 +1,65 @@
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Check if we are in a container from the GitHub workflows
+  become: true
+  ansible.builtin.command: "cat /proc/self/cgroup"
+  register: nubes_boot_in_container_check
+
+- name: Set_fact for checking container for subsequent steps
+  ansible.builtin.set_fact:
+    nubes_boot_in_container: "{{ nubes_boot_in_container_check.stdout == '0::/' }}"
+
+- include_tasks: update_cloud_users.yml
+
+- name: Install dnsutils for dig
+  ansible.builtin.package:
+    name: dnsutils
+    state: present
+    update_cache: true
+  when: ansible_facts['distribution'] == "Rocky"
+  become: true
+
+- name: Copy in nubes-boot script
+  copy:
+    src: "nubes-boot.sh"
+    dest: "/usr/local/sbin/nubes-boot.sh"
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: Copy in set_hostname.sh script
+  copy:
+    src: "set_hostname.sh"
+    dest: "/usr/local/sbin/set_hostname.sh"
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: Copy in nubes-boot systemd unit
+  copy:
+    src: "nubes-boot.service"
+    dest: "/etc/systemd/system/nubes-boot.service"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Copy in motd
+  copy:
+    src: "motd"
+    dest: "/etc/motd"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+
+- name: Enable systemd service
+  become: true
+  ansible.builtin.systemd_service:
+    name: nubes-boot.service
+    enabled: true
+  when: not nubes_boot_in_container

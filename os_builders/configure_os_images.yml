@@ -16,7 +16,7 @@
   roles:
     - role: vm_baseline
     - role: container_registry
-    - role: nubes_bootcontext
+    - role: nubes_boot
     - role: image_fixes
     - role: tidy_image
     

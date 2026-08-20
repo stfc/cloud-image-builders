@@ -5,20 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
-See branch [0.3.X](https://github.com/stfc/cloud-image-builders/tree/0.3.X) for upcoming changes.
+See branch [0.4.X](https://github.com/stfc/cloud-image-builders/tree/0.4.X) for upcoming changes.
 
-## [0.2.0] - 2026-07-15
+## [0.3.0] - 2026-08-20
 
-### Fixed:
-
-## [0.2.1]
+### Added:
+- Install epel-release to provide EPEL repositories. [#181](https://github.com/stfc/cloud-image-builders/pull/181)
 
 ### Changed:
-- Ubuntu 22.04 and All Kubernetes images (which are based on Ubuntu 22.04) now use the HWE 6.8 Kernel to mitigate CVE-2026-43499
+- Switched from Pakiti 2 to Pakiti 3. Virtual machines will now report to Pakiti correctly. [#180](https://github.com/stfc/cloud-image-builders/pull/180)
+- Image build flavor changed to l3.imagecreate. This flavor is on dev and prod and has a disk size of 20GB. [#176](https://github.com/stfc/cloud-image-builders/pull/176)
+- nubes-bootcontext.sh script renamed to nubes-boot.sh to match the service name. [#172](https://github.com/stfc/cloud-image-builders/pull/172)
 
-## [0.2.0]
+### Fixed:
+- update_keys.sh hangs indefinitely. Added a retry limit to the wget command to error and exit. [#179](https://github.com/stfc/cloud-image-builders/pull/179)
+- Hostname does not get set permanently. Switch to using hostnamectl. [#172](https://github.com/stfc/cloud-image-builders/pull/172)
+
+### Removed:
+- Revert Ubuntu 22 back to mainstream kernel 5.15.0 as it is now patched. [#182](https://github.com/stfc/cloud-image-builders/pull/182)
+
+## [0.2.1] - 2026-08-13
+
+### Changed:
+- Ubuntu 22.04 now uses the HWE 6.8 Kernel to mitigate CVE-2026-43499. [#175](https://github.com/stfc/cloud-image-builders/pull/175)
+
+## [0.2.0] - 2026-07-15
 
 ### Added:
 - Added new builders for Rocky 8 and 9 AQ images. [#148](https://github.com/stfc/cloud-image-builders/pull/148)
@@ -37,10 +50,10 @@ See branch [0.3.X](https://github.com/stfc/cloud-image-builders/tree/0.3.X) for 
 - Added this CHANGELOG file to track changes to the images.
 - Image metadata value "image_builder_version" to track the version of the image builders used when making the image [#135](https://github.com/stfc/cloud-image-builders/pull/135)
 
-### Changed
+### Changed:
 - Changed image build flavor to l6.c2 to enable images to be used on VMs with less than 50GB disk [#130](https://github.com/stfc/cloud-image-builders/issues/130)
 - Changed update_cloud_users.sh to use the new username service. This script is more reslient to failures. [#138](https://github.com/stfc/cloud-image-builders/pull/138)
 
-### Fixed
+### Fixed:
 - Fix user creation on VMs with 10.10 or 192.168 IP address [#126](https://github.com/stfc/cloud-image-builders/issues/126)
 - Fix cleaning up users after image creation [#125](https://github.com/stfc/cloud-image-builders/issues/125)

@@ -18,3 +18,4 @@
     name: qemu-guest-agent.service
     enabled: true
   become: true
+  when: not vm_baseline_in_container

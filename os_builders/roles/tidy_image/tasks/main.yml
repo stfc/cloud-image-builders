@@ -36,6 +36,7 @@
 - include_tasks: logrotate.yml
 - include_tasks: clear_audit_log.yml
 - include_tasks: remove_shell_history.yml
+- include_tasks: shrink_image.yml
 
 - name: Mark next boot as first boot
   ansible.builtin.file:
