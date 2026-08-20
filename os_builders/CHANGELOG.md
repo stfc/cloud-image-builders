@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed:
 - Switched from Pakiti 2 to Pakiti 3. Virtual machines will now report to Pakiti correctly.
+- Image build flavor changed to l3.imagecreate. This flavor is on dev and prod and has a disk size of 20GB
 - nubes-bootcontext.sh script renamed to nubes-boot.sh to match the service name.
 
 ### Fixed:
