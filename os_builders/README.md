@@ -229,13 +229,15 @@ This only requires Git and you do not need the environment set up to build image
 
 6. Update the [version.txt](./version.txt) if not already done
 
-7. Commit and push the changes as the following, updating where needed:
+7. Update the image_builder_version in [build.pkr.hcl](./build.pkr.hcl) if not already done
+
+8. Commit and push the changes as the following, updating where needed:
    ```markdown
    RELEASE: Version 0.3.0
 
    Brief summary of changes. Including breaking changes or unexpected new beaviour.
    ```
 
-8. In GitHub, create a pull request from the next version branch to main [here](https://github.com/stfc/cloud-image-builders/compare/main...main)
+9. In GitHub, create a pull request from the next version branch to main [here](https://github.com/stfc/cloud-image-builders/compare/main...main)
 
-9. Once pull request is merged create a new branch from main with the next version
+10. Once pull request is merged create a new branch from main with the next version

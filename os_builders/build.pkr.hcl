@@ -33,7 +33,7 @@ locals {
     # Once we're RL9 + EFI + Above 4GB decoding everywhere we can enable EFI which gives
     # some perf benefits for GPU passthrough where REBAR can be used
     "hw_firmware_type" : "bios",
-    "image_builder_version": "0.2.0"
+    "image_builder_version": "0.3.0"
   }
   aq_metadata = {
     "AQ_ARCHETYPE": "cloud",
