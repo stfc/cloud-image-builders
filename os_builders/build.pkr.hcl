@@ -71,17 +71,31 @@ build {
     metadata = local.metadata
   }
   source "openstack.builder" {
+    name                      = "ubuntu-resolute-26.04-nogui"
+    image_name                = "ubuntu-resolute-26.04-nogui-${ local.date_suffix }"
+    ssh_username              = "ubuntu"
+    external_source_image_url = "https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img"
+    metadata = local.metadata
+  }
+  source "openstack.builder" {
     name = "rocky-8-nogui"
     image_name = "rocky-8-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
-    source "openstack.builder" {
+  source "openstack.builder" {
     name = "rocky-9-nogui"
     image_name = "rocky-9-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
+    metadata = local.metadata
+  }
+  source "openstack.builder" {
+    name = "rocky-10-nogui"
+    image_name = "rocky-10-nogui-${ local.date_suffix }"
+    ssh_username = "rocky"
+    external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
 
@@ -113,12 +127,19 @@ build {
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
     metadata                  = merge(local.metadata, local.aq_metadata, {"AQ_OSVERSION": "8"})
   }
-    source "openstack.builder" {
+  source "openstack.builder" {
     name = "rocky-9-aq"
     image_name = "rocky-9-aq-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
     metadata                  = merge(local.metadata, local.aq_metadata, {"AQ_OSVERSION": "9"})
+  }
+  source "openstack.builder" {
+    name = "rocky-10-aq"
+    image_name = "rocky-10-aq-${ local.date_suffix }"
+    ssh_username = "rocky"
+    external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
+    metadata                  = merge(local.metadata, local.aq_metadata, {"AQ_OSVERSION": "10"})
   }
 
   sources = ["openstack.builder"]
