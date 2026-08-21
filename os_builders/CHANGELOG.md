@@ -7,18 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Fixed:
+### Added:
+- Added the Ubuntu 26, Rocky 10 and Rocky 10-aq images to the builders. [#191](https://github.com/stfc/cloud-image-builders/pull/191)
 
+### Fixed:
 -  Removes double quotes from Virtual machine UUID reporting to Pakiti.
 
 ## [0.3.1] - 2026-08-25
 
 ### Changed:
-
 - Virtual machines now report to Pakiti with their UUID rather than hostname. [#194](https://github.com/stfc/cloud-image-builders/pull/194)
 
 ### Fixed:
-
 - Typo in the hostname for VMs fixed. [#194](https://github.com/stfc/cloud-image-builders/pull/194)
 
 ## [0.3.0] - 2026-08-20
