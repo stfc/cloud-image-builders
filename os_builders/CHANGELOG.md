@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-See branch [0.4.X](https://github.com/stfc/cloud-image-builders/tree/0.4.X) for upcoming changes.
+### Changed:
+- Virtual machines with ip matching 192.168... or 10.10... have their hostname set as their UUID.
 
 ## [0.3.0] - 2026-08-20
 
