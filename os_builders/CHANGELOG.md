@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-See branch 0.4.X for upcoming changes.
+### Fixed:
+
+-  Removes double quotes from Virtual machine UUID reporting to Pakiti.
 
 ## [0.3.1] - 2026-08-25
 
