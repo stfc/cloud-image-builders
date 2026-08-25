@@ -2,6 +2,11 @@
 
 This doccument contains information relevant to users. This includes behavioral changes and bug fixes to OS images.
 
+
+## 0.3.1 - 25th August 2026
+
+No changes that affect users.
+
 ## 0.3.0 - 20th August 2026
 
 ### Overview:
