@@ -101,21 +101,21 @@ build {
 
   source "openstack.builder" {
     name                      = "azimuth-workstation"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-desktop-260810-1105.qcow2"
+    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-desktop-260914-1528.qcow2"
     image_name                = "azimuth-workstation-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     metadata = local.metadata
   }
   source "openstack.builder" {
     name                      = "azimuth-rstudio"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-linux-rstudio-260810-1105.qcow2"
+    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-linux-rstudio-260914-1509.qcow2"
     image_name                = "azimuth-rstudio-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     metadata = local.metadata
   }
   source "openstack.builder" {
     name                      = "azimuth-jupyter-repo2docker"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-jupyter-repo2docker-260810-1105.qcow2"
+    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-jupyter-repo2docker-260914-1522.qcow2"
     image_name                = "azimuth-jupyter-repo2docker-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     metadata = local.metadata
