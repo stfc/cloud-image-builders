@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added:
 - Added the Ubuntu 26, Rocky 10 and Rocky 10-aq images to the builders. [#191](https://github.com/stfc/cloud-image-builders/pull/191)
+- Updated Azimuth base images to v0.36.2 
 
 ### Fixed:
 -  Removes double quotes from Virtual machine UUID reporting to Pakiti.
