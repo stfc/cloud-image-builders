@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added:
+- Added the UK eScienceRoot-2026 and eScienceCA-3B CA certs [#208](https://github.com/stfc/cloud-image-builders/pull/208)
+
 ### Fixed:
 
 -  Removes double quotes from Virtual machine UUID reporting to Pakiti.
