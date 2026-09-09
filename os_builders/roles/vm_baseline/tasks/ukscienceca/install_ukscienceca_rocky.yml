@@ -12,7 +12,9 @@
 - name: Install UK eScience Packages
   yum:
     name:
-    - ca_UKeScienceRoot-2007
-    - ca_UKeScienceCA-2B
+      - ca_UKeScienceRoot-2007
+      - ca_UKeScienceCA-2B
+      - ca_UKeScienceRoot-2026
+      - ca_UKeScienceCA-3B
     state: present
   become: true
