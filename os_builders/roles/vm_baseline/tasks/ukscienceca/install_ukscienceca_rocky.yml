@@ -12,8 +12,10 @@
 - name: Install UK eScience Packages
   yum:
     name:
+      # 2007 and 2B certs expires Oct 30 2027
       - ca_UKeScienceRoot-2007
       - ca_UKeScienceCA-2B
+      # 2026 and 3B certs expire Mar 31 2046
       - ca_UKeScienceRoot-2026
       - ca_UKeScienceCA-3B
     state: present

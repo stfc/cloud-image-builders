@@ -15,6 +15,7 @@
     state: present
   become: true
 
+# 2007 and 2B certs expires Oct 30 2027
 - name: Install UK eScience Root
   ansible.builtin.apt:
     name: ca-ukescienceroot-2007
@@ -29,6 +30,7 @@
     update_cache: yes
   become: true
 
+# 2026 and 3B certs expire Mar 31 2046
 - name: Install UK eScience Root
   ansible.builtin.apt:
     name: ca-ukescienceroot-2026
