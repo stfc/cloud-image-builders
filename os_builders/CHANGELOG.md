@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -  Removes double quotes from Virtual machine UUID reporting to Pakiti.
 
+### Changed:
+- Changed the aq domain from prod_cloud to prod. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
+
 ## [0.3.1] - 2026-08-25
 
 ### Changed:
