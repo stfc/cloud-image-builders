@@ -37,7 +37,7 @@ locals {
   }
   aq_metadata = {
     "AQ_ARCHETYPE": "cloud",
-    "AQ_DOMAIN": "prod_cloud",
+    "AQ_DOMAIN": "prod",
     "aq_managed": "true",
     "AQ_OS": "rocky",
     "AQ_OSNAME": "rocky",
