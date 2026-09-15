@@ -65,6 +65,8 @@
     name:
       - ncm-ncd
       - ncm-spma
+      - ncm-cdispd
+      - ncm-ntpd
   become: true
 
 - name: Create cloud-init config to run the script
