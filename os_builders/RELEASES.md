@@ -3,6 +3,18 @@
 This doccument contains information relevant to users. This includes behavioral changes and bug fixes to OS images.
 
 
+## 0.3.2 - 17th September 2026
+
+This release provides fixes for the "-aq" type images.
+
+### Details:
+
+#### Fixed: 
+- Added the UK eScienceRoot-2026 and eScienceCA-3B CA certificates.
+    - The Aquilon server had it's host certificates renewed. Virtual machines need these certificates to trust the server.
+- Installed missing ncm services required by Quattor to configure the virtual machines.
+
+
 ## 0.3.1 - 25th August 2026
 
 No changes that affect users.
