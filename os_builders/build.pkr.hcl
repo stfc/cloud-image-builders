@@ -49,7 +49,7 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.imagecreate"
   security_groups   = ["default"]
-  networks          = ["${local.env_network_id}"]  
+  networks          = ["${local.env_network_id}"]
   image_visibility  = "private"
   ssh_timeout       = "20m"
   image_min_disk    = "20"
@@ -138,6 +138,13 @@ build {
     playbook_file = "quattor.yml"
     extra_arguments = [
       # Still required for Rocky 8 and 9
+      "--scp-extra-args", "'-O'",
+    ]
+  }
+  provisioner "ansible" {
+    user          = "${build.User}"
+    playbook_file = "testing_os_images.yml"
+    extra_arguments = [
       "--scp-extra-args", "'-O'",
     ]
   }
