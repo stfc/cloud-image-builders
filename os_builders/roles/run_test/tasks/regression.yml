@@ -1,0 +1,12 @@
+- name: Check only root, rocky, ubuntu and cloud users exist
+  ansible.builtin.command: awk -F':' '($3 == 0 || $3 >= 1000) && $3 < 65534 && $1 !~ /^(root|rocky|ubuntu|cloud)$/ {print $1}' /etc/passwd
+  register: run_test_unexpected_users
+  changed_when: false
+  failed_when: run_test_unexpected_users.stdout != ""
+
+
+- name: Check hostname is host-172-16-X-X.nubes.rl.ac.uk
+  ansible.builtin.command: hostname
+  register: run_test_hostname
+  changed_when: false
+  failed_when: run_test_hostname.stdout is not match('^host-172-16-[0-9]+-[0-9]+\.nubes\.rl\.ac\.uk$')
