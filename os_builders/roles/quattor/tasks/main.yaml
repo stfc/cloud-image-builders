@@ -41,11 +41,9 @@
     state: present
     module_hotfixes: true
   with_items:
-    - appstream
     - extras
     - os
   become: true
-
 
 - name: Add Quattor repositories
   ansible.builtin.yum_repository:
@@ -60,13 +58,18 @@
     - externals-el{{ ansible_facts.distribution_major_version }}
     - quattor-{{ quattor_version }}-el{{ ansible_facts.distribution_major_version }}
 
+- name: Remove the epel repository from upstream so we use mirror epel instead
+  ansible.builtin.dnf:
+    name: epel-release
+    state: absent
+  become: true
+
 - name: Install packages
   ansible.builtin.yum:
     name:
       - ncm-ncd
       - ncm-spma
       - ncm-cdispd
-      - ncmd-ntpd
   become: true
 
 - name: Create cloud-init config to run the script

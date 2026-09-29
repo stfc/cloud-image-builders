@@ -145,15 +145,6 @@ build {
   sources = ["openstack.builder"]
 
   provisioner "ansible" {
-    user          = "${build.User}"
-    playbook_file = "configure_os_images.yml"
-    extra_arguments = [
-      # Workaround https://github.com/hashicorp/packer/issues/12416
-      # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default
-      "--scp-extra-args", "'-O'",
-    ]
-  }
-  provisioner "ansible" {
     only = ["openstack.rocky-8-aq", "openstack.rocky-9-aq", "openstack.rocky-10-aq"]
     user          = "${build.User}"
     playbook_file = "quattor.yml"
@@ -162,5 +153,16 @@ build {
       "--scp-extra-args", "'-O'",
     ]
   }
+
+  provisioner "ansible" {
+    user          = "${build.User}"
+    playbook_file = "configure_os_images.yml"
+    extra_arguments = [
+      # Workaround https://github.com/hashicorp/packer/issues/12416
+      # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default
+      "--scp-extra-args", "'-O'",
+    ]
+  }
+
 }
 
