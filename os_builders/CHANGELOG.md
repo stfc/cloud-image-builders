@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added the UK eScienceRoot-2026 and eScienceCA-3B CA certs [#208](https://github.com/stfc/cloud-image-builders/pull/208)
 - Added the bash-completion package to the Rocky images.
 
+### Changed:
+- Updated Azimuth base images to v0.36.2 [#206](https://github.com/stfc/cloud-image-builders/pull/206)
+
 ### Fixed:
 -  Removes double quotes from Virtual machine UUID reporting to Pakiti.
 - Install missing ncm services for "-aq" images.
