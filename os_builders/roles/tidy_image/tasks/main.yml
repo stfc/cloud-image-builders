@@ -44,3 +44,18 @@
     state: touch
     mode: 0644
   become: true
+
+- name: Put pinned python3 back to default python3 on RL8
+  become: true
+  ansible.builtin.dnf:
+    name: python3
+    state: latest
+  when: ansible_facts['distribution'] == "Rocky"
+
+# This must be the final step, as we rely on 3.12 for Ansible compatibility
+- name: Remove pinned python3.12 and use default python3
+  become: true
+  ansible.builtin.dnf:
+    name: python3.12*
+    state: removed
+  when: ansible_facts['distribution'] == "Rocky"
