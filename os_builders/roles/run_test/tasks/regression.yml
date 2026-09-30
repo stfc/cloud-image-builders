@@ -9,4 +9,4 @@
   ansible.builtin.command: hostname
   register: run_test_hostname
   changed_when: false
-  failed_when: run_test_hostname.stdout is not match('^host-172-16-[0-9]+-[0-9]+\.nubes\.rl\.ac\.uk$')
+  failed_when: run_test_hostname.stdout is not match('^host-(172-16|192-168|10-10)-[0-9]+-[0-9]+\.nubes\.stfc\.ac\.uk$')
