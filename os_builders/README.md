@@ -40,10 +40,7 @@
 
 4. Install Python packages
    ```shell
-   # Unless you are building Rocky 8 images, use the standard requirements.txt
    pip install -r requirements.txt
-   # For Rocky 8 images
-   pip install -r requirements-rl8.txt
    ```
   
 5. Install Packer and dependencies

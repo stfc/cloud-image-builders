@@ -1,0 +1,2 @@
+ansible<10
+ansible-core<2.17

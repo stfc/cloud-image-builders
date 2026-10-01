@@ -13,15 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added the bash-completion package to the Rocky images.
 
 ### Fixed:
--  Removes double quotes from Virtual machine UUID reporting to Pakiti.
+- Removes double quotes from Virtual machine UUID reporting to Pakiti.
 - Install missing ncm services for "-aq" images.
 
 ### Changed:
 - Changed the aq domain from prod_cloud to prod. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
-- RL8 uses Python 3.12 to install various roles to switch to a combined requirements files. The images still ship using the system default Python and 3.12 is removed as part of the image build. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
+- Packer picks the appropriate requirements file for Rocky 8 and 9 image builds, enabling users to build all images at once with the right venvs. [#226](https://github.com/stfc/cloud-image-builders/pull/226)
 - The provisioner adds Quattor support first, then configures runs the OS image builder steps so image prep and cleanup is always the final step. Previously, the OS image builder steps were run first, then Quattor support was added. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
 
 ### Removed
+=======
 - The version pins of the requirements files has been removed to pick up the latest package versions containing security patches. This has been re-tested for support on OpenStack Yoga still. [#226](https://github.com/stfc/cloud-image-builders/pull/226)
 
 

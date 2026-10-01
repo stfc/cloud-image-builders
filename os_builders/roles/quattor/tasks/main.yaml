@@ -59,7 +59,7 @@
     - quattor-{{ quattor_version }}-el{{ ansible_facts.distribution_major_version }}
 
 - name: Remove the epel repository from upstream so we use mirror epel instead
-  ansible.builtin.dnf:
+  ansible.builtin.yum:
     name: epel-release
     state: absent
   become: true
@@ -80,3 +80,4 @@
     group: root
     mode: "0644"
   become: true
+
