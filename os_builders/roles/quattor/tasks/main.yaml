@@ -1,4 +1,23 @@
-- name: Add EPEL repository
+- name: Ensure yum.quattor.repos.d directory exists
+  ansible.builtin.file:
+    # If we place these repos in /etc/yum.repos.d quattor will not update
+    # them and creating duplicate packages across the system and quattor repo dirs
+    # conflicts. Instead get them into the right place so quattor's spma
+    # takes over and puts the right conf in on first-boot
+    path: "{{ quattor_repo_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Remove the built-in epel repository to switch to the gridpp mirror 
+  ansible.builtin.dnf:
+    name: epel-release
+    state: absent
+  become: true
+
+- name: Add gridpp mirror EPEL repository
   ansible.builtin.yum_repository:
     name: epel-{{ ansible_facts.distribution_major_version }}-x86_64
     description: "EPEL {{ ansible_facts.distribution_major_version }} Repository"
@@ -6,6 +25,7 @@
     enabled: true
     gpgcheck: false
     state: present
+    reposdir: "{{ quattor_repo_dir }}"
   become: true
 
 - name: Add Powertools repository
@@ -17,6 +37,7 @@
     gpgcheck: true
     state: present
     module_hotfixes: true
+    reposdir: "{{ quattor_repo_dir }}"
   become: true
 
 - name: Add Rocky mirror repositories crb
@@ -28,6 +49,7 @@
     gpgcheck: true
     state: present
     module_hotfixes: true
+    reposdir: "{{ quattor_repo_dir }}"
   become: true
   when: ansible_facts.distribution_major_version == '9'
 
@@ -40,6 +62,7 @@
     gpgcheck: true
     state: present
     module_hotfixes: true
+    reposdir: "{{ quattor_repo_dir }}"
   with_items:
     - extras
     - os
@@ -53,19 +76,25 @@
     enabled: true
     gpgcheck: false
     state: present
+    reposdir: "{{ quattor_repo_dir }}"
   become: true
   loop:
     - externals-el{{ ansible_facts.distribution_major_version }}
     - quattor-{{ quattor_version }}-el{{ ansible_facts.distribution_major_version }}
 
-- name: Remove the epel repository from upstream so we use mirror epel instead
-  ansible.builtin.yum:
-    name: epel-release
-    state: absent
+- name: Ensure dnf uses the quattor repos and the default ones to bootstrap quattor packages
+  ansible.builtin.lineinfile:
+    regexp: '^reposdir='
+    line: "reposdir=/etc/yum.repos.d,{{ quattor_repo_dir }}"
+    insertafter: '\[main\]'
+    path: "{{ item }}"
+  with_items:
+    - /etc/dnf/dnf.conf
+    - /etc/yum.conf
   become: true
 
 - name: Install packages
-  ansible.builtin.yum:
+  ansible.builtin.dnf:
     name:
       - ncm-ncd
       - ncm-spma
@@ -80,4 +109,3 @@
     group: root
     mode: "0644"
   become: true
-
