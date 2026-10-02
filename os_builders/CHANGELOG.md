@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed:
 - Changed the aq domain from prod_cloud to prod. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
 - Updated Azimuth base images to v0.36.2 [#206](https://github.com/stfc/cloud-image-builders/pull/206)
+- The version pins of the requirements files has been removed to pick up the latest package versions containing security patches. This has been re-tested for support on OpenStack Yoga still. [#229](https://github.com/stfc/cloud-image-builders/pull/229)
 
 ## [0.3.1] - 2026-08-25
 
