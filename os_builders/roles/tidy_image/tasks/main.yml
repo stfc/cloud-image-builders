@@ -17,8 +17,6 @@
   when: not in_container
 
 - include_tasks: get_package_facts.yml
-- include_tasks: run_quattor.yml
-  when: ansible_facts['distribution'] == "Rocky"
 - include_tasks: get_package_facts.yml
 - include_tasks: cleanout_tmp.yml
 - include_tasks: cleanout_rc_directories.yml
