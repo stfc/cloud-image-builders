@@ -145,20 +145,23 @@ build {
   sources = ["openstack.builder"]
 
   provisioner "ansible" {
+    only = ["openstack.rocky-8-aq", "openstack.rocky-9-aq", "openstack.rocky-10-aq"]
     user          = "${build.User}"
+    command       = strcontains(source.name, "rocky-8") ? "envs/rl8.sh" : "envs/default.sh"
+    playbook_file = "quattor.yml"
+    extra_arguments = [
+      # Still required for Rocky 8 and 9
+      "--scp-extra-args", "'-O'",
+    ]
+  }
+
+  provisioner "ansible" {
+    user          = "${build.User}"
+    command       = strcontains(source.name, "rocky-8") ? "envs/rl8.sh" : "envs/default.sh"
     playbook_file = "configure_os_images.yml"
     extra_arguments = [
       # Workaround https://github.com/hashicorp/packer/issues/12416
       # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default
-      "--scp-extra-args", "'-O'",
-    ]
-  }
-  provisioner "ansible" {
-    only = ["openstack.rocky-8-aq", "openstack.rocky-9-aq", "openstack.rocky-10-aq"]
-    user          = "${build.User}"
-    playbook_file = "quattor.yml"
-    extra_arguments = [
-      # Still required for Rocky 8 and 9
       "--scp-extra-args", "'-O'",
     ]
   }
