@@ -13,9 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed:
 
-- Terminate generated sudoers entries with a newline for compatibility with sudo-rs. [#228](https://github.com/stfc/cloud-image-builders/pull/228)
 -  Removes double quotes from Virtual machine UUID reporting to Pakiti.
 - Install missing ncm services for "-aq" images.
+- Terminate generated sudoers entries with a newline for compatibility with sudo-rs. [#228](https://github.com/stfc/cloud-image-builders/pull/228)
 
 ### Changed:
 - Changed the aq domain from prod_cloud to prod. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
