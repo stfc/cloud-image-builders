@@ -5,6 +5,7 @@
 - [How to build images](#how-to-build-images)
 - [How to update the playbooks](#how-to-update-the-playbooks)
 - [How to release a new version](#how-to-release-a-new-verison)
+- [How to release a hotfix](#how-to-release-a-hotfix)
 
 ## How to build images
 
@@ -71,26 +72,22 @@ The following steps assume you have set up your VM correctly as in the previous 
    cd ~/cloud-image-builders/os_builders
    export OS_CLOUD=openstack
    ```
-2. Choose from the following steps whether you want to build all, multiple or one image. Also, "env=dev" should match the environment your application credentials were made in.
-3. Initiate Packer image build for all images
-   ```shell
-   packer build --var env=dev build.pkr.hcl
-   ```
+2. Choose from the following steps whether you want to build one or multiple images. Also, "env=dev" should match the environment your application credentials were made in.
 4. Intiate Packer image build for multiple images
    ```shell
    # Replace image-name with the actual image name. "openstack." is required
-   packer build --var env=dev -only <openstack.image-name>,<openstack.image-name>... build.pkr.hcl
+   packer build --var env=dev -only openstack.<image-name>,openstack.<image-name>... build.pkr.hcl
    # e.g.
-   packer build --var env=dev -only openstack.ubuntu-jammy-22.04-nogui,openstack.rocky-8-nogui build.pkr.hcl
+   packer build --var env=dev -only openstack.ubuntu-jammy-24.04-nogui,openstack.rocky-9-nogui build.pkr.hcl
    ```
 5. Initiate Packer image build for a single image
    ```shell
    # Replace image-name with the actual image name. "openstack." is required
-   packer build --var env=dev -only <openstack.image-name> build.pkr.hcl
+   packer build --var env=dev -only openstack.<image-name> build.pkr.hcl
    # e.g.
    packer build --var env=dev -only openstack.ubuntu-jammy-22.04-nogui build.pkr.hcl
    ```
-6. Once the build completes successfully you should get a UUID of the new image
+6. Once the build completes successfully you will get a UUID of the new image
 
 ### Testing the image is working
 
@@ -159,13 +156,21 @@ The image configuration is based on the Ansible playbooks run by Packer. If we w
    cd ~/cloud-image-builders/os_builders
    export OS_CLOUD=openstack
    ```
-
-2. Switch to the next version branch and checkout from there before developing
+2. Bring development branch up to date with remote
    ```shell
-   git switch 0.3.X
-   git checkout -b <new-feature-branch>
+   git switch develop
+   git pull
    ```
-
+2. Create a branch name using the correct prefix:
+   - **feature/<feature>**
+   - **docs/<docs>**
+   - **bugfix/<fixes>**
+   - **release/<release>**
+2. Switch to new branch
+   ```shell
+   # For example:
+   git switch -c feature/update-wazuh
+   ```
 2. Create a VM using the current image for the OS 
   ```shell
   openstack server create --wait \
@@ -200,7 +205,7 @@ The image configuration is based on the Ansible playbooks run by Packer. If we w
 
 7. Commit any changes you have made and update the [CHANGELOG](./CHANGELOG.md)
 
-8. Make a pull request to the next version branch adding the relevant labels and linking, if any, the GitHub issue
+8. Make a pull request to either **develop** or the parent feature branch ranch adding the relevant labels and linking, if any, the GitHub issue
 
 ## How to release a new image builders version
 
@@ -215,29 +220,67 @@ This only requires Git and you do not need the environment set up to build image
    git clone git@github.com:stfc/cloud-image-builders.git
    cd cloud-image-builders/os_builders
    ```
-
-2. Switch to the next version branch
+2. Create a release branch to freeze changes. Then other work can continue to be merged into develop
    ```shell
-   git switch 0.3.X
+   git switch develop
+   git pull
+   git switch -c release/<version>
    ```
-   
-3. In [CHANEGLOG.md](./CHANGELOG.md) update the unreleased section to the next version and date it.
-
-4. Add a new unreleased section at the top linking to the next branch name
-
-5. In [RELEASES.md](./RELEASES.md) add the releasing version with the date and summarise **changes that users** using the format of previous releases.
-
-6. Update the [version.txt](./version.txt) if not already done
-
-7. Update the image_builder_version in [build.pkr.hcl](./build.pkr.hcl) if not already done
-
-8. Commit and push the changes as the following, updating where needed:
+3. In [CHANEGLOG.md](./CHANGELOG.md):
+   - Update the unreleased section to the next version and date it.
+   - Add the pull request URL to any changes that are missing one.
+   - Add a new unreleased section at the top
+5. In [RELEASES.md](./RELEASES.md):
+   - Add the release version with the date
+   - Summarise changes **that affect** users.
+   - If no changes affect users then state that.
+6. Update the version in:
+   - [version.txt](./version.txt).
+   - [build.pkr.hcl](./build.pkr.hcl): The variable **image_builder_version**
+8. Commit and push the changes as the following:
    ```markdown
-   RELEASE: Version 0.3.0
+   RELEASE: Version 0.X.Y
 
-   Brief summary of changes. Including breaking changes or unexpected new beaviour.
+   See RELEASES.md and CHANGELOG.md for details.
    ```
+9. In GitHub, create a pull request from the release branch to main.
+   ```markdown
+   For example:
+   main <- release/0.5.1
+   ```
+10. Once the release branch has been merged into main, it needs to be merged back into develop
 
-9. In GitHub, create a pull request from the next version branch to main [here](https://github.com/stfc/cloud-image-builders/compare/main...main)
+## How to release a hotfix
 
-10. Once pull request is merged create a new branch from main with the next version
+Sometimes bugs are not noticed until after release. If they are important and need to be fixed we need to be able to get a fix merged into main without merging unprepared development features. Follow the below steps to create a new release with the hotfix.
+
+#### Steps:
+
+1. Start from main and make sure it is up-to-date.
+   ```shell
+   git switch main
+   git pull
+   ```
+2. Create a new branch from here. This avoids having to merge in features from **develop**.
+   ```shell
+   # It is important you use the prefix "hotfix/"
+   git switch -c hotfix/<bug>
+   ```
+3. Write the fix and commit it to the branch.
+   ```shell
+   # ... bug fixing in the playbooks
+   git add <files>
+   git commit
+   # Commit message: 
+   # HOTFIX - os_builders: Some hotfix
+   # 
+   # This issue must be addressed in a hotfix and we cannot wait
+   # for the next release.
+   ```
+4. Test the fix thoroughly against all images. You don't want to have to hotfix a hotfix.
+   ```shell
+   packer build ...
+   ```
+5. Create the release commit within this branch also. Follow steps 4 to 7 from the [release guide](#how-to-release-a-new-image-builders-version).
+6. Create a pull request to the **main** branch.
+7. Once it has been merged follow [How to build images](#how-to-build-images).
