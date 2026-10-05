@@ -1,0 +1,5 @@
+---
+- name: Run Tests On all STFC Cloud Images
+  hosts: all
+  roles:
+    - role: run_test
