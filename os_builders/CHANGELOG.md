@@ -5,16 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## Unreleased:
 
 ### Added:
-- Added the UK eScienceRoot-2026 and eScienceCA-3B CA certs [#208](https://github.com/stfc/cloud-image-builders/pull/208)
-- Added the bash-completion package to the Rocky images.
 
 ### Fixed:
 
--  Removes double quotes from Virtual machine UUID reporting to Pakiti.
-- Install missing ncm services for "-aq" images.
+### Changed:
+
+### Removed:
+
+
+## [0.3.2] - 2026-10-06
+
+### Added:
+- Added the UK eScienceRoot-2026 and eScienceCA-3B CA certs [#208](https://github.com/stfc/cloud-image-builders/pull/208)
+- Added the bash-completion package to the Rocky images.[#214](https://github.com/stfc/cloud-image-builders/pull/214)
+
+### Fixed:
+
+- Removes double quotes from Virtual machine UUID reporting to Pakiti. [#199](https://github.com/stfc/cloud-image-builders/pull/199)
+- Install missing ncm services for "-aq" images. [#212](https://github.com/stfc/cloud-image-builders/pull/212)
+- "quattor-fetch" and "quattor-configure" will no longer error the first time it is run on a virtual machine. [#230https://github.com/stfc/cloud-image-builders/pull/230]()
 
 ### Changed:
 - Changed the aq domain from prod_cloud to prod. [#215](https://github.com/stfc/cloud-image-builders/pull/215)
