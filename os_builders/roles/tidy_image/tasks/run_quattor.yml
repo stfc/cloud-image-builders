@@ -1,5 +1,0 @@
-- name: run quattor
-  shell: "quattor-fetch && quattor-configure --all --verbose"
-  ignore_errors: true
-  when: ansible_facts['distribution'] == "Rocky"
-  become: true
