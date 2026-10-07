@@ -2,7 +2,7 @@
 
 set -x
 
-UUID=$(jq .uuid /mnt/context/openstack/latest/meta_data.json)
+UUID=$(jq -r .uuid /mnt/context/openstack/latest/meta_data.json)
 # We set the host as the UUID in case there are VMs with duplicte IP addresses
 # Such as 192.168.X.Y or 10.10.X.Y
 /usr/sbin/pakiti3 --url "https://pakiti.stfc.ac.uk/feed/" --site Cloud --host "$UUID"

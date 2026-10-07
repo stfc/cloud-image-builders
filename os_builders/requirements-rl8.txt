@@ -1,4 +1,5 @@
-ansible==9.13.0
-ansible-core==2.16.19rc1
-# The most compatible OpenStack CLI version with OpenStack Yoga
-python-openstackclient==5.8.0
+# Ansible 9.x and 2.16.x are the latest supported version for RL8
+ansible<10
+ansible-core<2.17
+python-openstackclient
+

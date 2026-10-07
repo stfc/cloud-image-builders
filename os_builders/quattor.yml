@@ -1,3 +1,9 @@
+- name:
+  hosts: all
+  gather_facts: false  # This is required if we potentially don't have Python available on the target
+  roles:
+    - role: ensure_python
+
 - name: Install Quattor Onto STFC Cloud User Image
   hosts: all
   roles:

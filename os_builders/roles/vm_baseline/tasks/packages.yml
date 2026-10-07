@@ -5,3 +5,10 @@
     state: latest
   become: true
   when: ansible_facts['distribution'] == "Rocky"
+
+- name: Install bash-completion package
+  ansible.builtin.package:
+    name: bash-completion
+    state: latest
+  become: true
+  when: ansible_facts['distribution'] == "Rocky"

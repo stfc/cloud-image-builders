@@ -5,14 +5,19 @@
     - fail:
         msg: "[ERROR] Empty inventory. No host available."
       when: groups.all|length == 0
-      
-- name: Prepare the image with the STFC security baseline
+
+- name:
   hosts: all
+  gather_facts: false  # This is required if we potentially don't have Python available on the target
   pre_tasks:
     - name: User warning
       ansible.builtin.debug:
         msg: "[Warning] Do not run on non-cloud machine"
+  roles:
+    - role: ensure_python
 
+- name: Prepare the image with the STFC security baseline
+  hosts: all
   roles:
     - role: vm_baseline
     - role: container_registry
