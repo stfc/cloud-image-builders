@@ -2,6 +2,23 @@
 
 This doccument contains information relevant to users. This includes behavioral changes and bug fixes to OS images.
 
+## 0.3.2 - 6th October 2026
+
+### Overview:
+
+This release fixes issues with the "-aq" style Rocky images.
+
+### Details:
+
+#### Added:
+- UK eScienceRoot-2026 and eScienceCA-3B CA certificates pre-installed.
+    - The Aquilon server's certificates were updated. This prevented new virtual machines from contacting the server and being able to pull any config.
+- bash-completion package pre-installed on all Rocky images.
+    - This package was missing and caused unexpected behaviour compared to previous images.
+
+#### Fixed:
+- Updated how Quattor is installed onto the "-aq" images.
+    - The first "quattor-fetch" and "quattor-configure" should no longer error on new virtual machines.
 
 ## 0.3.1 - 25th August 2026
 
