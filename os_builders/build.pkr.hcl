@@ -49,7 +49,7 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.imagecreate"
   security_groups   = ["default"]
-  networks          = ["${local.env_network_id}"]  
+  networks          = ["${local.env_network_id}"]
   image_visibility  = "private"
   ssh_timeout       = "20m"
   image_min_disk    = "20"
@@ -160,6 +160,13 @@ build {
     extra_arguments = [
       # Workaround https://github.com/hashicorp/packer/issues/12416
       # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default
+      "--scp-extra-args", "'-O'",
+    ]
+  }
+  provisioner "ansible" {
+    user          = "${build.User}"
+    playbook_file = "testing_os_images.yml"
+    extra_arguments = [
       "--scp-extra-args", "'-O'",
     ]
   }
