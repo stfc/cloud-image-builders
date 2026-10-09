@@ -1,2 +1,0 @@
-- include_tasks: stateful.yml
-- include_tasks: regression.yml

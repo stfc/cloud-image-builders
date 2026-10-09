@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased:
 
 ### Added:
-- Added the testing_os_images.yml playbook and run_test role. [#239](https://github.com/stfc/cloud-image-builders/pull/239)
 - Added the Ubuntu 26 and Rocky 10 images to the builders. [#191](https://github.com/stfc/cloud-image-builders/pull/191)
 
 ### Fixed:

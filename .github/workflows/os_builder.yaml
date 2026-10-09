@@ -69,4 +69,3 @@ jobs:
         run: |
           cd os_builders
           ansible-playbook configure_os_images.yml -i ../.github/localhost.yml
-
