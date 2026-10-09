@@ -72,7 +72,7 @@ build {
   }
   source "openstack.builder" {
     name                      = "ubuntu-resolute-26.04-nogui"
-    image_name                = "ubuntu-resolute-26.04-nogui-${ local.date_suffix }"
+    image_name                = "ubuntu-resolute-26.04-nogui-preview-${ local.date_suffix }"
     ssh_username              = "ubuntu"
     external_source_image_url = "https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img"
     metadata = local.metadata
@@ -93,7 +93,7 @@ build {
   }
   source "openstack.builder" {
     name = "rocky-10-nogui"
-    image_name = "rocky-10-nogui-${ local.date_suffix }"
+    image_name = "rocky-10-nogui-preview-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
