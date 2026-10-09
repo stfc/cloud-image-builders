@@ -29,7 +29,7 @@
     - name: Add cloud user to sudoers
       copy:
         dest: /etc/sudoers.d/cloud-team-user
-        content: "cloud ALL=(ALL) NOPASSWD:ALL"
+        content: "cloud ALL=(ALL) NOPASSWD:ALL\n"
         mode: 0440
   become: true
 
