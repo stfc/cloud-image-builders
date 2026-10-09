@@ -4,9 +4,10 @@
   changed_when: false
   failed_when: run_test_unexpected_users.stdout != ""
 
-
-- name: Check hostname is host-172-16-X-X.nubes.rl.ac.uk
+- name: Check hostname is contains the IP address of the host in the format host-<IP_ADDRESS>.nubes.stfc.ac.uk
   ansible.builtin.command: hostname
   register: run_test_hostname
   changed_when: false
-  failed_when: run_test_hostname.stdout is not match('^host-(172-16|192-168|10-10)-[0-9]+-[0-9]+\.nubes\.stfc\.ac\.uk$')
+  failed_when: run_test_hostname.stdout is not match('^host-' + ansible_facts['default_ipv4']['address'].replace('.', '-') + '\.nubes\.stfc\.ac\.uk$')
+  # We cannot set the hostname on a GitHub actions container, so we skip this check if we are in a container
+  when: not in_container
