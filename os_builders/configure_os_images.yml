@@ -38,4 +38,4 @@
     - role: nubes_boot
     - role: image_fixes
     - role: tidy_image
-    
+    - role: run_test
