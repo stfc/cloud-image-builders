@@ -17,9 +17,10 @@ if [[ "$image_name" == *aq ]]; then
     done
    
 else
-    openstack image set --public --name "$image_name" "$new_image_id"
+    openstack image set --public "$new_image_id"
 fi
 
+openstack image set --name "$image_name" "$new_image_id"
 openstack image set --deactivate --name "$warehoused_image_name" "$warehoused_image_id"
 
 cat << EOF
