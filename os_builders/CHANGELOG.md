@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed:
 
 ### Removed:
+- Removed the Azimuth builds as these images aren't being used currently. [#243](https://github.com/stfc/cloud-image-builders/pull/243)
 
 
 ## [0.3.2] - 2026-10-06

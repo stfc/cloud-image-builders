@@ -98,28 +98,6 @@ build {
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
-
-  source "openstack.builder" {
-    name                      = "azimuth-workstation"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-desktop-260914-1528.qcow2"
-    image_name                = "azimuth-workstation-${ local.date_suffix }"
-    ssh_username              = "ubuntu"
-    metadata = local.metadata
-  }
-  source "openstack.builder" {
-    name                      = "azimuth-rstudio"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-linux-rstudio-260914-1509.qcow2"
-    image_name                = "azimuth-rstudio-${ local.date_suffix }"
-    ssh_username              = "ubuntu"
-    metadata = local.metadata
-  }
-  source "openstack.builder" {
-    name                      = "azimuth-jupyter-repo2docker"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-jupyter-repo2docker-260914-1522.qcow2"
-    image_name                = "azimuth-jupyter-repo2docker-${ local.date_suffix }"
-    ssh_username              = "ubuntu"
-    metadata = local.metadata
-  }
   source "openstack.builder" {
     name = "rocky-8-aq"
     image_name = "rocky-8-aq-${ local.date_suffix }"
