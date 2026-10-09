@@ -6,6 +6,7 @@
 - [How to update the playbooks](#how-to-update-the-playbooks)
 - [How to release a new version](#how-to-release-a-new-verison)
 - [How to release a hotfix](#how-to-release-a-hotfix)
+- [Branch reviews](#branch-reviews)
 
 ## How to build images
 
@@ -205,7 +206,9 @@ The image configuration is based on the Ansible playbooks run by Packer. If we w
 
 7. Commit any changes you have made and update the [CHANGELOG](./CHANGELOG.md)
 
-8. Make a pull request to either **develop** or the parent feature branch ranch adding the relevant labels and linking, if any, the GitHub issue
+8. Make a pull request to either **develop** adding labels and linking, if any, the GitHub issue
+
+9. See [Branch Reviews](#branch-reviews)
 
 ## How to release a new image builders version
 
@@ -248,7 +251,9 @@ This only requires Git and you do not need the environment set up to build image
    For example:
    main <- release/0.5.1
    ```
-10. Once the release branch has been merged into main, it needs to be merged back into develop
+10. See [Branch Reviews](#branch-reviews)
+11. Once the release branch has been merged into main, it needs to be merged back into develop
+12. See [Branch Reviews](#branch-reviews)
 
 ## How to release a hotfix
 
@@ -283,4 +288,58 @@ Sometimes bugs are not noticed until after release. If they are important and ne
    ```
 5. Create the release commit within this branch also. Follow steps 4 to 7 from the [release guide](#how-to-release-a-new-image-builders-version).
 6. Create a pull request to the **main** branch.
+10. See [Branch Reviews](#branch-reviews)
 7. Once it has been merged follow [How to build images](#how-to-build-images).
+11. After we are back to stable. The branch has been merged into main, it needs to be merged back into develop
+12. See [Branch Reviews](#branch-reviews)
+
+
+## Branch Reviews
+
+Merging feature branches into **develop** is where the majority of code will be reviewed. Any new features should be working before they are merged. This is important as release branches are made off of develop. That means any broken code in develop will make it to a release.
+
+**The following describes criteria for the quality and number of reviews for the most common branching scenarios:**
+
+### develop <-- feature/*
+#### Consider:
+This is usually new code such as tests, bug fixes, new features...
+
+#### Criteria:
+- At least 2 reviewers
+- Must confirm code is working
+- Must confirm testing has been done via an image build
+
+### main <-- release/*
+#### Consider:
+1. All code has been through the develop branch and reviewed thoroughly.
+2. Here we make sure that the release documentation is clear and the version update is sane.
+3. Although the commits with the new code will be included in the changes, it is not neccesary to review them.
+
+#### Criteria:
+- At least 1 reviewer
+- Must confirm the version update follows [SemVer](https://semver.org/)
+- Must confirm [RELEASES.md](./RELEASES.md) and [CHANGELOG.md](./CHANGELOG.md) have been updated.
+
+### develop <-- release/*
+#### Consider:
+1. The code has already been merged to main.
+2. The only new changes should be docummentation and versions
+3. There may be merge conflicts as develop has moved ahead
+
+#### Criteria:
+- At least 1 reviewer
+- Must confirm the [CHANGELOG.md](./CHANGELOG.md) has had conflicts resolved correctly.
+
+### main <-- hotfix/*
+#### Consider:
+Can the fix be applied as a bugfix in the next release?
+- Yes. Change the merge target to **develop**
+- No. Review thoroughly
+
+#### Criteria:
+- At least 2 reviewers
+- Must confirm code is working
+- Must confirm testing has been done via an image build **by someone other than the author**
+
+### develop <-- hotfix/*
+See develop <-- release/*
