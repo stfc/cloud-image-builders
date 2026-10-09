@@ -141,12 +141,5 @@ build {
       "--scp-extra-args", "'-O'",
     ]
   }
-  provisioner "ansible" {
-    user          = "${build.User}"
-    playbook_file = "testing_os_images.yml"
-    extra_arguments = [
-      "--scp-extra-args", "'-O'",
-    ]
-  }
 }
 

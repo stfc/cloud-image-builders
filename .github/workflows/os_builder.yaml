@@ -33,7 +33,7 @@ jobs:
   test_image_build_ubuntu:
       strategy:
         matrix:
-          os: ["ubuntu:22.04", "ubuntu:24.04"]
+          os: ["ubuntu:22.04", "ubuntu:24.04", "ubuntu:26.04"]
       runs-on: ubuntu-latest
       container: ${{ matrix.os }}
       steps:
@@ -55,7 +55,7 @@ jobs:
   test_image_build_rocky:
     strategy:
       matrix:
-        os: ["rockylinux:8", "rockylinux:9"]
+        os: ["rockylinux/rockylinux:8", "rockylinux/rockylinux:9", "rockylinux/rockylinux:10"]
     runs-on: ubuntu-latest
     container: ${{ matrix.os }}
     steps:
@@ -64,7 +64,7 @@ jobs:
         run: |
           dnf install epel-release -y
           # These have to be separate steps as ansible is provided by epel-release
-          dnf install ansible -y
+          dnf install ansible-core -y
       - name: Run configure_os_images playbook
         run: |
           cd os_builders

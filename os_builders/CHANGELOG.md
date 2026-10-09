@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added the Ubuntu 26 and Rocky 10 images to the builders. [#191](https://github.com/stfc/cloud-image-builders/pull/191)
 
 ### Fixed:
+- Various CI fixes, including making sure Ubuntu 26 and RL10 gets tested, the regression tests run, and resolving warnings flagged by ansible-lint or the CI pipeline. [#241](https://github.com/stfc/cloud-image-builders/pull/241)
 
 ### Changed:
 
