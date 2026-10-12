@@ -1,0 +1,165 @@
+---
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+# --- Pakiti ---
+- name: Send a Pakiti report
+  ansible.builtin.command: /etc/cron.daily/run-pakiti
+  register: pakiti_report
+  changed_when: false
+  failed_when: false
+  become: true
+
+# --- Wazuh ---
+- name: Get the Wazuh manager address
+  ansible.builtin.command: grep -oPm1 '(?<=<address>)[^<]+' /var/ossec/etc/ossec.conf
+  register: wazuh_manager
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: Check the Wazuh manager ports are reachable
+  ansible.builtin.wait_for:
+    host: "{{ wazuh_manager.stdout }}"
+    port: "{{ item }}"
+    timeout: 5
+  loop:
+    - 1514
+    - 1515
+  register: wazuh_ports
+  ignore_errors: true
+  when: wazuh_manager.stdout | length > 0
+
+- name: Get the Wazuh agent connection state
+  ansible.builtin.command: cat /var/ossec/var/run/wazuh-agentd.state
+  register: wazuh_state
+  changed_when: false
+  failed_when: false
+  become: true
+
+# --- sudo ---
+- name: Run a command with sudo
+  ansible.builtin.command: id -u
+  register: sudo_check
+  changed_when: false
+  ignore_errors: true
+  become: true
+
+# --- Package manager (apt on Ubuntu, dnf on Rocky) ---
+- name: Install test packages
+  ansible.builtin.package:
+    name:
+      - jq
+      - tree
+      - rsync
+    state: present
+  register: package_install
+  ignore_errors: true
+  become: true
+
+# --- Cloud support keys ---
+- name: Read the cloud user's authorized_keys
+  ansible.builtin.slurp:
+    src: /home/cloud/.ssh/authorized_keys
+  register: cloud_keys
+  failed_when: false
+  become: true
+
+# --- Docker mirror (only on images with Docker installed) ---
+- name: Read the Docker daemon config
+  ansible.builtin.slurp:
+    src: /etc/docker/daemon.json
+  register: docker_config
+  failed_when: false
+  become: true
+  when: "'docker.service' in ansible_facts.services"
+
+
+# =============================================================================
+# Results: everything below judges what was collected above.
+# =============================================================================
+
+- name: Load baseline files from the repo
+  ansible.builtin.set_fact:
+    baseline_keys: "{{ lookup('ansible.builtin.file', role_path ~ '/../vm_baseline/files/authorized_keys', errors='warn') | default('', true) | trim }}"
+    baseline_docker: "{{ lookup('ansible.builtin.file', role_path ~ '/../container_registry/files/docker.json', errors='warn') | default('', true) | trim }}"
+    services: "{{ ansible_facts.services }}"
+    docker_installed: "{{ 'docker.service' in ansible_facts.services }}"
+
+- name: Work out each check's result
+  ansible.builtin.set_fact:
+    results:
+      - name: pakiti_report_sent
+        ok: "{{ (pakiti_report.rc | default(1)) == 0 }}"
+        reason: "run-pakiti exited {{ pakiti_report.rc | default('?') }}: {{ pakiti_report.msg | default('', true) or ((pakiti_report.stderr_lines | default([])) | last | default('no output')) }}"
+
+      - name: qemu_guest_agent_running
+        ok: "{{ (services['qemu-guest-agent.service'].state | default('')) == 'running' }}"
+        reason: "qemu-guest-agent is {{ services['qemu-guest-agent.service'].state | default('not installed') }}"
+
+      - name: wazuh_agent_running
+        ok: "{{ (services['wazuh-agent.service'].state | default('')) == 'running' }}"
+        reason: "wazuh-agent is {{ services['wazuh-agent.service'].state | default('not installed') }}"
+
+      - name: wazuh_manager_ports_open
+        ok: "{{ wazuh_manager.stdout | default('') | length > 0 and wazuh_ports is not failed }}"
+        reason: >-
+          {{ 'no manager address in /var/ossec/etc/ossec.conf' if (wazuh_manager.stdout | default('') | length == 0)
+             else 'cannot reach ' ~ wazuh_manager.stdout ~ ' on port(s) '
+                  ~ (wazuh_ports.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | join(', ')) }}
+
+      - name: wazuh_agent_connected
+        ok: "{{ \"status='connected'\" in (wazuh_state.stdout | default('')) }}"
+        reason: >-
+          {{ 'wazuh-agentd.state not found' if (wazuh_state.rc | default(1)) != 0
+             else 'agent state: ' ~ (wazuh_state.stdout_lines | default([]) | select('match', '^status=') | first | default('unknown')) }}
+
+      - name: sudo_escalation
+        ok: "{{ (sudo_check.stdout | default('') | trim) == '0' }}"
+        reason: "sudo failed: {{ sudo_check.msg | default(sudo_check.stderr | default('id -u did not return 0')) }}"
+
+      - name: packages_installed
+        ok: "{{ package_install is not failed }}"
+        reason: "package install failed: {{ package_install.msg | default('unknown error') }}"
+
+      - name: cloud_support_keys_match_baseline
+        ok: >-
+          {{ cloud_keys.content is defined and baseline_keys | length > 0
+             and (cloud_keys.content | b64decode | trim) == baseline_keys }}
+        reason: >-
+          {{ 'baseline vm_baseline/files/authorized_keys not found' if baseline_keys | length == 0
+             else '/home/cloud/.ssh/authorized_keys not found' if cloud_keys.content is not defined
+             else '/home/cloud/.ssh/authorized_keys does not match vm_baseline/files/authorized_keys' }}
+
+- name: Add Docker results (only when Docker is installed)
+  ansible.builtin.set_fact:
+    results: >-
+      {{ results + [
+           {'name': 'docker_config_matches_baseline',
+            'ok': docker_config.content is defined and baseline_docker | length > 0
+                  and (docker_config.content | b64decode | from_json) == (baseline_docker | from_json),
+            'reason': 'baseline container_registry/files/docker.json not found' if baseline_docker | length == 0
+                      else '/etc/docker/daemon.json not found' if docker_config.content is not defined
+                      else '/etc/docker/daemon.json does not match container_registry/files/docker.json'},
+           {'name': 'docker_running',
+            'ok': (services['docker.service'].state | default('')) == 'running',
+            'reason': 'docker is ' ~ (services['docker.service'].state | default('unknown'))}
+         ] }}
+  when: docker_installed | bool
+
+- name: Summary
+  ansible.builtin.debug:
+    msg: "{{ ('PASS  ' ~ item.name) if (item.ok | bool) else ('FAIL  ' ~ item.name ~ ' - ' ~ (item.reason | trim)) }}"
+  loop: "{{ results }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Note skipped Docker checks
+  ansible.builtin.debug:
+    msg: "SKIP  docker checks - Docker is not installed on this image"
+  when: not (docker_installed | bool)
+
+- name: Fail if any check failed
+  ansible.builtin.fail:
+    msg: "Failed checks: {{ results | rejectattr('ok') | map(attribute='name') | join(', ') }}"
+  when: results | map(attribute='ok') | map('bool') | reject | list | length > 0
