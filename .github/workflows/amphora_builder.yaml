@@ -43,7 +43,7 @@ jobs:
           sha256sum output/amphora-x64-$(date +%Y-%m-%d)-haproxy.qcow2 > output/amphora-x64-$(date +%Y-%m-%d)-haproxy.qcow2.sha256
       
       - name: Upload image
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: amphora-image
           if-no-files-found: error
