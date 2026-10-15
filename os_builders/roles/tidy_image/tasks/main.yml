@@ -4,15 +4,6 @@
   # E.g. update grub
   ansible.builtin.meta: flush_handlers
 
-- name: Check if we are in a container from the GitHub workflows
-  become: true
-  ansible.builtin.command: "cat /proc/self/cgroup"
-  register: in_container_check
-
-- name: set_fact for checking container
-  ansible.builtin.set_fact:
-    in_container: "{{ in_container_check.stdout == '0::/' }}"
-
 - include_tasks: reboot.yml
   when: not in_container
 

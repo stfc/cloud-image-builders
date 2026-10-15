@@ -59,12 +59,8 @@
     path: /boot/grub
   register: bios_dir
 
-- name: Check if we are in a container from the GitHub workflows
-  ansible.builtin.command: "cat /proc/self/cgroup"
-  register: in_container
-
 - name: Update grub configuration
-  when: ansible_facts['os_family']  == "Debian" and in_container.stdout != "0::/"
+  when: ansible_facts['os_family']  == "Debian" and in_container
   become: true
   block:
     - name: Update grub configuration for Debian BIOS boot
@@ -79,4 +75,4 @@
   become: true
   # We could be on EFI or BIOS so need to find the correct grub config location
   ansible.builtin.shell: 'grub2-mkconfig -o "$(readlink -e /etc/grub2.conf)"'
-  when: grub_updated.changed and ansible_facts['os_family']  == "RedHat" and in_container.stdout != "0::/"
+  when: grub_updated.changed and ansible_facts['os_family']  == "RedHat" and in_container
