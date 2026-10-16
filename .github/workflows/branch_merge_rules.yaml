@@ -1,0 +1,30 @@
+name: Branch Merge Rules
+
+on:
+  pull_request:
+    branches:
+      - "main"
+      - "develop"
+
+jobs:
+  check_main:
+    if: github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        if: "!startsWith(github.head_ref, 'release/') && !startsWith(github.head_ref, 'hotfix/')"
+        run: |
+          echo "Only release/* and hotfix/* branches can be merged into main."
+          echo "Source branch: ${{ github.head_ref }}"
+          exit 1
+
+  check_develop:
+    if: github.base_ref == 'develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        if: "!startsWith(github.head_ref, 'feature/') && !startsWith(github.head_ref, 'docs/') && !startsWith(github.head_ref, 'bugfix/') && !startsWith(github.head_ref, 'release/') && !startsWith(github.head_ref, 'hotfix/')"
+        run: |  
+          echo "Only feature/*, bugfix/*, docs/* and hotfix/* branches can be merged into develop."
+          echo "Source branch: ${{ github.head_ref }}"
+          exit 1
