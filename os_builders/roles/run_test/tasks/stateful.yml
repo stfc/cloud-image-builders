@@ -85,6 +85,7 @@
     baseline_docker: "{{ lookup('ansible.builtin.file', role_path ~ '/../container_registry/files/docker.json', errors='warn') | default('', true) | trim }}"
     services: "{{ ansible_facts.services }}"
     docker_installed: "{{ 'docker.service' in ansible_facts.services }}"
+    in_packer_build: "{{ packer_build_name is defined }}"
 
 - name: Work out each check's result
   ansible.builtin.set_fact:
@@ -92,14 +93,22 @@
       - name: pakiti_report_sent
         ok: "{{ (pakiti_report.rc | default(1)) == 0 }}"
         reason: "run-pakiti exited {{ pakiti_report.rc | default('?') }}: {{ pakiti_report.msg | default('', true) or ((pakiti_report.stderr_lines | default([])) | last | default('no output')) }}"
-
+        
       - name: qemu_guest_agent_running
-        ok: "{{ (services['qemu-guest-agent.service'].state | default('')) == 'running' }}"
-        reason: "qemu-guest-agent is {{ services['qemu-guest-agent.service'].state | default('not installed') }}"
+        ok: >-
+          {{ (services['qemu-guest-agent.service'].status | default('')) in ['enabled', 'static'] if in_packer_build
+             else (services['qemu-guest-agent.service'].state | default('')) == 'running' }}
+        reason: >-
+          {{ 'qemu-guest-agent is ' ~ (services['qemu-guest-agent.service'].status | default('not installed')) ~ ' (build: must be installed and enabled)' if in_packer_build
+             else 'qemu-guest-agent is ' ~ (services['qemu-guest-agent.service'].state | default('not installed')) }}
 
       - name: wazuh_agent_running
-        ok: "{{ (services['wazuh-agent.service'].state | default('')) == 'running' }}"
-        reason: "wazuh-agent is {{ services['wazuh-agent.service'].state | default('not installed') }}"
+        ok: >-
+          {{ (services['wazuh-agent.service'].status | default('')) == 'enabled' if in_packer_build
+             else (services['wazuh-agent.service'].state | default('')) == 'running' }}
+        reason: >-
+          {{ 'wazuh-agent is ' ~ (services['wazuh-agent.service'].status | default('not installed')) ~ ' (build: must be installed and enabled)' if in_packer_build
+             else 'wazuh-agent is ' ~ (services['wazuh-agent.service'].state | default('not installed')) }}
 
       - name: wazuh_manager_ports_open
         ok: "{{ wazuh_manager.stdout | default('') | length > 0 and wazuh_ports is not failed }}"
@@ -109,7 +118,8 @@
                   ~ (wazuh_ports.results | default([]) | selectattr('failed', 'defined') | selectattr('failed') | map(attribute='item') | join(', ')) }}
 
       - name: wazuh_agent_connected
-        ok: "{{ \"status='connected'\" in (wazuh_state.stdout | default('')) }}"
+        # Not checked during a Packer build: the agent enrolls on first boot.
+        ok: "{{ in_packer_build or \"status='connected'\" in (wazuh_state.stdout | default('')) }}"
         reason: >-
           {{ 'wazuh-agentd.state not found' if (wazuh_state.rc | default(1)) != 0
              else 'agent state: ' ~ (wazuh_state.stdout_lines | default([]) | select('match', '^status=') | first | default('unknown')) }}
