@@ -26,6 +26,7 @@ locals {
     "hw_scsi_model" : "virtio-scsi",
     "hw_vif_multiqueue_enabled" : "true",
     "os_require_quiesce" : "yes",
+    "os_admin_user": "cloud",
     # This must be set to BIOS to avoid problems where NVIDIA drivers expect BAR support
     # (as we are in EFI mode) but our host HVs are still in BIOS mode.
     # "NVRM: This PCI I/O region assigned to your NVIDIA device is invalid:"
