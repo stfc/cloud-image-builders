@@ -19,6 +19,7 @@
 - name: Prepare the image with the STFC security baseline
   hosts: all
   roles:
+    - role: image_create
     - role: vm_baseline
     - role: container_registry
     - role: nubes_boot
