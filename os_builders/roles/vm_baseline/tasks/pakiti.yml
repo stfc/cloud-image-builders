@@ -2,7 +2,6 @@
   become: true
   ansible.builtin.package:
     name: perl
-    state: latest
 
 - name: Copy Pakiti client script
   become: true
