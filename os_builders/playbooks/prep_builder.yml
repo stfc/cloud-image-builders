@@ -1,1 +1,10 @@
-../prep_builder.yml
+---
+- name: Prep builder
+  hosts: localhost
+  roles:
+    - role: prep_builder
+
+  post_tasks:
+    - name: Initialise Packer
+      command:
+        cmd: packer init .
