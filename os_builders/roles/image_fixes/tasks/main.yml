@@ -4,4 +4,9 @@
 # Fix NVIDIA: This PCI I/O region assigned to your NVIDIA device is invalid
 - ansible.builtin.include_tasks:
     file: nvidia-pci.yml
-    
+
+# Mitigation for CVE-2026-98432 on Ubuntu
+# This should be reverted as soon as a patch is available
+- ansible.builtin.include_tasks:
+    file: CVE-2026-98432.yml
+  when: ansible_facts['distribution'] == "Ubuntu"
