@@ -13,9 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed:
 - Various CI fixes, including making sure Ubuntu 26 and RL10 gets tested, the regression tests run, and resolving warnings flagged by ansible-lint or the CI pipeline. [#241](https://github.com/stfc/cloud-image-builders/pull/241)
+- CI for Amphora use the current branch instead of main for testing. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
 
 ### Changed:
 - Changed default root user, for qemu-guest-agent, to cloud. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
+- Playbooks are now contained in the "playbooks" directory. This allows users to trigger the plays from a collection [#252](https://github.com/stfc/cloud-image-builders/pull/252)
+- Pakiti and Wazuh will use the UUID from cloud-init instead of the metadata service. This allows config drive machines to correctly report to Pakiti and Wazuh. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
+- Improved handling creating Cloud support accounts, installing security tooling like Pakiti, and installing any dependencies on different image bases [#248](https://github.com/stfc/cloud-image-builders/pull/248)
 
 ### Removed:
 - Removed the Azimuth builds as these images aren't being used currently. [#243](https://github.com/stfc/cloud-image-builders/pull/243)
