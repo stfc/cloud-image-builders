@@ -62,24 +62,29 @@ ossec_xml = ossec_conf.getroot()
 agent_hostname = socket.getfqdn()
 
 # Check if the host is an OpenStack VM
-param = "-w 1 -c 1"
-metadata_ip = "169.254.169.254"
-response = os.system(f"ping {param} {metadata_ip}")
-if response == 0:
-    try:
-        metadata_url = "http://169.254.169.254/openstack/latest/meta_data.json"
-        response = requests.get(metadata_url)
-        openstack_metadata = response.json()
-        metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
-        # IMPORTANT NOTE:
-        # the label "openstack.uuid" is now used by a stackstorm automation
-        # and therefore it cannot be removed
-        for vm_attr in metadata_to_parse:
-            labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
-        agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
-    except:
-        print("not an openstack VM")
+instance_data_path = "/run/cloud-init/instance-data.json"
 
+if os.path.exists(instance_data_path):
+    with open(instance_data_path, "r") as file:
+        instance_data = json.load(file)
+
+    # https://docs.cloud-init.io/en/19.3/topics/instancedata.html
+    v1_data = instance_data.get("v1", {})
+    openstack_metadata = {
+        "uuid": v1_data.get("instance_id"),
+        "hostname": v1_data.get("local_hostname"),
+        "project_id": v1_data.get("project_id"),
+    }
+
+    for vm_attr in ["hostname", "project_id"]:
+        labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
+
+    # Append the VM UUID so we can uniquely identify the VM in Wazuh
+    agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
+else:
+    print(
+        "Not an OpenStack VM, /run/cloud-init/instance-data.json does not exist, skipping OpenStack metadata"
+    )
 
 if os.path.exists("/etc/ccm.conf"):
     print("Is Quattor Managed")
