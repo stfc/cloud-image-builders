@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pakiti and Wazuh will use the UUID from cloud-init instead of the metadata service. This allows config drive machines to correctly report to Pakiti and Wazuh. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
 - Improved handling creating Cloud support accounts, installing security tooling like Pakiti, and installing any dependencies on different image bases [#248](https://github.com/stfc/cloud-image-builders/pull/248)
 - Wazuh will now report various metadata elements, such as project ID, flavor and hostname to Wazuh as labels. [#256](https://github.com/stfc/cloud-image-builders/pull/256)
+- Regression test will only check for the cloud user and not any other users. [#256](https://github.com/stfc/cloud-image-builders/pull/256)
 
 ### Removed:
 - Removed the Azimuth builds as these images aren't being used currently. [#243](https://github.com/stfc/cloud-image-builders/pull/243)
