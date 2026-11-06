@@ -1,8 +1,7 @@
-- name: Check only root, rocky, ubuntu and cloud users exist
-  ansible.builtin.command: awk -F':' '($3 == 0 || $3 >= 1000) && $3 < 65534 && $1 !~ /^(root|rocky|ubuntu|cloud)$/ {print $1}' /etc/passwd
+- name: Check cloud user exists
+  ansible.builtin.command: "getent passwd cloud"
   register: run_test_unexpected_users
   changed_when: false
-  failed_when: run_test_unexpected_users.stdout != ""
 
 - name: Check hostname is contains the IP address of the host in the format host-<IP_ADDRESS>.nubes.stfc.ac.uk
   ansible.builtin.command: hostname

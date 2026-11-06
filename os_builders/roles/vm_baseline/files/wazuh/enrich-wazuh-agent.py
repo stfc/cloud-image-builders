@@ -5,9 +5,7 @@ import subprocess
 import socket
 import json
 import xml.etree.ElementTree
-import shutil
 import pathlib
-import requests
 
 
 source = "/var/ossec/etc/ossec.template"
@@ -62,24 +60,39 @@ ossec_xml = ossec_conf.getroot()
 agent_hostname = socket.getfqdn()
 
 # Check if the host is an OpenStack VM
-param = "-w 1 -c 1"
-metadata_ip = "169.254.169.254"
-response = os.system(f"ping {param} {metadata_ip}")
-if response == 0:
-    try:
-        metadata_url = "http://169.254.169.254/openstack/latest/meta_data.json"
-        response = requests.get(metadata_url)
-        openstack_metadata = response.json()
-        metadata_to_parse = ["uuid", "name", "hostname", "project_id"]
-        # IMPORTANT NOTE:
-        # the label "openstack.uuid" is now used by a stackstorm automation
-        # and therefore it cannot be removed
-        for vm_attr in metadata_to_parse:
-            labels_conf["openstack." + vm_attr] = openstack_metadata[vm_attr]
-        agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
-    except:
-        print("not an openstack VM")
+instance_data_path = "/run/cloud-init/instance-data.json"
 
+if os.path.exists(instance_data_path):
+    with open(instance_data_path, "r") as file:
+        instance_data = json.load(file)
+
+    # https://docs.cloud-init.io/en/19.3/topics/instancedata.html
+    v1_data = instance_data.get("v1", {})
+    cloud_init_metadata = {
+        "uuid": v1_data.get("instance_id"),
+        "hostname": v1_data.get("local_hostname"),
+        "distro": v1_data.get("distro", "unknown"),
+        "distro_version": v1_data.get("distro_version", "unknown"),
+    }
+
+    # Openstack specific fields not available on generic cloud-init metadata yet
+    ds_data = instance_data.get("ds", {})
+    instance_data = {
+        "instance-type": ds_data.get("instance-type"),
+        "project_id": ds_data.get("meta_data").get("project_id"),
+    }
+
+    openstack_metadata = {**cloud_init_metadata, **instance_data}
+
+    for vm_attr, vm_value in openstack_metadata.items():
+        labels_conf["openstack." + vm_attr] = vm_value
+
+    # Append the VM UUID so we can uniquely identify the VM in Wazuh
+    agent_hostname = agent_hostname + "-" + openstack_metadata["uuid"]
+else:
+    print(
+        "Not an OpenStack VM, /run/cloud-init/instance-data.json does not exist, skipping OpenStack metadata"
+    )
 
 if os.path.exists("/etc/ccm.conf"):
     print("Is Quattor Managed")
@@ -147,5 +160,10 @@ hostname_update = xml.etree.ElementTree.SubElement(client_update, "enrollment")
 hostname_update.tag = "agent_name"
 hostname_update.text = agent_hostname
 
+try:
+    # Pretty print the XML so things go onto new lines and are indented. This is only available in Python 3.9+
+    xml.etree.ElementTree.indent(ossec_xml, space="    ")
+except AttributeError:
+    pass  # Fall back to flat XML on Python < 3.9
 
 ossec_conf.write(destination)
