@@ -1,6 +1,6 @@
 ### Description:
 
-> This should always be a draft pull request and never merged. See How to release a hotfix in the README
+> **This should always be a draft pull request and never merged. See How to release a hotfix in the README**
 
 <!--
 This should be a brief one or two line description of the PR. Details should be contained in commit messages.

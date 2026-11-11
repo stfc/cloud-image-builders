@@ -9,10 +9,9 @@ This should be a brief one or two line description of the PR. Details should be 
 ### Reviewer:
 
 #### Consider:
-1. The code has already been merged to main.
-2. The only new changes should be docummentation and versions
-3. There may be merge conflicts as develop has moved ahead
+1. The only new changes should be docummentation and versions
 
 #### Criteria:
 - At least 1 reviewer
-- Must confirm the [CHANGELOG.md](./CHANGELOG.md) has had conflicts resolved correctly.
+- Must confirm the version update follows [SemVer](https://semver.org/)
+- Must confirm [RELEASES.md](./RELEASES.md) and [CHANGELOG.md](./CHANGELOG.md) have been updated.
