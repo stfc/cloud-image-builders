@@ -2,6 +2,12 @@
 
 This doccument contains information relevant to users. This includes behavioral changes and bug fixes to OS images.
 
+## 0.4.0 - 11th November 2026
+
+### Overview:
+
+The only change that affects users in this release is the build of **ubuntu-26.04-preview** and **rocky-10-preview**. These have been made publically available in OpenStack. However, they are still in preview and are not considered production ready.
+
 ## 0.3.2 - 6th October 2026
 
 ### Overview:
