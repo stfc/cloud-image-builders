@@ -165,7 +165,7 @@ The image configuration is based on the Ansible playbooks run by Packer. If we w
 2. Create a branch name using the correct prefix:
    - **feature/<feature>**
    - **docs/<docs>**
-   - **bugfix/<fixes>**
+   - **fix/<fixes>**
    - **release/<release>**
    - **sec/<CVE-identifier/fix>**
 2. Switch to new branch
@@ -291,14 +291,14 @@ Sometimes bugs are not noticed until after release. If they are important and ne
 6. Create a **draft** pull request to the **main** branch.
 7. See [Branch Reviews](#branch-reviews) but this pull request will not be merged
 8. Once it has been approved follow [How to build images](#how-to-build-images) making sure to switch to your hotfix branch. 
-9. After the new images are released the commits need to be cherry picked into **develop** by creating a `bugfix/*` branch from **develop**.
+9. After the new images are released the commits need to be cherry picked into **develop** by creating a `fix/*` branch from **develop**.
    ```shell
    git switch develop
-   git switch -c bugfix/<hotfix-issue>
+   git switch -c fix/<hotfix-issue>
    git cherry-pick <hotfix-commit-sha>
    ```
 10. Update the [CHANGELOG](./CHANGELOG.md)
-11. Create a pull request from **bugfix/<hotfix-issue>** to **develop**
+11. Create a pull request from **fix/<hotfix-issue>** to **develop**
 12. See [Branch Reviews](#branch-reviews)
 
 ## Branch Reviews
@@ -338,7 +338,7 @@ This is usually new code such as tests, bug fixes, new features...
 ### main <-- hotfix/*
 > This should always be a draft pull request and never merged. See [How to release a hotfix](#how-to-release-a-hotfix)
 #### Consider:
-Can the fix be applied as a bugfix in the next release?
+Can the fix be applied as a fix in the next release?
 - Yes. Change the merge target to **develop**
 - No. Review thoroughly
 
