@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check source branch
-        if: "!startsWith(github.head_ref, 'develop/')"
+        if: "!startsWith(github.head_ref, 'develop')"
         run: |
-          echo "Only release/* and hotfix/* branches can be merged into main."
+          echo "Only develop can be merged into main."
           echo "Source branch: ${{ github.head_ref }}"
           exit 1
 
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check source branch
-        if: "!startsWith(github.head_ref, 'feature/') && !startsWith(github.head_ref, 'docs/') && !startsWith(github.head_ref, 'bugfix/') && !startsWith(github.head_ref, 'release/') && !startsWith(github.head_ref, 'sec/')"
+        if: "!startsWith(github.head_ref, 'feature/') && !startsWith(github.head_ref, 'docs/') && !startsWith(github.head_ref, 'fix/') && !startsWith(github.head_ref, 'release/') && !startsWith(github.head_ref, 'sec/')"
         run: |  
           echo "Only feature/*, bugfix/*, docs/*, sec/* and hotfix/* branches can be merged into develop."
           echo "Source branch: ${{ github.head_ref }}"
