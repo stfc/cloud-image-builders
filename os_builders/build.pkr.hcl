@@ -26,6 +26,7 @@ locals {
     "hw_scsi_model" : "virtio-scsi",
     "hw_vif_multiqueue_enabled" : "true",
     "os_require_quiesce" : "yes",
+    "os_admin_user": "cloud",
     # This must be set to BIOS to avoid problems where NVIDIA drivers expect BAR support
     # (as we are in EFI mode) but our host HVs are still in BIOS mode.
     # "NVRM: This PCI I/O region assigned to your NVIDIA device is invalid:"
@@ -33,7 +34,7 @@ locals {
     # Once we're RL9 + EFI + Above 4GB decoding everywhere we can enable EFI which gives
     # some perf benefits for GPU passthrough where REBAR can be used
     "hw_firmware_type" : "bios",
-    "image_builder_version": "0.3.2"
+    "image_builder_version": "0.4.0"
   }
   aq_metadata = {
     "AQ_ARCHETYPE": "cloud",
@@ -49,7 +50,7 @@ source "openstack" "builder" {
   domain_name       = "Default"
   flavor            = "l3.imagecreate"
   security_groups   = ["default"]
-  networks          = ["${local.env_network_id}"]  
+  networks          = ["${local.env_network_id}"]
   image_visibility  = "private"
   ssh_timeout       = "20m"
   image_min_disk    = "20"
@@ -71,39 +72,31 @@ build {
     metadata = local.metadata
   }
   source "openstack.builder" {
+    name                      = "ubuntu-resolute-26.04-nogui"
+    image_name                = "ubuntu-resolute-26.04-nogui-preview-${ local.date_suffix }"
+    ssh_username              = "ubuntu"
+    external_source_image_url = "https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img"
+    metadata = local.metadata
+  }
+  source "openstack.builder" {
     name = "rocky-8-nogui"
     image_name = "rocky-8-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
-    source "openstack.builder" {
+  source "openstack.builder" {
     name = "rocky-9-nogui"
     image_name = "rocky-9-nogui-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
-
   source "openstack.builder" {
-    name                      = "azimuth-workstation"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-desktop-260914-1528.qcow2"
-    image_name                = "azimuth-workstation-${ local.date_suffix }"
-    ssh_username              = "ubuntu"
-    metadata = local.metadata
-  }
-  source "openstack.builder" {
-    name                      = "azimuth-rstudio"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-linux-rstudio-260914-1509.qcow2"
-    image_name                = "azimuth-rstudio-${ local.date_suffix }"
-    ssh_username              = "ubuntu"
-    metadata = local.metadata
-  }
-  source "openstack.builder" {
-    name                      = "azimuth-jupyter-repo2docker"
-    external_source_image_url = "https://azimuth-images.stackhpc.cloud/ubuntu-noble-jupyter-repo2docker-260914-1522.qcow2"
-    image_name                = "azimuth-jupyter-repo2docker-${ local.date_suffix }"
-    ssh_username              = "ubuntu"
+    name = "rocky-10-nogui"
+    image_name = "rocky-10-nogui-preview-${ local.date_suffix }"
+    ssh_username = "rocky"
+    external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
     metadata = local.metadata
   }
   source "openstack.builder" {
@@ -113,12 +106,19 @@ build {
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/8/images/x86_64/Rocky-8-GenericCloud-Base.latest.x86_64.qcow2"
     metadata                  = merge(local.metadata, local.aq_metadata, {"AQ_OSVERSION": "8"})
   }
-    source "openstack.builder" {
+  source "openstack.builder" {
     name = "rocky-9-aq"
     image_name = "rocky-9-aq-${ local.date_suffix }"
     ssh_username = "rocky"
     external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2"
     metadata                  = merge(local.metadata, local.aq_metadata, {"AQ_OSVERSION": "9"})
+  }
+  source "openstack.builder" {
+    name = "rocky-10-aq"
+    image_name = "rocky-10-aq-${ local.date_suffix }"
+    ssh_username = "rocky"
+    external_source_image_url = "https://www.mirrorservice.org/sites/download.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2"
+    metadata                  = merge(local.metadata, local.aq_metadata, {"AQ_OSVERSION": "10"})
   }
 
   sources = ["openstack.builder"]
@@ -126,7 +126,7 @@ build {
   provisioner "ansible" {
     only = ["openstack.rocky-8-aq", "openstack.rocky-9-aq"]
     user          = "${build.User}"
-    playbook_file = "quattor.yml"
+    playbook_file = "playbooks/quattor.yml"
     extra_arguments = [
       # Still required for Rocky 8 and 9
       "--scp-extra-args", "'-O'",
@@ -135,7 +135,7 @@ build {
 
   provisioner "ansible" {
     user          = "${build.User}"
-    playbook_file = "configure_os_images.yml"
+    playbook_file = "playbooks/configure_os_images.yml"
     extra_arguments = [
       # Workaround https://github.com/hashicorp/packer/issues/12416
       # This is required for Ubuntu (Debian) 24.04+ as SFTP is disabled by default

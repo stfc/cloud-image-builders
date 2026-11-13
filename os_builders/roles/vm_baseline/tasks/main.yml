@@ -1,4 +1,6 @@
 - name: Check if we are in a container from the GitHub workflows
+  # This role can be run standalone so we can't rely on the in_container fact
+  # from the configure_os_images playbook being set, so we check again here
   become: true
   ansible.builtin.command: "cat /proc/self/cgroup"
   register: vm_baseline_in_container_check
@@ -7,6 +9,8 @@
   ansible.builtin.set_fact:
     vm_baseline_in_container: "{{ vm_baseline_in_container_check.stdout == '0::/' }}"
 
+- include_tasks: yum-repos.yml
+  when: ansible_facts['os_family']  == "RedHat"
 - include_tasks: cron.yml
 - include_tasks: locale.yml
 

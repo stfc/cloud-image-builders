@@ -15,6 +15,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed:
 
+## [0.4.0] - 2026-11-11:
+
+### Added:
+- Added the testing_os_images.yml playbook and run_test role. [#239](https://github.com/stfc/cloud-image-builders/pull/239)
+- Added the Ubuntu 26 and Rocky 10 images to the builders. [#191](https://github.com/stfc/cloud-image-builders/pull/191)
+
+### Fixed:
+- Various CI fixes, including making sure Ubuntu 26 and RL10 gets tested, the regression tests run, and resolving warnings flagged by ansible-lint or the CI pipeline. [#241](https://github.com/stfc/cloud-image-builders/pull/241)
+- CI for Amphora use the current branch instead of main for testing. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
+
+### Changed:
+- Changed default root user, for qemu-guest-agent, to cloud. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
+- Playbooks are now contained in the "playbooks" directory. This allows users to trigger the plays from a collection [#252](https://github.com/stfc/cloud-image-builders/pull/252)
+- Pakiti and Wazuh will use the UUID from cloud-init instead of the metadata service. This allows config drive machines to correctly report to Pakiti and Wazuh. [#248](https://github.com/stfc/cloud-image-builders/pull/248)
+- Improved handling creating Cloud support accounts, installing security tooling like Pakiti, and installing any dependencies on different image bases [#248](https://github.com/stfc/cloud-image-builders/pull/248)
+- Wazuh will now report various metadata elements, such as project ID, flavor and hostname to Wazuh as labels. [#256](https://github.com/stfc/cloud-image-builders/pull/256)
+- Regression test will only check for the cloud user and not any other users. [#256](https://github.com/stfc/cloud-image-builders/pull/256)
+
+### Removed:
+- Removed the Azimuth builds as these images aren't being used currently. [#243](https://github.com/stfc/cloud-image-builders/pull/243)
+
 
 ## [0.3.2] - 2026-10-06
 
@@ -36,11 +57,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.1] - 2026-08-25
 
 ### Changed:
-
 - Virtual machines now report to Pakiti with their UUID rather than hostname. [#194](https://github.com/stfc/cloud-image-builders/pull/194)
 
 ### Fixed:
-
 - Typo in the hostname for VMs fixed. [#194](https://github.com/stfc/cloud-image-builders/pull/194)
 
 ## [0.3.0] - 2026-08-20
